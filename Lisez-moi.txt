@@ -1,0 +1,8 @@
+
+
+Le dossier sources contient toutes les sources.
+
+Le dossier diagrammes contient tous les diagrammes.
+
+Le dossier site contient le site tel qu'il est censé être sur un serveur web.
+
