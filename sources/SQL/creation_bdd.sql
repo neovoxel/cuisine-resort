@@ -1,23 +1,22 @@
-
-
 CREATE TABLE Utilisateur
 (
-	id_utilisateur		int auto-increment primary key,
-	login				varchar(25) primary key,
+	id_utilisateur		int auto_increment,
+	login				varchar(25),
 	nom_utilisateur		varchar(25) default null,
 	prenom				varchar(25) default null,
 	mdp					varchar(100) not null,
 	email				varchar(25) not null,
-	type_utilisateur	integer not null default 0
+	type_utilisateur	integer not null default 0,
+	constraint PK_Utilisateur primary key (id_utilisateur, login),
 	
 	constraint CST_Type_Utilisateur
-		check (type_utilisateur == 0 OR type_utilisateur == 1)
+		check (type_utilisateur = 0 OR type_utilisateur = 1)
 );
 
 
 CREATE TABLE Commentaire
 (
-	id_com			int auto-increment primary key,
+	id_com			int auto_increment primary key,
 	id_utilisateur	int,
 	id_recette		int,
 	commentaire		text not null,
@@ -27,21 +26,22 @@ CREATE TABLE Commentaire
 
 CREATE TABLE Recette
 (
-	id_recette		int auto-increment primary key,
+	id_recette		int auto_increment primary key,
+	id_utilisateur	int,
 	id_categorie	int,
 	titre			varchar(100) not null,
 	recette			text not null,
-	etat			integer not null default 0
+	etat			integer not null default 0,
 	
 	constraint CST_Etat_Recette
-		check (etat == 0 OR etat == 1 OR etat == 2)
+		check (etat = 0 OR etat = 1 OR etat = 2)
 );
 
 
 CREATE TABLE Categorie
 (
-	id_categorie	int auto-increment primary key,
-	nom_categorie	varchar(10) not null
+	id_categorie	int auto_increment primary key,
+	nom_categorie	varchar(10) not null,
 	
 	constraint CST_Nom_Categorie
 		check (nom_categorie IN ('Entree', 'Plat', 'Dessert'))
@@ -59,7 +59,7 @@ CREATE TABLE Compose
 
 CREATE TABLE Ingredient
 (
-	id_ingredient	int auto-increment,
+	id_ingredient	int auto_increment,
 	id_unite		int,
 	nom_ingredient	varchar(25),
 	constraint PK_Ingredient primary key (id_ingredient, nom_ingredient)
@@ -68,7 +68,7 @@ CREATE TABLE Ingredient
 
 CREATE TABLE Unite
 (
-	id_unite	int auto-increment,
+	id_unite	int auto_increment,
 	nom_unite	varchar(25),
 	constraint PK_Unite primary key (id_unite, nom_unite)
 );
