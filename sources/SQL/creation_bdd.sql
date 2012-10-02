@@ -1,3 +1,7 @@
+CREATE DATABASE cuisine CHARACTER SET 'utf8';
+USE cuisine;
+
+
 CREATE TABLE Utilisateur
 (
 	id_utilisateur		int auto_increment,
@@ -11,7 +15,7 @@ CREATE TABLE Utilisateur
 	
 	constraint CST_Type_Utilisateur
 		check (type_utilisateur = 0 OR type_utilisateur = 1)
-);
+) ENGINE=INNODB;
 
 
 CREATE TABLE Commentaire
@@ -21,7 +25,7 @@ CREATE TABLE Commentaire
 	id_recette		int,
 	commentaire		text not null,
 	date_com		DATETIME not null
-);
+) ENGINE=INNODB;
 
 
 CREATE TABLE Recette
@@ -35,17 +39,18 @@ CREATE TABLE Recette
 	
 	constraint CST_Etat_Recette
 		check (etat = 0 OR etat = 1 OR etat = 2)
-);
+) ENGINE=INNODB;
 
 
 CREATE TABLE Categorie
 (
-	id_categorie	int auto_increment primary key,
-	nom_categorie	varchar(10) not null,
+	id_categorie	int auto_increment,
+	nom_categorie	varchar(10),
+	constraint PK_Categorie primary key (id_categorie, nom_categorie),
 	
 	constraint CST_Nom_Categorie
 		check (nom_categorie IN ('Entree', 'Plat', 'Dessert'))
-);
+) ENGINE=INNODB;
 
 
 CREATE TABLE Compose
@@ -54,7 +59,7 @@ CREATE TABLE Compose
 	id_ingredient	int,
 	quantite		decimal(4,3),
 	constraint PK_Ingredient primary key (id_recette, id_ingredient)
-);
+) ENGINE=INNODB;
 
 
 CREATE TABLE Ingredient
@@ -63,7 +68,7 @@ CREATE TABLE Ingredient
 	id_unite		int,
 	nom_ingredient	varchar(25),
 	constraint PK_Ingredient primary key (id_ingredient, nom_ingredient)
-);
+) ENGINE=INNODB;
 
 
 CREATE TABLE Unite
@@ -71,7 +76,7 @@ CREATE TABLE Unite
 	id_unite	int auto_increment,
 	nom_unite	varchar(25),
 	constraint PK_Unite primary key (id_unite, nom_unite)
-);
+) ENGINE=INNODB;
 
 
 ALTER TABLE Commentaire
