@@ -57,7 +57,7 @@ CREATE TABLE Compose
 (
 	id_recette		int,
 	id_ingredient	int,
-	quantite		decimal(4,3),
+	quantite		decimal(10,3),
 	constraint PK_Ingredient primary key (id_recette, id_ingredient)
 ) ENGINE=INNODB;
 
