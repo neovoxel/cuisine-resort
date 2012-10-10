@@ -3,15 +3,18 @@
 		if (is_file($file)) {
 			ob_start();
 			include $file;
-			$content = ob_get_contents();
+			$file_content = ob_get_contents();
 			ob_end_clean();
-			return $content;
+			return $file_content;
 		}
 		else
-			return false;
+			return "Le fichier '$file' n'a pas été trouvé.";
 	}
 	
 	function render($_S, $layout) {
-		include $layout;
+		if (is_file($layout))
+			include $layout;
+		else
+			die("Le fichier layout '$layout' n'a pas été trouvé.");
 	}
 ?>
