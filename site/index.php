@@ -1,11 +1,11 @@
 <?php
-	include 'lib.inc.php';
-	include 'config.inc.php';
+	include 'includes/lib.inc.php';
+	include 'includes/config.inc.php';
 	
-	$_SQUELETTE['entete'] = loadPageContent('entete.inc.php');
-	$_SQUELETTE['navigation'] = loadPageContent('navigation.inc.php');
-	$_SQUELETTE['pied'] = loadPageContent('pied.inc.php');
+	$_SQUELETTE['entete'] = loadPageContent('includes/entete.inc.php');
+	$_SQUELETTE['navigation'] = loadPageContent('includes/navigation.inc.php');
+	$_SQUELETTE['pied'] = loadPageContent('includes/pied.inc.php');
 	
-	render($_SQUELETTE, 'layout.inc.php');
+	render($_SQUELETTE, 'includes/layout.inc.php');
 
 ?>
