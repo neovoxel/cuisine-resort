@@ -36,9 +36,15 @@ CREATE TABLE Recette
 	titre			varchar(100) not null,
 	recette			text not null,
 	etat			integer not null default 0,
+	temps_prepar	time,
+	nb_pers			int default 1,
+	difficulte		int default 0,
 	
 	constraint CST_Etat_Recette
-		check (etat = 0 OR etat = 1 OR etat = 2)
+		check (etat = 0 OR etat = 1 OR etat = 2),
+	
+	constraint CST_Difficulte_Recette
+		check (difficulte = 0 OR difficulte = 1 OR difficulte = 2)
 ) ENGINE=INNODB;
 
 

@@ -46,11 +46,11 @@ INSERT INTO Categorie(nom_categorie)
 INSERT INTO Categorie(nom_categorie)
 	VALUES('Dessert');
 
-INSERT INTO Recette(id_utilisateur,id_categorie,titre,recette,etat)
-	VALUES(1,2,'Soupe au Pistou','Et bien dans une casserole, tu mets des haricots et de la sauce tomate. Beh ouais!',1);
+INSERT INTO Recette(id_utilisateur,id_categorie,titre,recette,etat,temps_prepar,nb_pers,difficulte)
+	VALUES(1,2,'Soupe au Pistou','Et bien dans une casserole, tu mets des haricots et de la sauce tomate. Beh ouais!',1,'00:30:00',2,1);
 
-INSERT INTO Recette(id_utilisateur,id_categorie,titre,recette,etat)
-	VALUES(2,3,'Gateau au caca','Si je dis : onctueux, succulent, délicieux et appétissant. Vous répondez ? Gateau au caca, bien sûr!\nEn exclusivité pour le site, je propose de vous délivrer la si recherchée recette de ce fameux met.\nMais avant cela, je tiens à remercier mon ami Adrien, non seulement parce que c\'est un cuisinier de génie mais surtout parce qu\'il m\'autorise à vous communiquer sa recette!',2);
+INSERT INTO Recette(id_utilisateur,id_categorie,titre,recette,etat,temps_prepar,nb_pers,difficulte)
+	VALUES(2,3,'Gateau au caca','Si je dis : onctueux, succulent, délicieux et appétissant. Vous répondez ? Gateau au caca, bien sûr!\nEn exclusivité pour le site, je propose de vous délivrer la si recherchée recette de ce fameux met.\nMais avant cela, je tiens à remercier mon ami Adrien, non seulement parce que c\'est un cuisinier de génie mais surtout parce qu\'il m\'autorise à vous communiquer sa recette!',2,'00:30:00',2,1);
 
 INSERT INTO Compose(id_recette,id_ingredient,quantite)
 	VALUES(1,1,2);
