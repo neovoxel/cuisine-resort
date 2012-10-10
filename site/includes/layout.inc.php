@@ -10,6 +10,9 @@
 	<div id="navigation">
 		<?php echo $_S['navigation']; ?>
 	</div>
+	<div id="contenu">
+		<?php echo $_S['contenu']; ?>
+	</div>
 	<div id="pied">
 		<?php echo $_S['pied']; ?>
 	</div>

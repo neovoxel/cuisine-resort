@@ -4,6 +4,7 @@
 	
 	$_SQUELETTE['entete'] = loadPageContent('includes/entete.inc.php');
 	$_SQUELETTE['navigation'] = loadPageContent('includes/navigation.inc.php');
+	$_SQUELETTE['contenu'] = loadPageContent('includes/accueil.inc.php');
 	$_SQUELETTE['pied'] = loadPageContent('includes/pied.inc.php');
 	
 	render($_SQUELETTE, 'includes/layout.inc.php');
