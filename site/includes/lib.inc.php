@@ -17,4 +17,13 @@
 		else
 			die("Le fichier layout '$layout' n'a pas été trouvé.");
 	}
+	
+	function pageExists($_page, $_P) {
+		
+		foreach ($_P as $page_name=> $tmp) {
+			if ($_page == $page_name)
+				return true;
+		}
+		return false;
+	}
 ?>
