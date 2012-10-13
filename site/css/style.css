@@ -1,0 +1,37 @@
+body {
+	background-color: #3D6328;
+	font-family:  Arial, sans-serif;}
+	
+div#entete {
+	width: 600px;
+	height: 100px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #90EA60; --IMAGE A METTRE
+	--border-style: solid;
+	--border-color: gray;}
+	
+div#navigation {
+	border-style: solid;
+	border-color: gray;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	width: 600px
+	}
+	
+div#contenu {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	background-color: gray;	
+	}
+	
+div#pied {
+	bottom: auto;	
+	background-color: #333333;
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	}
