@@ -32,7 +32,6 @@ CREATE TABLE Recette
 (
 	id_recette		int auto_increment primary key,
 	id_utilisateur	int,
-	id_categorie	int,
 	titre			varchar(100) not null,
 	recette			text not null,
 	etat			integer not null default 0,
@@ -46,6 +45,14 @@ CREATE TABLE Recette
 	
 	constraint CST_Difficulte_Recette
 		check (difficulte = 0 OR difficulte = 1 OR difficulte = 2 OR difficulte = 3)
+) ENGINE=INNODB;
+
+
+CREATE TABLE Appartient
+(
+	id_recette		int,
+	id_categorie	int,
+	constraint PK_Appartient primary key (id_recette, id_categorie)
 ) ENGINE=INNODB;
 
 
@@ -63,7 +70,7 @@ CREATE TABLE Compose
 	id_recette		int,
 	id_ingredient	int,
 	quantite		float not null,
-	constraint PK_Ingredient primary key (id_recette, id_ingredient)
+	constraint PK_Compose primary key (id_recette, id_ingredient)
 ) ENGINE=INNODB;
 
 
@@ -71,8 +78,15 @@ CREATE TABLE Ingredient
 (
 	id_ingredient	int auto_increment,
 	nom_ingredient	varchar(25),
-	id_unite		int,
 	constraint PK_Ingredient primary key (id_ingredient, nom_ingredient)
+) ENGINE=INNODB;
+
+
+CREATE TABLE Mesure
+(
+	id_ingredient int,
+	id_unite int,
+	constraint PK_Mesure primary key (id_ingredient, id_unite)
 ) ENGINE=INNODB;
 
 
@@ -89,14 +103,18 @@ ADD constraint FK_Commentaire_Utilisateur foreign key (id_utilisateur) reference
 ADD constraint FK_Commentaire_Recette foreign key (id_recette) references Recette (id_recette);
 
 ALTER TABLE Recette
-ADD constraint FK_Recette_Utilisateur foreign key (id_utilisateur) references Utilisateur (id_utilisateur),
-ADD constraint FK_Recette_Categorie foreign key (id_categorie) references Categorie (id_categorie);
+ADD constraint FK_Recette_Utilisateur foreign key (id_utilisateur) references Utilisateur (id_utilisateur);
+
+ALTER TABLE Appartient
+ADD constraint FK_Appartient_Recette foreign key (id_recette) references Recette (id_recette),
+ADD constraint FK_Appartient_Categorie foreign key (id_categorie) references Categorie (id_categorie);
 
 ALTER TABLE Compose
 ADD constraint FK_Compose_Recette foreign key (id_recette) references Recette (id_recette),
 ADD constraint FK_Compose_Ingredient foreign key (id_ingredient) references Ingredient (id_ingredient);
 
-ALTER TABLE Ingredient
-ADD constraint FK_Ingredient_Unite foreign key (id_unite) references Unite (id_unite);
+ALTER TABLE Mesure
+ADD constraint FK_Mesure_Ingredient foreign key (id_ingredient) references Ingredient (id_ingredient),
+ADD constraint FK_Mesure_Unite foreign key (id_unite) references Unite (id_unite);
 
 
