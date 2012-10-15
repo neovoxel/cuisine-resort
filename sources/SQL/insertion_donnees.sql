@@ -37,14 +37,14 @@ INSERT INTO Ingredient(id_unite,nom_ingredient)
 INSERT INTO Ingredient(id_unite,nom_ingredient)
 	VALUES(1,'Oeuf');
 	
-INSERT INTO Categorie(nom_categorie)
-	VALUES('Entree');
+INSERT INTO Categorie(nom_categorie,image_categorie)
+	VALUES('Entrées','entrees.jpg');
 
-INSERT INTO Categorie(nom_categorie)
-	VALUES('Plat');
+INSERT INTO Categorie(nom_categorie,image_categorie)
+	VALUES('Plats','plats.jpg');
 
-INSERT INTO Categorie(nom_categorie)
-	VALUES('Dessert');
+INSERT INTO Categorie(nom_categorie,image_categorie)
+	VALUES('Desserts','dessets.jpg');
 
 INSERT INTO Recette(id_utilisateur,id_categorie,titre,recette,etat,temps_prepar,nb_pers,difficulte)
 	VALUES(1,2,'Soupe au Pistou','Et bien dans une casserole, tu mets des haricots et de la sauce tomate. Beh ouais!',1,'00:30:00',2,1);

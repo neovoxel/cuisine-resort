@@ -39,6 +39,7 @@ CREATE TABLE Recette
 	temps_prepar	time,
 	nb_pers			int default 1,
 	difficulte		int default 0,
+	image_recette	text default null,
 	
 	constraint CST_Etat_Recette
 		check (etat = 0 OR etat = 1 OR etat = 2),
@@ -52,10 +53,8 @@ CREATE TABLE Categorie
 (
 	id_categorie	int auto_increment,
 	nom_categorie	varchar(10),
-	constraint PK_Categorie primary key (id_categorie, nom_categorie),
-	
-	constraint CST_Nom_Categorie
-		check (nom_categorie IN ('Entree', 'Plat', 'Dessert'))
+	image_categorie	text not null,
+	constraint PK_Categorie primary key (id_categorie, nom_categorie)
 ) ENGINE=INNODB;
 
 
