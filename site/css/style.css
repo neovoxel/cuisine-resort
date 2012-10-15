@@ -1,37 +1,57 @@
 body {
 	background-color: #3D6328;
-	font-family:  Arial, sans-serif;}
+	font-family:  Arial, sans-serif;
+}
 	
-div#entete {
-	width: 600px;
-	height: 100px;
+#entete {
+	width: 900px;
+	height: 300px;
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
 	background-color: #90EA60; --IMAGE A METTRE
 	--border-style: solid;
-	--border-color: gray;}
+	--border-color: gray;
+}
+
 	
-div#navigation {
+#navigation {
 	border-style: solid;
 	border-color: gray;
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
 	width: 600px
-	}
+}
 	
-div#contenu {
+#contenu {
 	margin-left: auto;
 	margin-right: auto;
-	text-align: center;
+	text-align: left;
 	background-color: gray;	
-	}
+}
+
+#detail_recette {
+	margin: 10px;
+	padding: 5px;
+	padding-top: 1px;
+}
+
+#detail_recette hr {
+	color: black;
+}
+
+#detail_recette #presentation h1{
+	text-align: center;
+}
+
+#detail_recette #presentation .img_recette {
+	float: right;
+}
 	
-div#pied {
+#pied {
 	bottom: auto;	
 	background-color: #333333;
-	position: absolute;
 	width: 100%;
 	bottom: 0;
-	}
+}

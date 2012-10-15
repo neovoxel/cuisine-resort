@@ -1,1 +1,1 @@
-<h1>Voici l'entête !!!</h1>
+<a href="index.php" ><img src="images/banniere.jpg" alt="Bannière" /></a>

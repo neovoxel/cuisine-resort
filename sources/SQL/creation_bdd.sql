@@ -36,7 +36,7 @@ CREATE TABLE Recette
 	titre			varchar(100) not null,
 	recette			text not null,
 	etat			integer not null default 0,
-	temps_prepar	time,
+	temps_prepar	time default null,
 	nb_pers			int default 1,
 	difficulte		int default 0,
 	image_recette	text default null,
@@ -45,7 +45,7 @@ CREATE TABLE Recette
 		check (etat = 0 OR etat = 1 OR etat = 2),
 	
 	constraint CST_Difficulte_Recette
-		check (difficulte = 0 OR difficulte = 1 OR difficulte = 2)
+		check (difficulte = 0 OR difficulte = 1 OR difficulte = 2 OR difficulte = 3)
 ) ENGINE=INNODB;
 
 
@@ -62,7 +62,7 @@ CREATE TABLE Compose
 (
 	id_recette		int,
 	id_ingredient	int,
-	quantite		decimal(10,3),
+	quantite		float not null,
 	constraint PK_Ingredient primary key (id_recette, id_ingredient)
 ) ENGINE=INNODB;
 
@@ -70,8 +70,8 @@ CREATE TABLE Compose
 CREATE TABLE Ingredient
 (
 	id_ingredient	int auto_increment,
-	id_unite		int,
 	nom_ingredient	varchar(25),
+	id_unite		int,
 	constraint PK_Ingredient primary key (id_ingredient, nom_ingredient)
 ) ENGINE=INNODB;
 

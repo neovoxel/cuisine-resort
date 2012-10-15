@@ -11,31 +11,31 @@ INSERT INTO Unite(nom_unite)
 	VALUES('Sans unité');
 
 INSERT INTO Unite(nom_unite)
-	VALUES('Millilitre');
+	VALUES('ml');
 
 INSERT INTO Unite(nom_unite)
-	VALUES('Gramme');
+	VALUES('g');
 
 INSERT INTO Unite(nom_unite)
-	VALUES('Kilogramme');
+	VALUES('Kg');
 
 INSERT INTO Unite(nom_unite)
-	VALUES('Litre');
+	VALUES('L');
 	
 INSERT INTO Ingredient(id_unite,nom_ingredient)
-	VALUES(3,'Haricots');
+	VALUES(3,'haricots');
 	
 INSERT INTO Ingredient(id_unite,nom_ingredient)
-	VALUES(4,'Sauce tomate');
+	VALUES(4,'sauce tomate');
 	
 INSERT INTO Ingredient(id_unite,nom_ingredient)
-	VALUES(3,'Farine');
+	VALUES(3,'farine');
 
 INSERT INTO Ingredient(id_unite,nom_ingredient)
-	VALUES(3,'Sucre');
+	VALUES(3,'sucre');
 
 INSERT INTO Ingredient(id_unite,nom_ingredient)
-	VALUES(1,'Oeuf');
+	VALUES(1,'œufs');
 	
 INSERT INTO Categorie(nom_categorie,image_categorie)
 	VALUES('Entrées','entrees.jpg');
@@ -49,8 +49,8 @@ INSERT INTO Categorie(nom_categorie,image_categorie)
 INSERT INTO Recette(id_utilisateur,id_categorie,titre,recette,etat,temps_prepar,nb_pers,difficulte)
 	VALUES(1,2,'Soupe au Pistou','Et bien dans une casserole, tu mets des haricots et de la sauce tomate. Beh ouais!',1,'00:30:00',2,1);
 
-INSERT INTO Recette(id_utilisateur,id_categorie,titre,recette,etat,temps_prepar,nb_pers,difficulte)
-	VALUES(2,3,'Gateau au caca','Si je dis : onctueux, succulent, délicieux et appétissant. Vous répondez ? Gateau au caca, bien sûr!\nEn exclusivité pour le site, je propose de vous délivrer la si recherchée recette de ce fameux met.\nMais avant cela, je tiens à remercier mon ami Adrien, non seulement parce que c\'est un cuisinier de génie mais surtout parce qu\'il m\'autorise à vous communiquer sa recette!',2,'00:30:00',2,1);
+INSERT INTO Recette(id_utilisateur,id_categorie,titre,recette,etat,temps_prepar,nb_pers,difficulte,image_recette)
+	VALUES(2,3,'Gateau au caca','Si je dis : onctueux, succulent, délicieux et appétissant. Vous répondez ? Gateau au caca, bien sûr!\nEn exclusivité pour le site, je propose de vous délivrer la si recherchée recette de ce fameux met.\nMais avant cela, je tiens à remercier mon ami Adrien, non seulement parce que c\'est un cuisinier de génie mais surtout parce qu\'il m\'autorise à vous communiquer sa recette!',2,'01:30:00',2,1,'img.jpg');
 
 INSERT INTO Compose(id_recette,id_ingredient,quantite)
 	VALUES(1,1,2);
@@ -79,17 +79,16 @@ INSERT INTO Commentaire(id_utilisateur,id_recette,commentaire,date_com)
 INSERT INTO Commentaire(id_utilisateur,id_recette,commentaire,date_com)
 	VALUES(2,2,'Tu aimes hein ? :D','2012-10-02 21:17:53');
 
-	
 
-CREATE USER 'cuisine_user'@'localhost' IDENTIFIED BY '***';
+
+CREATE USER 'cuisine_user'@'localhost' IDENTIFIED BY 'SJzEeqLb2HHeNYVV';
 
 GRANT SELECT ,
 INSERT ,
 
 UPDATE ,
 DELETE ,
-FILE ON * . * TO 'cuisine_user'@'localhost' IDENTIFIED BY '***' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0 ;
+FILE ON * . * TO 'cuisine_user'@'localhost' IDENTIFIED BY 'SJzEeqLb2HHeNYVV' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0 ;
 
 GRANT ALL PRIVILEGES ON `cuisine` . * TO 'cuisine_user'@'localhost';
-	
-	
+
