@@ -1,7 +1,7 @@
 <?php
 	include 'includes/config.inc.php';
 	include 'includes/lib.inc.php';
-	
+	include 'includes/config.BD.inc.php';
 	
 	if (isset($_GET['page']) and !empty($_GET['page']))
 	{

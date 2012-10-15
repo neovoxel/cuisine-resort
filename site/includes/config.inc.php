@@ -6,5 +6,6 @@
 	$_PAGES['recettes']		= 'includes/liste_recettes.inc.php';
 	$_PAGES['profil']		= 'includes/profil.inc.php';
 	$_PAGES['inscription']	= 'includes/inscription.inc.php';
+	$_PAGES['detail']		= 'includes/detail_recette.inc.php';
 	
 ?>

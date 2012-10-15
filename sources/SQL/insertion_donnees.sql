@@ -44,7 +44,7 @@ INSERT INTO Categorie(nom_categorie,image_categorie)
 	VALUES('Plats','plats.jpg');
 
 INSERT INTO Categorie(nom_categorie,image_categorie)
-	VALUES('Desserts','dessets.jpg');
+	VALUES('Desserts','desserts.jpg');
 
 INSERT INTO Recette(id_utilisateur,id_categorie,titre,recette,etat,temps_prepar,nb_pers,difficulte)
 	VALUES(1,2,'Soupe au Pistou','Et bien dans une casserole, tu mets des haricots et de la sauce tomate. Beh ouais!',1,'00:30:00',2,1);
@@ -78,3 +78,18 @@ INSERT INTO Commentaire(id_utilisateur,id_recette,commentaire,date_com)
 
 INSERT INTO Commentaire(id_utilisateur,id_recette,commentaire,date_com)
 	VALUES(2,2,'Tu aimes hein ? :D','2012-10-02 21:17:53');
+
+	
+
+CREATE USER 'cuisine_user'@'localhost' IDENTIFIED BY '***';
+
+GRANT SELECT ,
+INSERT ,
+
+UPDATE ,
+DELETE ,
+FILE ON * . * TO 'cuisine_user'@'localhost' IDENTIFIED BY '***' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0 ;
+
+GRANT ALL PRIVILEGES ON `cuisine` . * TO 'cuisine_user'@'localhost';
+	
+	
