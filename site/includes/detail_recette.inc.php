@@ -17,7 +17,8 @@ EOF;
 		SELECT nom_ingredient, quantite, nom_unite
 		FROM recette R INNER JOIN compose C ON R.id_recette=C.id_recette
 		INNER JOIN ingredient I ON C.id_ingredient=I.id_ingredient
-		INNER JOIN unite U ON I.id_unite=U.id_unite
+		INNER JOIN mesure M ON I.id_ingredient=M.id_ingredient
+		INNER JOIN unite U ON M.id_unite=U.id_unite
 		WHERE R.id_recette = $id_recette;
 EOF;
 		
@@ -61,12 +62,12 @@ EOF;
 			<div id="presentation">
 				<img class="img_recette" src="$image_recette" alt="Illustration recette" />
 				<h1>$titre_recette</h1>
-				<h3>Recette proposée par $nom_utilisateur</h3>
 				<ul>
 					<li>Préparation : $temps_preparation</li>
 					<li>Difficulté : $difficulte_recette</li>
 					<li>Nombre de personnes : $nbr_pers</li>
 				</ul>
+				<h4>Recette proposée par $nom_utilisateur</h4>
 				<hr />
 			</div>
 			<div id="ingredients">
