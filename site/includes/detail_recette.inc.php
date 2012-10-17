@@ -21,6 +21,12 @@ EOF;
 		INNER JOIN unite U ON M.id_unite=U.id_unite
 		WHERE R.id_recette = $id_recette;
 EOF;
+		$request_categorie = <<< EOF
+		SELECT C.id_categorie, nom_categorie
+		FROM recette R INNER JOIN appartient A ON R.id_recette=A.id_recette
+		INNER JOIN categorie C ON A.id_categorie=C.id_categorie
+		WHERE R.id_recette = $id_recette;
+EOF;
 		
 		$PDO_BDD = getPDO_BDD();
 		
@@ -36,20 +42,34 @@ EOF;
 		catch (Exception $err)
 		{ die ('Erreur : '.$err->getMessage()); }
 		
+		try { $result_categorie=$PDO_BDD->query($request_categorie); }
+		catch (Exception $err)
+		{ die ('Erreur : '.$err->getMessage()); }
+		
 		if ($result_recette->rowCount() > 0
 		and $result_utlisateur->rowCount() > 0
+		and $result_categorie->rowCount() > 0
 		and $result_ingredients->rowCount() > 0) {
 			
 			$result_recette		= $result_recette->fetchAll(PDO::FETCH_ASSOC);
 			$result_utlisateur	= $result_utlisateur->fetchAll(PDO::FETCH_ASSOC);
 			$result_ingredients	= $result_ingredients->fetchAll(PDO::FETCH_ASSOC);
+			$result_categorie	= $result_categorie->fetchAll(PDO::FETCH_ASSOC);
+			
+			$categories_recette = 'Catégorie';
+			if (count($result_categorie) > 1)
+				$categories_recette .= 's';
+			$categories_recette .= ' : ';
+			foreach ($result_categorie as $value) {
+				$categories_recette .= '<a href="./index.php?page=recettes&idc='.$value['id_categorie'].'">'.$value['nom_categorie'].'</a> ';
+			}
 			
 			$titre_recette		= $result_recette[0]['titre'];
 			$nom_utilisateur	= $result_utlisateur[0]['login'];
 			$nbr_pers			= $result_recette[0]['nb_pers'];
 			$temps_preparation	= formatTime($result_recette[0]['temps_prepar']);
 			$difficulte_recette	= getDifficulte($result_recette[0]['difficulte']);
-			$text_recette		= nl2br($result_recette[0]['recette']);
+			$texte_recette		= nl2br($result_recette[0]['recette']);
 			$date_recette		= formatDate($result_recette[0]['date_recette']);
 			
 			if (is_null($result_recette[0]['image_recette'])) {
@@ -61,9 +81,10 @@ EOF;
 			echo <<< EOF
 			<div id="detail_recette">
 			<div id="presentation">
-				<img class="img_recette" src="$image_recette" alt="Illustration recette" />
+				<img class="img_recette" src="$image_recette" alt="Illustration recette" height="300" width="300" />
 				<h1>$titre_recette</h1>
 				<ul>
+					<li>$categories_recette</li>
 					<li>Préparation : $temps_preparation</li>
 					<li>Difficulté : $difficulte_recette</li>
 					<li>Nombre de personnes : $nbr_pers</li>
@@ -83,7 +104,7 @@ EOF;
 			</div>
 			<div id="preparation">
 				<h2>Préparation : ($temps_preparation)</h2>
-				<p>$text_recette</p>
+				<p>$texte_recette</p>
 			</div>
 			</div>
 EOF;

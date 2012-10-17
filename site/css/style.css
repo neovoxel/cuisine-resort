@@ -37,9 +37,56 @@ body {
 	border-radius: 10px 10px 0 0;
 }
 
+#accueil h1  {
+	text-align: center;
+}
+
+#accueil #liste_recettes .recette {
+	background-color: #787878;
+	padding: 5px;
+	margin-top: 10px;
+	height: 180px;
+}
+
+#accueil #liste_recettes .recette:hover {
+	background-color: #888888;
+	box-shadow: 5px 5px 9px #383838;
+}
+
+#accueil #liste_recettes .recette h3 {
+	margin-top: 10px;
+}
+
+#accueil #liste_recettes .recette h4 {
+	margin-top: -15px;
+	font-style: italic;
+}
+
+#accueil #liste_recettes .recette .texte_recette {
+	margin-top: -10px;
+	margin-bottom: -5px;
+}
+
+#accueil #liste_recettes .recette h4 a {
+	font-style: normal;
+}
+
+#accueil #liste_recettes .recette h3 a {
+	color: black;
+}
+
+#accueil #liste_recettes .recette .img_recette {
+	float: left;
+	margin-right: 5px;
+	weight: 150px;
+	height: 150px;
+	line-height: 180px;
+	vertical-align: middle;
+}
+
 #contenu a {
 	color: #993300;
-	text-decoration: none
+	text-decoration: none;
 }
 
 #contenu a:hover {
@@ -64,6 +111,10 @@ body {
 #detail_recette .auteur_recette {
 	font-style: italic;
 	font-weight: bold;
+}
+
+#detail_recette .auteur_recette a {
+	font-style: normal;
 }
 
 #detail_recette #presentation .img_recette {
