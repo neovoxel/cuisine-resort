@@ -37,6 +37,15 @@ body {
 	border-radius: 10px 10px 0 0;
 }
 
+#contenu a {
+	color: #993300;
+	text-decoration: none
+}
+
+#contenu a:hover {
+	text-decoration: underline;
+}
+
 #detail_recette {
 	margin: 10px;
 	padding: 5px;
@@ -52,8 +61,9 @@ body {
 	text-align: center;
 }
 
-#detail_recette h4 {
+#detail_recette .auteur_recette {
 	font-style: italic;
+	font-weight: bold;
 }
 
 #detail_recette #presentation .img_recette {
