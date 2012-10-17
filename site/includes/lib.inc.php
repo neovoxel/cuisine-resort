@@ -51,6 +51,11 @@
 		return $result;
 	}
 	
+	function formatDate($unformated_date) {
+		$date = explode("-", $unformated_date);
+		return $date[2].'/'.$date[1].'/'.$date[0];
+	}
+	
 	function formatIngredient($quantite, $unite, $ingredient) {
 		$result = $quantite.' ';
 		if ($unite != 'Sans unité')

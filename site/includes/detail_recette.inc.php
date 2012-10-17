@@ -50,6 +50,7 @@ EOF;
 			$temps_preparation	= formatTime($result_recette[0]['temps_prepar']);
 			$difficulte_recette	= getDifficulte($result_recette[0]['difficulte']);
 			$text_recette		= nl2br($result_recette[0]['recette']);
+			$date_recette		= formatDate($result_recette[0]['date_recette']);
 			
 			if (is_null($result_recette[0]['image_recette'])) {
 				$image_recette = 'images/default/recette.png';
@@ -67,7 +68,7 @@ EOF;
 					<li>Difficulté : $difficulte_recette</li>
 					<li>Nombre de personnes : $nbr_pers</li>
 				</ul>
-				<h4>Recette proposée par $nom_utilisateur</h4>
+				<p class="auteur_recette">Recette proposée le $date_recette par <a href="./index.php?page=profil&idp=2">$nom_utilisateur</a></p>
 				<hr />
 			</div>
 			<div id="ingredients">
