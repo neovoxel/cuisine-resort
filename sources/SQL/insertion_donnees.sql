@@ -83,6 +83,9 @@ INSERT INTO Appartient(id_recette,id_categorie)
 	VALUES(2,3);
 	
 INSERT INTO Appartient(id_recette,id_categorie)
+	VALUES(2,2);
+	
+INSERT INTO Appartient(id_recette,id_categorie)
 	VALUES(3,3);
 	
 INSERT INTO Compose(id_recette,id_ingredient,quantite)
