@@ -39,6 +39,7 @@ CREATE TABLE Recette
 	nb_pers			int default 1,
 	difficulte		int default 0,
 	image_recette	text default null,
+	date_recette	DATE not null,
 	
 	constraint CST_Etat_Recette
 		check (etat = 0 OR etat = 1 OR etat = 2),

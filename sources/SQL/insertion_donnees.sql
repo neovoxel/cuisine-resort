@@ -67,14 +67,14 @@ INSERT INTO Categorie(nom_categorie,image_categorie)
 INSERT INTO Categorie(nom_categorie,image_categorie)
 	VALUES('Desserts','desserts.jpg');
 
-INSERT INTO Recette(id_utilisateur,titre,recette,etat,temps_prepar,nb_pers,difficulte)
-	VALUES(1,'Soupe au Pistou','Et bien dans une casserole, tu mets des haricots et de la sauce tomate. Beh ouais!',1,'00:30:00',2,1);
+INSERT INTO Recette(id_utilisateur,titre,recette,etat,temps_prepar,nb_pers,difficulte,date_recette)
+	VALUES(1,'Soupe au Pistou','Et bien dans une casserole, tu mets des haricots et de la sauce tomate. Beh ouais!',1,'00:30:00',2,1,'2012-10-03');
 
-INSERT INTO Recette(id_utilisateur,titre,recette,etat,temps_prepar,nb_pers,difficulte,image_recette)
-	VALUES(2,'Gateau au caca','Si je dis : onctueux, succulent, délicieux et appétissant. Vous répondez ? Gateau au caca, bien sûr!\nEn exclusivité pour le site, je propose de vous délivrer la si recherchée recette de ce fameux met.\nMais avant cela, je tiens à remercier mon ami Adrien, non seulement parce que c\'est un cuisinier de génie mais surtout parce qu\'il m\'autorise à vous communiquer sa recette!',2,'01:30:00',2,2,'img.jpg');
+INSERT INTO Recette(id_utilisateur,titre,recette,etat,temps_prepar,nb_pers,difficulte,image_recette,date_recette)
+	VALUES(2,'Gateau au caca','Si je dis : onctueux, succulent, délicieux et appétissant. Vous répondez ? Gateau au caca, bien sûr!\nEn exclusivité pour le site, je propose de vous délivrer la si recherchée recette de ce fameux met.\nMais avant cela, je tiens à remercier mon ami Adrien, non seulement parce que c\'est un cuisinier de génie mais surtout parce qu\'il m\'autorise à vous communiquer sa recette!',2,'01:30:00',2,2,'img.jpg','2012-10-05');
 
-INSERT INTO Recette(id_utilisateur,titre,recette,etat,temps_prepar,nb_pers,difficulte,image_recette)
-	VALUES(1,'Tiramisu','Séparer les blancs des jaunes. Mélanger les jaunes + sucre + sucre vanillé. Ajouter le mascarpone au fouet.\n\nMonter les blancs en neige et les incorporer délicatement à la spatule au mélange précédent.\n\nPréparer du café noir.\n\nMouiller les biscuits dans le café.\n\nTapisser le fond du moule avec les biscuits. Recouvrir d\'une couche de crème, œuf, sucre, mascarpone. Alterner biscuits et crème.\nTerminer par une couche de crème. Saupoudrer de cacao.\n\nMettre au réfrigérateur 4 heures minimum.',1,'04:30:00',8,0,'image.jpg');
+INSERT INTO Recette(id_utilisateur,titre,recette,etat,temps_prepar,nb_pers,difficulte,image_recette,date_recette)
+	VALUES(1,'Tiramisu','Séparer les blancs des jaunes. Mélanger les jaunes + sucre + sucre vanillé. Ajouter le mascarpone au fouet.\n\nMonter les blancs en neige et les incorporer délicatement à la spatule au mélange précédent.\n\nPréparer du café noir.\n\nMouiller les biscuits dans le café.\n\nTapisser le fond du moule avec les biscuits. Recouvrir d\'une couche de crème, œuf, sucre, mascarpone. Alterner biscuits et crème.\nTerminer par une couche de crème. Saupoudrer de cacao.\n\nMettre au réfrigérateur 4 heures minimum.',1,'04:30:00',8,0,'image.jpg','2012-09-26');
 
 INSERT INTO Appartient(id_recette,id_categorie)
 	VALUES(1,2);
