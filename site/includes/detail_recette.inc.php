@@ -9,7 +9,7 @@
 		WHERE id_recette = $id_recette;
 EOF;
 		$request_utlisateur = <<< EOF
-		SELECT login, nom_utilisateur, prenom
+		SELECT U.id_utilisateur, login, nom_utilisateur, prenom
 		FROM recette R INNER JOIN utilisateur U ON R.id_utilisateur=U.id_utilisateur
 		WHERE id_recette = $id_recette;
 EOF;
@@ -66,6 +66,7 @@ EOF;
 			
 			$titre_recette		= $result_recette[0]['titre'];
 			$nom_utilisateur	= $result_utlisateur[0]['login'];
+			$id_utilisateur		= $result_utlisateur[0]['id_utilisateur'];
 			$nbr_pers			= $result_recette[0]['nb_pers'];
 			$temps_preparation	= formatTime($result_recette[0]['temps_prepar']);
 			$difficulte_recette	= getDifficulte($result_recette[0]['difficulte']);
@@ -89,7 +90,7 @@ EOF;
 					<li>Difficulté : $difficulte_recette</li>
 					<li>Nombre de personnes : $nbr_pers</li>
 				</ul>
-				<p class="auteur_recette">Recette proposée le $date_recette par <a href="./index.php?page=profil&idp=2">$nom_utilisateur</a></p>
+				<p class="auteur_recette">Recette proposée le $date_recette par <a href="./index.php?page=profil&idp=$id_utilisateur">$nom_utilisateur</a></p>
 				<hr />
 			</div>
 			<div id="ingredients">

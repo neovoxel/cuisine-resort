@@ -23,10 +23,10 @@ if ($result_recettes->rowCount() > 0) {
 	$result_recettes = $result_recettes->fetchAll(PDO::FETCH_ASSOC);
 	
 	foreach ($result_recettes as $line) {
-		$id_recette		= $line['id_recette'];
+		$id_recette = $line['id_recette'];
 		
 		$request_utlisateur = <<< EOF
-		SELECT login, nom_utilisateur, prenom
+		SELECT U.id_utilisateur, login, nom_utilisateur, prenom
 		FROM recette R INNER JOIN utilisateur U ON R.id_utilisateur=U.id_utilisateur
 		WHERE id_recette = $id_recette;
 EOF;
@@ -64,6 +64,7 @@ EOF;
 			$texte_recette		= substr($line['recette'], 0, 250).'...';
 			$date_recette		= formatDate($line['date_recette']);
 			$nom_utilisateur	= $result_utlisateur[0]['login'];
+			$id_utilisateur		= $result_utlisateur[0]['id_utilisateur'];
 			$lien_page_detail	= '<a href="./index.php?page=detail&idr='.$id_recette.'">';
 			
 			if (is_null($line['image_recette'])) {
@@ -76,7 +77,7 @@ EOF;
 <div class="recette">
 	<p>$lien_page_detail<img class="img_recette" src="$image_recette" alt="Illustration recette" height="150" width="150" /></a></p>
 	<h3>$lien_page_detail $titre_recette</a></h3>
-	<h4>Le $date_recette par <a href="./index.php?page=profil&idp=2">$nom_utilisateur</a></h4>
+	<h4>Le $date_recette par <a href="./index.php?page=profil&idp=$id_utilisateur">$nom_utilisateur</a></h4>
 	<p class="texte_recette">$texte_recette $lien_page_detail Lire la suite</a></p>
 	<p>$categories_recette</p>
 </div>

@@ -2,6 +2,10 @@ body {
 	background-color: #3D6328;
 	font-family:  Arial, sans-serif;
 }
+
+hr {
+	color: black;
+}
 	
 #entete {
 	width: 900px;
@@ -99,11 +103,6 @@ body {
 	padding-top: 1px;
 }
 
-#detail_recette hr {
-	color: black;
-	margin-right: 10px;
-}
-
 #detail_recette #presentation h1{
 	text-align: center;
 }
@@ -121,6 +120,7 @@ body {
 	float: right;
 	weight: 300px;
 	height: 300px;
+	margin-left: 10px;
 	box-shadow: 8px 8px 12px #383838;
 }
 	
