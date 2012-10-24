@@ -3,6 +3,8 @@
 	include 'includes/lib.inc.php';
 	include 'includes/config.BD.inc.php';
 	
+	session_start();
+	
 	if (isset($_GET['page']) and !empty($_GET['page']))
 	{
 		if (pageExists($_GET['page'], $_PAGES))

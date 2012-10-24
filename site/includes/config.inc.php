@@ -7,5 +7,7 @@
 	$_PAGES['profil']		= 'includes/profil.inc.php';
 	$_PAGES['inscription']	= 'includes/inscription.inc.php';
 	$_PAGES['detail']		= 'includes/detail_recette.inc.php';
+	$_PAGES['connexion']	= 'includes/connexion.inc.php';
+	$_PAGES['deconnexion']	= 'includes/deconnexion.inc.php';
 	
 ?>

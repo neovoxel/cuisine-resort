@@ -27,35 +27,30 @@ EOF;
 		INNER JOIN categorie C ON A.id_categorie=C.id_categorie
 		WHERE R.id_recette = $id_recette;
 EOF;
+		$request_commentaires = <<< EOF
+		SELECT id_com
+		FROM commentaire C INNER JOIN recette R ON C.id_recette=R.id_recette
+		WHERE R.id_recette = $id_recette;
+EOF;
 		
-		$PDO_BDD = getPDO_BDD();
+		$erreur_requete = false;
 		
-		try { $result_recette=$PDO_BDD->query($request_recette); }
-		catch (Exception $err)
-		{ die ('Erreur : '.$err->getMessage()); }
+		try { $result_recette = my_request($request_recette); }
+		catch (Exception $err) { echo $err->getMessage(); $erreur_requete = true; }
 		
-		try { $result_utlisateur=$PDO_BDD->query($request_utlisateur); }
-		catch (Exception $err)
-		{ die ('Erreur : '.$err->getMessage()); }
+		try { $result_utlisateur = my_request($request_utlisateur); }
+		catch (Exception $err) { echo $err->getMessage(); $erreur_requete = true; }
 		
-		try { $result_ingredients=$PDO_BDD->query($request_ingredients); }
-		catch (Exception $err)
-		{ die ('Erreur : '.$err->getMessage()); }
+		try { $result_ingredients = my_request($request_ingredients); }
+		catch (Exception $err) { echo $err->getMessage(); $erreur_requete = true; }
 		
-		try { $result_categorie=$PDO_BDD->query($request_categorie); }
-		catch (Exception $err)
-		{ die ('Erreur : '.$err->getMessage()); }
+		try { $result_categorie = my_request($request_categorie); }
+		catch (Exception $err) { echo $err->getMessage(); $erreur_requete = true; }
 		
-		if ($result_recette->rowCount() > 0
-		and $result_utlisateur->rowCount() > 0
-		and $result_categorie->rowCount() > 0
-		and $result_ingredients->rowCount() > 0) {
-			
-			$result_recette		= $result_recette->fetchAll(PDO::FETCH_ASSOC);
-			$result_utlisateur	= $result_utlisateur->fetchAll(PDO::FETCH_ASSOC);
-			$result_ingredients	= $result_ingredients->fetchAll(PDO::FETCH_ASSOC);
-			$result_categorie	= $result_categorie->fetchAll(PDO::FETCH_ASSOC);
-			
+		try { $result_commentaires = my_request($request_commentaires); }
+		catch (Exception $err) {  }
+		
+		if (!$erreur_requete) {
 			$categories_recette = 'Catégorie';
 			if (count($result_categorie) > 1)
 				$categories_recette .= 's';
@@ -106,9 +101,23 @@ EOF;
 			<div id="preparation">
 				<h2>Préparation : ($temps_preparation)</h2>
 				<p>$texte_recette</p>
-			</div>
+				<hr />
 			</div>
 EOF;
+
+			if (!empty($result_commentaires)) {
+				echo <<< EOF
+				<h2>Commentaires :</h2>
+				<div id="liste_commentaires">
+EOF;
+				
+				foreach ($result_commentaires as $line)
+					echo previewCommentaire($line['id_com']);
+				
+				echo '</div>';
+			}
+			
+			echo '</div>';
 			
 		}
 		else

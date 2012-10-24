@@ -1,5 +1,8 @@
 <?php
-	if (isset($_GET['idp']) and !empty($_GET['idp']))
+if (isset($_SESSION['id_user']))
+	echo 'Bonjour, '.$_SESSION['id_user'];
+
+if (isset($_GET['idp']) and !empty($_GET['idp']))
 	{
 		$id_profil=$_GET['idp'];
 		
@@ -14,7 +17,7 @@ EOF;
 		WHERE U.id_utilisateur = $id_profil;
 EOF;
 		$request_recettes = <<< EOF
-		SELECT *
+		SELECT id_recette
 		FROM utilisateur U INNER JOIN recette R ON U.id_utilisateur=R.id_utilisateur
 		WHERE U.id_utilisateur = $id_profil;
 EOF;
@@ -34,6 +37,15 @@ EOF;
 		catch (Exception $err)
 		{ die ('Erreur : '.$err->getMessage()); }
 		
+		if($result_recettes->rowCount() > 0)
+				$norecette=false;
+			else
+				$norecette=true;
+				
+		if($result_commentaires->rowCount() > 0)
+				$nocomment=false;
+			else
+				$nocomment=true;		
 		
 		if ($result_profil->rowCount() > 0) {
 			
@@ -71,11 +83,33 @@ EOF;
 			</div>
 			<div id="profil_recettes">
 				<h2>Recettes de $login</h2>
-				<p>LOOOOOOL</p>
+EOF;
+			if(!$norecette)
+			{
+				echo '<div id="liste_recettes">';
+				foreach ($result_recettes as $line)
+						echo previewRecette($line['id_recette']);
+				echo '</div>';
+			}
+			else
+				echo 'Cet utilisateur n\'a écrit aucune recette.';
+						
+			echo <<< EOF
 				<hr />
 			</div>
 			<div id="profil_commentaires">
-				<h2>Commentaires de $login</h2>
+EOF;
+			if(!$nocomment)
+			{
+				echo '<div id="liste_commentaires">';
+				foreach ($result_commentaires as $line)
+						echo previewCommentaire($line['id_com']);
+				echo '</div>';
+			}
+			else
+				echo 'Cet utilisateur n\'a écrit de commentaire.';
+						
+			echo <<< EOF
 			</div>
 			</div>
 EOF;

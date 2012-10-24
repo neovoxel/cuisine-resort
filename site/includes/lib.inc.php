@@ -32,6 +32,43 @@
 		return $PDO_BDD;
 	}
 	
+	function my_request($request) {
+		$PDO_BDD = getPDO_BDD();
+		try { $result=$PDO_BDD->query($request); }
+		catch (Exception $err)
+		{ die ('Erreur : '.$err->getMessage()); }
+		
+		if ($result->rowCount() > 0) {
+			return $result->fetchAll(PDO::FETCH_ASSOC);
+		}
+		else
+			throw new Exception('La requête ne renvoie rien');
+	}
+	
+	function isValidUser($login, $password) {
+		$request_utilisateur = <<< EOF
+		SELECT mdp
+		FROM utilisateur
+		WHERE login='$login'
+EOF;
+
+		$PDO_BDD = getPDO_BDD();
+		
+		try { $result_utilisateur=$PDO_BDD->query($request_utilisateur); }
+		catch (Exception $err)
+		{ die ('Erreur : '.$err->getMessage()); }
+		
+		if ($result_utilisateur->rowCount() > 0) {
+			$result_utilisateur	= $result_utilisateur->fetchAll(PDO::FETCH_ASSOC);
+			if ($result_utilisateur[0]['mdp'] == $password)
+				return true;
+			else
+				return false;
+		}
+		else
+			return false;
+	}
+	
 	function formatTime($unformated_time) {
 		$time = explode(":", $unformated_time);
 		
@@ -54,6 +91,11 @@
 	function formatDate($unformated_date) {
 		$date = explode("-", $unformated_date);
 		return $date[2].'/'.$date[1].'/'.$date[0];
+	}
+	
+	function formatDateHeure($unformated_dateheure){
+		$dateheure= explode(" ",$unformated_dateheure);
+		return formatDate($dateheure[0]).' '.$dateheure[1];
 	}
 	
 	function formatIngredient($quantite, $unite, $ingredient) {
@@ -162,5 +204,42 @@ EOF;
 		}
 		else
 			return '';
+	}
+	
+	function previewCommentaire($id_recette) {
+		
+		$PDO_BDD = getPDO_BDD();
+		
+		$requette=<<<EOF
+		SELECT r.id_recette, titre, commentaire, date_com, u.id_utilisateur, login
+		FROM  recette r INNER JOIN commentaire c ON r.id_recette=c.id_recette
+						INNER JOIN utilisateur u ON c.id_utilisateur=u.id_utilisateur
+		WHERE id_com=$id_recette;
+EOF;
+		try { $result=$PDO_BDD->query($requette); }
+		catch (Exception $err)
+		{ die ('Erreur : '.$err->getMessage()); }
+		
+		if ($result->rowCount() > 0)
+		{
+			$result	= $result->fetchAll(PDO::FETCH_ASSOC);
+			$line = $result[0];
+			
+			$idUtil='<a href="./index.php?page=profil&idp='.$line['id_utilisateur'].'">'.$line['login'].'</a>';
+			$idRecette='<a href="./index.php?page=detail&idr='.$line['id_recette'].'">'.$line['titre'].'</a>';
+			$dateCom= formatDateHeure($line['date_com']);
+			$textCom=$line['commentaire'];
+			
+			$commentaire=<<<EOF
+			<div class="commentaire">
+				<p><h4>Commentaire de $idUtil pour la recette $idRecette le $dateCom.</h4></p>
+				<p>$textCom</p>
+			</div>
+EOF;
+			return $commentaire;
+		}
+		else
+			return '';
+		
 	}
 ?>
