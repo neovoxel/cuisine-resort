@@ -20,7 +20,7 @@ if (isset($_REQUEST['form_log'])) {
 	<fieldset id="formulaire_connexion">
 		<legend>Connexion</legend>
 		<?php if (isset($erreur_login)) echo '<span style="color:red;">'.$erreur_login.'</span><br />'; ?>
-		Login : <input type="text" name="login" ><br />
+		Login : <input type="text" name="login" <?php if (isset($erreur_login)) echo "value=\"$login\""; ?> ><br />
 		Mot de passe : <input type="password" name="pwd" ><br />
 		<input type="submit" name="form_log" value="Connexion">
 	</fieldset>

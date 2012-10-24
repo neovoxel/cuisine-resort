@@ -168,6 +168,13 @@ hr {
 	height: 250px;
 	margin: 10px;
 }
+
+#formulaire_connexion {
+	width: 300px;
+	margin: 0 auto;
+	display: block;
+	border-radius: 0 15px 0 0;
+}
 	
 #pied {
 	bottom: auto;

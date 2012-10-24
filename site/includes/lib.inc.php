@@ -232,7 +232,7 @@ EOF;
 			
 			$commentaire=<<<EOF
 			<div class="commentaire">
-				<p><h4>Commentaire de $idUtil pour la recette $idRecette le $dateCom.</h4></p>
+				<p><h4>Commentaire de $idUtil sur la recette $idRecette le $dateCom.</h4></p>
 				<p>$textCom</p>
 			</div>
 EOF;
