@@ -1,58 +1,41 @@
 <?php
 
-	$jeutest = array('Entrees', 'Plats', 'Dessert');
-	
-	$PDO_BDD = getPDO_BDD();
-	$liste_categorie_request='SELECT * FROM categorie ;';
-	
-	try { $liste_categorie_result=$PDO_BDD->query($liste_categorie_request); }
-	catch (Exception $err)
-	{ die ('Erreur : '.$err->getMessage()); }
+$result_categories = my_request('SELECT * FROM categorie;');
 
-	$tab_result=$liste_categorie_result->fetchAll(PDO::FETCH_ASSOC);
-	
-	
+if ($result_categories !== false) {
+
 	if (isset($_GET['idc']) and !empty($_GET['idc'])) {
 		$my_idc = $_GET['idc'];
 		
-		$liste_recettes_request= <<< EOF
+		$request_recettes = <<< EOF
 		SELECT id_recette
 		FROM appartient
 		WHERE id_categorie = $my_idc;
 EOF;
-
-		try { $liste_recettes_result=$PDO_BDD->query($liste_recettes_request); }
-		catch (Exception $err)
-		{ die ('Erreur : '.$err->getMessage()); }
+		$result_recettes = my_request($request_recettes);
 		
-		if ($liste_recettes_result->rowCount() > 0) {
+		if ($result_recettes !== false) {
 			
 			echo '<div id="liste_categories">';
 			
-			foreach($tab_result as $value) {
-				if ($value['id_categorie'] == $my_idc) {
-					$id_categorie		= $value['id_categorie'];
-					$image_categorie	= $value['image_categorie'];
-					$nom_categorie		= $value['nom_categorie'];
+			foreach($result_categories as $line) {
+				if ($line['id_categorie'] == $my_idc) {
+					$id_categorie	 = $line['id_categorie'];
+					$image_categorie = $line['image_categorie'];
+					$nom_categorie	 = $line['nom_categorie'];
 					
 					echo <<< EOF
-<div id="categorie_selection">
-<img class="img_categorie" src="./images/categories/$image_categorie" />
-<h1>$nom_categorie</h1>
-</div>
+	<div id="categorie_selection">
+	<img class="img_categorie" src="./images/categories/$image_categorie" />
+	<h1>$nom_categorie</h1>
+	</div>
 EOF;
-
-					$liste_recettes_result = $liste_recettes_result->fetchAll(PDO::FETCH_ASSOC);
-					
 					echo '<div id="liste_recettes">';
-					
-					foreach ($liste_recettes_result as $line)
+					foreach ($result_recettes as $line)
 						echo previewRecette($line['id_recette']);
-					
 					echo '</div>';
 				}
 			}
-			
 			echo '</div>';
 		}
 		else
@@ -61,20 +44,39 @@ EOF;
 	else {
 		echo '<div id="liste_categories">';
 		
-		foreach($tab_result as $value) {
-			$id_categorie		= $value['id_categorie'];
-			$image_categorie	= $value['image_categorie'];
-			$nom_categorie		= $value['nom_categorie'];
+		foreach($result_categories as $line) {
+			$id_categorie	 = $line['id_categorie'];
+			$image_categorie = $line['image_categorie'];
+			$nom_categorie	 = $line['nom_categorie'];
+			$nb_recettes	 = 0;
+			$lien_recette	 = '<a href="index.php?page=recettes&idc='.$id_categorie.'" >Voir les recettes</a>';
+			$ajouter_recette = '<a href="index.php?page=ajouter_recette&idc='.$id_categorie.'" >Ajouter une recette</a>';
+			
+			$request_recettes = <<< EOF
+			SELECT COUNT(id_recette) AS nb_recettes
+			FROM appartient
+			WHERE id_categorie = $id_categorie;
+EOF;
+			$result_recettes = my_request($request_recettes);
+			
+			if ($result_recettes !== false) {
+				$nb_recettes = $result_recettes[0]['nb_recettes'];
+			}
 			
 			echo <<< EOF
-<div class="categorie" >
-<a href="./index.php?page=recettes&idc=$id_categorie"><img class="img_categorie" src="./images/categories/$image_categorie" /></a>
-<h1><a href="./index.php?page=recettes&idc=$id_categorie">$nom_categorie</a></h1>
-<p>Mon texte<p>
-</div>
+	<div class="categorie" >
+		<a href="./index.php?page=recettes&idc=$id_categorie"><img class="img_categorie" src="./images/categories/$image_categorie" /></a>
+		<h1><a href="./index.php?page=recettes&idc=$id_categorie">$nom_categorie</a></h1>
+		<p>Il y a actuellement $nb_recettes recettes dans cette catégorie.<br />
+		$lien_recette<br />
+		$ajouter_recette<p>
+	</div>
 EOF;
 		}
 		
 		echo '</div>';
 	}
+}
+else
+	echo 'Y a un soucis';
 ?>

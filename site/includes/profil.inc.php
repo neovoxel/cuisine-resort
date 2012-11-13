@@ -34,7 +34,7 @@ EOF;
 }
 
 if (isset($_GET['idp']) and !empty($_GET['idp'])) {
-	$id_profil=$_GET['idp'];
+	$id_profil = $_GET['idp'];
 	
 	$request_profil = <<< EOF
 	SELECT *
@@ -47,7 +47,7 @@ EOF;
 	WHERE U.id_utilisateur = $id_profil;
 EOF;
 	
-	$result_profil= my_request($request_profil);
+	$result_profil	= my_request($request_profil);
 	$result_recettes= my_request($request_recettes);
 	
 	if ($result_profil !== false) {
@@ -68,6 +68,11 @@ EOF;
 			$prenom = '-';
 		if (is_null($email))
 			$email = '-';
+		
+		if (isset($_SESSION['id_utilisateur'])) {
+			if ($_SESSION['id_utilisateur'] == $id_profil)
+			echo 'Editer le profil';
+		}
 		
 		echo <<< EOF
 		<div id="profil">
@@ -110,8 +115,8 @@ EOF;
 	else
 		echo '<h1>Profil inexistant !</h1>';
 }
-else if (isset($_SESSION['id_user']))
-	echo 'Bonjour, '.$_SESSION['id_user'];
+else if (isset($_SESSION['id_utilisateur']))
+	echo 'Bonjour, '.$_SESSION['login_utilisateur'];
 else
 	echo '<h1>Profil inexistant !</h1>';
 

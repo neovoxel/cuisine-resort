@@ -2,8 +2,8 @@
 <a href="./index.php?page=recettes">Les recettes</a>
 <a href="./index.php?page=recherche">Rechercher</a>
 <?php
-if (isset($_SESSION['id_user'])) {
-	echo '<a href="./index.php?page=profil">Votre profil</a>'."\n";
+if (isset($_SESSION['id_utilisateur'])) {
+	echo '<a href="./index.php?page=profil">Mon profil</a>'."\n";
 	echo '<a href="./index.php?page=deconnexion">Déconnexion</a>';
 }
 else

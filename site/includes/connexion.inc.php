@@ -1,14 +1,26 @@
 <?php
 $login = "";
 
-if (isset($_REQUEST['form_log'])) {
-	$login = $_REQUEST['login'];
+if (isset($_POST['form_log'])) {
+	$login = $_POST['login'];
 	
-	if(isValidUser($login, $_REQUEST['pwd'])) {
-		session_start();
-		$_SESSION['id_user'] = $login;
+	if(isValidUser($login, $_POST['pwd'])) {
+		$request_utilisateur = <<< EOF
+		SELECT *
+		FROM utilisateur
+		WHERE login='$login';
+EOF;
+		$result_utilisateur = my_request($request_utilisateur);
 		
-		header('location: ./index.php?page=profil');
+		if ($result_utilisateur !== false) {
+			$result_utilisateur = $result_utilisateur[0];
+			session_start();
+			$_SESSION['id_utilisateur'] = $result_utilisateur['id_utilisateur'];
+			$_SESSION['login_utilisateur'] = $result_utilisateur['login'];
+			header('location: ./index.php?page=profil');
+		}
+		else
+			$erreur_login = "Erreur d'authentification !";
 	}
 	else
 		$erreur_login = "Erreur d'authentification !";
