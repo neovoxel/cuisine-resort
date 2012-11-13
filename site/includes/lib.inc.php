@@ -19,11 +19,10 @@
 	}
 	
 	function pageExists($_page, $_P) {
-		
-		foreach ($_P as $page_name=> $tmp) {
+		foreach ($_P as $page_name=> $tmp)
 			if ($_page == $page_name)
 				return true;
-		}
+		
 		return false;
 	}
 	
@@ -42,7 +41,7 @@
 			return $result->fetchAll(PDO::FETCH_ASSOC);
 		}
 		else
-			throw new Exception('La requête ne renvoie rien');
+			return false;
 	}
 	
 	function isValidUser($login, $password) {
@@ -51,22 +50,14 @@
 		FROM utilisateur
 		WHERE login='$login'
 EOF;
-
-		$PDO_BDD = getPDO_BDD();
 		
-		try { $result_utilisateur=$PDO_BDD->query($request_utilisateur); }
-		catch (Exception $err)
-		{ die ('Erreur : '.$err->getMessage()); }
+		$result_utilisateur = my_request($request_utilisateur);
 		
-		if ($result_utilisateur->rowCount() > 0) {
-			$result_utilisateur	= $result_utilisateur->fetchAll(PDO::FETCH_ASSOC);
+		if ($result_utilisateur !== false)
 			if ($result_utilisateur[0]['mdp'] == $password)
 				return true;
-			else
-				return false;
-		}
-		else
-			return false;
+		
+		return false;
 	}
 	
 	function formatTime($unformated_time) {
@@ -126,9 +117,6 @@ EOF;
 	}
 	
 	function previewRecette($id_recette) {
-		
-		$PDO_BDD = getPDO_BDD();
-		
 		$request_recette = <<< EOF
 		SELECT*
 		FROM recette
@@ -146,26 +134,13 @@ EOF;
 		WHERE R.id_recette = $id_recette;
 EOF;
 		
-		try { $result_recette=$PDO_BDD->query($request_recette); }
-		catch (Exception $err)
-		{ die ('Erreur : '.$err->getMessage()); }
+		$result_recette		= my_request($request_recette);
+		$result_utlisateur	= my_request($request_utlisateur);
+		$result_categorie	= my_request($request_categorie);
 		
-		try { $result_utlisateur=$PDO_BDD->query($request_utlisateur); }
-		catch (Exception $err)
-		{ die ('Erreur : '.$err->getMessage()); }
-		
-		try { $result_categorie=$PDO_BDD->query($request_categorie); }
-		catch (Exception $err)
-		{ die ('Erreur : '.$err->getMessage()); }
-		
-		
-		if ($result_utlisateur->rowCount() > 0
-		and $result_categorie->rowCount() > 0
-		and $result_recette->rowCount() > 0) {
-			
-			$result_utlisateur	= $result_utlisateur->fetchAll(PDO::FETCH_ASSOC);
-			$result_categorie	= $result_categorie->fetchAll(PDO::FETCH_ASSOC);
-			$result_recette		= $result_recette->fetchAll(PDO::FETCH_ASSOC);
+		if ($result_recette		!== false
+		and $result_utlisateur	!== false
+		and $result_categorie	!== false) {
 			
 			$line = $result_recette[0];
 			
@@ -206,7 +181,7 @@ EOF;
 			return '';
 	}
 	
-	function previewCommentaire($id_recette) {
+	/*function previewCommentaire($id_recette) {
 		
 		$PDO_BDD = getPDO_BDD();
 		
@@ -241,5 +216,5 @@ EOF;
 		else
 			return '';
 		
-	}
+	}*/
 ?>

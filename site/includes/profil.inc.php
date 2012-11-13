@@ -1,5 +1,38 @@
 <?php
 
+function liste_commentaires($id_profil) {
+	$request_commentaires = <<<EOF
+	SELECT date_com, commentaire, R.id_recette, titre
+	FROM utilisateur U INNER JOIN commentaire C ON U.id_utilisateur=C.id_utilisateur
+	INNER JOIN recette R ON C.id_recette=R.id_recette
+	WHERE U.id_utilisateur = $id_profil
+	ORDER BY date_com DESC;
+EOF;
+	
+	$result_commentaires= my_request($request_commentaires);
+	
+	echo '<div id="liste_commentaires">';
+	
+	if ($result_commentaires !== false) {
+		
+		foreach ($result_commentaires as $line) {
+			$dateCom = formatDateHeure($line['date_com']);
+			$textCom = $line['commentaire'];
+			$recetteCom = '<a href="index.php?page=detail&idr='.$line['id_recette'].'" >'.$line['titre'].'</a>';
+			
+			echo <<< EOF
+			<div class="commentaire">
+				<h4>Le $dateCom sur la recette $recetteCom</h4>
+				<p>$textCom</p>
+			</div>
+EOF;
+		}
+	}
+	else
+		echo '<p>Cet utilisateur n\'a écrit aucun commentaire.</p>';
+	echo '</div>';
+}
+
 if (isset($_GET['idp']) and !empty($_GET['idp'])) {
 	$id_profil=$_GET['idp'];
 	
@@ -8,47 +41,16 @@ if (isset($_GET['idp']) and !empty($_GET['idp'])) {
 	FROM utilisateur
 	WHERE id_utilisateur = $id_profil;
 EOF;
-	$request_commentaires = <<< EOF
-	SELECT *
-	FROM utilisateur U INNER JOIN commentaire C ON U.id_utilisateur=C.id_utilisateur
-	WHERE U.id_utilisateur = $id_profil;
-EOF;
 	$request_recettes = <<< EOF
 	SELECT id_recette
 	FROM utilisateur U INNER JOIN recette R ON U.id_utilisateur=R.id_utilisateur
 	WHERE U.id_utilisateur = $id_profil;
 EOF;
 	
+	$result_profil= my_request($request_profil);
+	$result_recettes= my_request($request_recettes);
 	
-	$PDO_BDD = getPDO_BDD();
-	
-	try { $result_profil=$PDO_BDD->query($request_profil); }
-	catch (Exception $err)
-	{ die ('Erreur : '.$err->getMessage()); }
-	
-	try { $result_commentaires=$PDO_BDD->query($request_commentaires); }
-	catch (Exception $err)
-	{ die ('Erreur : '.$err->getMessage()); }
-	
-	try { $result_recettes=$PDO_BDD->query($request_recettes); }
-	catch (Exception $err)
-	{ die ('Erreur : '.$err->getMessage()); }
-	
-	if($result_recettes->rowCount() > 0)
-			$norecette=false;
-		else
-			$norecette=true;
-			
-	if($result_commentaires->rowCount() > 0)
-			$nocomment=false;
-		else
-			$nocomment=true;		
-	
-	if ($result_profil->rowCount() > 0) {
-		
-		$result_profil		 = $result_profil->fetchAll(PDO::FETCH_ASSOC);
-		$result_commentaires = $result_commentaires->fetchAll(PDO::FETCH_ASSOC);
-		$result_recettes	 = $result_recettes->fetchAll(PDO::FETCH_ASSOC);
+	if ($result_profil !== false) {
 		
 		$login				= $result_profil[0]['login'];
 		$nom				= $result_profil[0]['nom_utilisateur'];
@@ -81,8 +83,7 @@ EOF;
 		<div id="profil_recettes">
 			<h2>Recettes de $login</h2>
 EOF;
-		if(!$norecette)
-		{
+		if($result_recettes !== false) {
 			echo '<div id="liste_recettes">';
 			foreach ($result_recettes as $line)
 					echo previewRecette($line['id_recette']);
@@ -97,16 +98,9 @@ EOF;
 		<div id="profil_commentaires">
 		<h2>Commentaires de $login</h2>
 EOF;
-		if(!$nocomment)
-		{
-			echo '<div id="liste_commentaires">';
-			foreach ($result_commentaires as $line)
-					echo previewCommentaire($line['id_com']);
-			echo '</div>';
-		}
-		else
-			echo 'Cet utilisateur n\'a écrit de commentaire.';
-					
+		
+		liste_commentaires($id_profil);
+		
 		echo <<< EOF
 		</div>
 		</div>

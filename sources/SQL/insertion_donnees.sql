@@ -124,6 +124,9 @@ INSERT INTO Commentaire(id_utilisateur,id_recette,commentaire,date_com)
 INSERT INTO Commentaire(id_utilisateur,id_recette,commentaire,date_com)
 	VALUES(2,2,'Tu aimes hein ? :D','2012-10-02 21:17:53');
 
+INSERT INTO Commentaire(id_utilisateur,id_recette,commentaire,date_com)
+	VALUES(2,1,'Jore !','2012-11-13 14:23:36');
+
 
 
 CREATE USER 'cuisine_user'@'localhost' IDENTIFIED BY 'SJzEeqLb2HHeNYVV';
