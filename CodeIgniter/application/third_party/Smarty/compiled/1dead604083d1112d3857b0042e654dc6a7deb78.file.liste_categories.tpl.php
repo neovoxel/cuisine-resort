@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2012-11-19 21:06:51
+<?php /* Smarty version Smarty-3.1.7, created on 2012-11-20 18:16:20
          compiled from "application/views\liste_categories.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:306850aa86cb5ed964-02736261%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,13 +7,13 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '1dead604083d1112d3857b0042e654dc6a7deb78' => 
     array (
       0 => 'application/views\\liste_categories.tpl',
-      1 => 1353355608,
+      1 => 1353430861,
       2 => 'file',
     ),
     '611f477ef18e2c90b72cf51d0af15efaa5aa80cb' => 
     array (
       0 => 'application/views\\main.tpl',
-      1 => 1353354464,
+      1 => 1353430861,
       2 => 'file',
     ),
   ),
@@ -79,11 +79,11 @@ $_smarty_tpl->tpl_vars['line']->_loop = true;
 				<a href="<?php echo base_url(('index.php/Main/liste_recettes/').($_smarty_tpl->tpl_vars['line']->value->id_categorie));?>
 "><img class="img_categorie" src="<?php echo base_url(('images/categories/').($_smarty_tpl->tpl_vars['line']->value->image_categorie));?>
 " /></a>
-				<h1><a href="./index.php?page=recettes&idc=<?php echo $_smarty_tpl->tpl_vars['line']->value->id_categorie;?>
+				<h1><a href="<?php echo base_url(('index.php/Main/liste_recettes/').($_smarty_tpl->tpl_vars['line']->value->id_categorie));?>
 "><?php echo $_smarty_tpl->tpl_vars['line']->value->nom_categorie;?>
 </a></h1>
 				<p>Il y a actuellement 0 recettes dans cette catégorie.<br />
-				<a href="index.php?page=recettes&idc=<?php echo $_smarty_tpl->tpl_vars['line']->value->id_categorie;?>
+				<a href="<?php echo base_url(('index.php/Main/liste_recettes/').($_smarty_tpl->tpl_vars['line']->value->id_categorie));?>
 " >Voir les recettes</a><br />
 				<a href="index.php?page=ajouter_recette&idc=<?php echo $_smarty_tpl->tpl_vars['line']->value->id_categorie;?>
 " >Ajouter une recette</a><p>
@@ -93,7 +93,7 @@ $_smarty_tpl->tpl_vars['line']->_loop = true;
 	</div>
 
 <?php }else{ ?>
-	<div> Vous n'avez encore aucune recette en cours de rédaction.</div>
+	<div>Erreur : $categories vide !</div>
 <?php }?>
 </div>
 
