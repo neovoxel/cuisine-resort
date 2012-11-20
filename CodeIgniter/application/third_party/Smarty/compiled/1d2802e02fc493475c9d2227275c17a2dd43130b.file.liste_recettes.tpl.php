@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2012-11-20 19:09:47
+<?php /* Smarty version Smarty-3.1.7, created on 2012-11-20 19:35:07
          compiled from "application/views\liste_recettes.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:48150abc71be56e70-63927668%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '1d2802e02fc493475c9d2227275c17a2dd43130b' => 
     array (
       0 => 'application/views\\liste_recettes.tpl',
-      1 => 1353434984,
+      1 => 1353436505,
       2 => 'file',
     ),
     '611f477ef18e2c90b72cf51d0af15efaa5aa80cb' => 
@@ -83,14 +83,16 @@ $_smarty_tpl->tpl_vars['line']->_loop = true;
 ?>
 			<div class="recette">
 				<p><a href="<?php echo base_url(('index.php/recettes/detail_recette/').($_smarty_tpl->tpl_vars['line']->value->id_recette));?>
-"><img class="img_recette" src="images/default/recette.png" alt="Illustration recette" height="150" width="150" /></a></p>
+"><img class="img_recette" src="<?php echo base_url('images/default/recette.png');?>
+" alt="Illustration recette" height="150" width="150" /></a></p>
 				<h3><a href="<?php echo base_url(('index.php/recettes/detail_recette/').($_smarty_tpl->tpl_vars['line']->value->id_recette));?>
 "> <?php echo $_smarty_tpl->tpl_vars['line']->value->titre;?>
 </a></h3>
 				<h4>Le <?php echo $_smarty_tpl->tpl_vars['line']->value->date_recette;?>
  par <a href="<?php echo base_url(('index.php/utilisateur/liste_categories/').($_smarty_tpl->tpl_vars['line']->value->id_categorie));?>
 ">$nom_utilisateur</a></h4>
-				<p class="texte_recette">$texte_recette <a href="<?php echo base_url(('index.php/recettes/detail_recette/').($_smarty_tpl->tpl_vars['line']->value->id_recette));?>
+				<p class="texte_recette"><?php echo $_smarty_tpl->tpl_vars['line']->value->recette;?>
+ <a href="<?php echo base_url(('index.php/recettes/detail_recette/').($_smarty_tpl->tpl_vars['line']->value->id_recette));?>
 "> Lire la suite</a></p>
 				<p><a href="<?php echo base_url(('index.php/recettes/liste_categories/').($_smarty_tpl->tpl_vars['line']->value->id_categorie));?>
 "><?php echo $_smarty_tpl->tpl_vars['line']->value->id_categorie;?>

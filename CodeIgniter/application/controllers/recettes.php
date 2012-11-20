@@ -22,6 +22,13 @@ class recettes extends CI_Controller {
 		$data['recettes'] = $this->mRecette->getAllFrom($id_categorie);
 		$data['categorie'] = $this->mCategorie->get($id_categorie);
 		
+		
+		/*foreach ($data['recettes'] as $line) {
+			echo $line->id_recette;
+			$data['recettes']['utilisateur'] = $this->mCategorie->get($id_categorie);
+		}*/
+		
+		
 		$this->load->helper('url');
 		$this->load->view('liste_recettes', $data);
 	}
