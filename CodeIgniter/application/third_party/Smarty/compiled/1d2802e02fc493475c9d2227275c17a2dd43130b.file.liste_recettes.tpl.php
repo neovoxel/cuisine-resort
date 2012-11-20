@@ -1,39 +1,31 @@
-<<<<<<< HEAD
-<?php /* Smarty version Smarty-3.1.7, created on 2012-11-20 19:01:06
-=======
-<?php /* Smarty version Smarty-3.1.7, created on 2012-11-20 18:16:20
->>>>>>> b66c2bf6c9bd82318a82dca926b14ca2046540e8
-         compiled from "application/views\liste_categories.tpl" */ ?>
-<?php /*%%SmartyHeaderCode:306850aa86cb5ed964-02736261%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /* Smarty version Smarty-3.1.7, created on 2012-11-20 19:09:47
+         compiled from "application/views\liste_recettes.tpl" */ ?>
+<?php /*%%SmartyHeaderCode:48150abc71be56e70-63927668%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
-    '1dead604083d1112d3857b0042e654dc6a7deb78' => 
+    '1d2802e02fc493475c9d2227275c17a2dd43130b' => 
     array (
-      0 => 'application/views\\liste_categories.tpl',
-<<<<<<< HEAD
-      1 => 1353434295,
-=======
-      1 => 1353430861,
->>>>>>> b66c2bf6c9bd82318a82dca926b14ca2046540e8
+      0 => 'application/views\\liste_recettes.tpl',
+      1 => 1353434984,
       2 => 'file',
     ),
     '611f477ef18e2c90b72cf51d0af15efaa5aa80cb' => 
     array (
       0 => 'application/views\\main.tpl',
-      1 => 1353430861,
+      1 => 1353354464,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '306850aa86cb5ed964-02736261',
+  'nocache_hash' => '48150abc71be56e70-63927668',
   'function' => 
   array (
   ),
   'version' => 'Smarty-3.1.7',
-  'unifunc' => 'content_50aa86cb653b0',
+  'unifunc' => 'content_50abc71c0f75a',
   'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
-<?php if ($_valid && !is_callable('content_50aa86cb653b0')) {function content_50aa86cb653b0($_smarty_tpl) {?><!DOCTYPE html>
+<?php if ($_valid && !is_callable('content_50abc71c0f75a')) {function content_50abc71c0f75a($_smarty_tpl) {?><!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
@@ -72,44 +64,44 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 
 	
 	<div class="container">
-		<h1>Liste des catégories</h1>
+		<h1>Liste des recettes</h1>
 		
 <div id="body">
-<?php if ((($tmp = @$_smarty_tpl->tpl_vars['categories']->value)===null||$tmp==='' ? '' : $tmp)){?>
+<?php if ((($tmp = @$_smarty_tpl->tpl_vars['recettes']->value)===null||$tmp==='' ? '' : $tmp)){?>
 	<div id="contenu">
-	<div id="liste_categories">
+	<div id="categorie_selection">
+		<img class="img_categorie" src="<?php echo base_url(('images/categories/').($_smarty_tpl->tpl_vars['categorie']->value->image_categorie));?>
+" />
+		<h1><?php echo $_smarty_tpl->tpl_vars['categorie']->value->nom_categorie;?>
+</h1>
+	</div>
+	<div id="liste_recettes">
 		<?php  $_smarty_tpl->tpl_vars['line'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['line']->_loop = false;
- $_from = $_smarty_tpl->tpl_vars['categories']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
+ $_from = $_smarty_tpl->tpl_vars['recettes']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
 foreach ($_from as $_smarty_tpl->tpl_vars['line']->key => $_smarty_tpl->tpl_vars['line']->value){
 $_smarty_tpl->tpl_vars['line']->_loop = true;
 ?>
-			<div class="categorie" >
-				<a href="<?php echo base_url(('index.php/recettes/liste_recettes/').($_smarty_tpl->tpl_vars['line']->value->id_categorie));?>
-"><img class="img_categorie" src="<?php echo base_url(('images/categories/').($_smarty_tpl->tpl_vars['line']->value->image_categorie));?>
-" /></a>
-<<<<<<< HEAD
-				<h1><a href="<?php echo base_url(('index.php/recettes/liste_recettes/').($_smarty_tpl->tpl_vars['line']->value->id_categorie));?>
-"><?php echo $_smarty_tpl->tpl_vars['line']->value->nom_categorie;?>
-</a></h1>
-				<p>Il y a actuellement 0 recettes dans cette catégorie.<br />
-				<a href="<?php echo base_url(('index.php/recettes/liste_recettes/').($_smarty_tpl->tpl_vars['line']->value->id_categorie));?>
-=======
-				<h1><a href="<?php echo base_url(('index.php/Main/liste_recettes/').($_smarty_tpl->tpl_vars['line']->value->id_categorie));?>
-"><?php echo $_smarty_tpl->tpl_vars['line']->value->nom_categorie;?>
-</a></h1>
-				<p>Il y a actuellement 0 recettes dans cette catégorie.<br />
-				<a href="<?php echo base_url(('index.php/Main/liste_recettes/').($_smarty_tpl->tpl_vars['line']->value->id_categorie));?>
->>>>>>> b66c2bf6c9bd82318a82dca926b14ca2046540e8
-" >Voir les recettes</a><br />
-				<a href="index.php?page=ajouter_recette&idc=<?php echo $_smarty_tpl->tpl_vars['line']->value->id_categorie;?>
-" >Ajouter une recette</a><p>
+			<div class="recette">
+				<p><a href="<?php echo base_url(('index.php/recettes/detail_recette/').($_smarty_tpl->tpl_vars['line']->value->id_recette));?>
+"><img class="img_recette" src="images/default/recette.png" alt="Illustration recette" height="150" width="150" /></a></p>
+				<h3><a href="<?php echo base_url(('index.php/recettes/detail_recette/').($_smarty_tpl->tpl_vars['line']->value->id_recette));?>
+"> <?php echo $_smarty_tpl->tpl_vars['line']->value->titre;?>
+</a></h3>
+				<h4>Le <?php echo $_smarty_tpl->tpl_vars['line']->value->date_recette;?>
+ par <a href="<?php echo base_url(('index.php/utilisateur/liste_categories/').($_smarty_tpl->tpl_vars['line']->value->id_categorie));?>
+">$nom_utilisateur</a></h4>
+				<p class="texte_recette">$texte_recette <a href="<?php echo base_url(('index.php/recettes/detail_recette/').($_smarty_tpl->tpl_vars['line']->value->id_recette));?>
+"> Lire la suite</a></p>
+				<p><a href="<?php echo base_url(('index.php/recettes/liste_categories/').($_smarty_tpl->tpl_vars['line']->value->id_categorie));?>
+"><?php echo $_smarty_tpl->tpl_vars['line']->value->id_categorie;?>
+</a></p>
 			</div>
 		<?php } ?>
 	</div>
 	</div>
 
 <?php }else{ ?>
-	<div>Erreur : $categories vide !</div>
+	<div>Erreur : $recettes vide !</div>
 <?php }?>
 </div>
 
