@@ -6,7 +6,7 @@ class mCategorie extends CI_Model {
 		parent::__construct();
 	}
 	
-	protected function get($id) {
+	public function get($id) {
 		$query = $this->db->get_where('Categorie', array('id_categorie' => $id));
 		
 		if($query->num_rows() > 0) {
@@ -19,14 +19,11 @@ class mCategorie extends CI_Model {
 	
 	public function getAll() {
 		$query = $this->db->get('Categorie');
-		// $query = $this->db->query('SELECT * FROM categorie');
 		
 		if($query->num_rows() > 0)
 			return $query->result();
 		else
 			return array();
-		
-		//return ($query->num_rows() > 0) ? $query->result() : array();
 	}
 	
 	/*
