@@ -26,14 +26,12 @@ class mRecette extends CI_Model {
 			return array();
 	}
 	
-	
-	
-	public function getAllFrom($id_categorie) {
+	public function getCategories($id_recette) {
 		$requette=<<<EOF
-SELECT c.id_categorie, r.id_recette, id_utilisateur, titre, recette, etat, temps_prepar, nb_pers difficult, image_recette, date_recette
-FROM categorie c INNER JOIN appartient a ON c.id_categorie = a.id_categorie
-				 INNER JOIN recette r ON a.id_recette = r.id_recette
-WHERE c.id_categorie=$id_categorie;
+SELECT C.id_categorie, nom_categorie
+FROM recette R INNER JOIN appartient A ON R.id_recette=A.id_recette
+INNER JOIN categorie C ON A.id_categorie=C.id_categorie
+WHERE R.id_recette = $id_recette;
 EOF;
 		$query = $this->db->query($requette);
 		
@@ -43,7 +41,21 @@ EOF;
 			return array();
 	}
 	
-	//getAllFrom($id_categorie)
+	public function getAllFrom($id_categorie) {
+		$requette=<<<EOF
+SELECT c.id_categorie, r.id_recette, U.id_utilisateur, titre, recette, etat, temps_prepar, nb_pers difficult, image_recette, date_recette, login
+FROM categorie c INNER JOIN appartient a ON c.id_categorie = a.id_categorie
+INNER JOIN recette r ON a.id_recette = r.id_recette
+INNER JOIN utilisateur U ON R.id_utilisateur=U.id_utilisateur
+WHERE c.id_categorie=$id_categorie;
+EOF;
+		$query = $this->db->query($requette);
+		
+		if($query->num_rows() > 0)
+			return $query->result();
+		else
+			return array();
+	}
 	
 	public function update($id, $nom_recette, $image_recette) {
 		

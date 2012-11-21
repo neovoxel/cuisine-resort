@@ -4,7 +4,6 @@
 {block name="output_area"}
 <div id="body">
 {if $categories|default:''}
-	<div id="contenu">
 	<div id="liste_categories">
 		{foreach $categories as $line}
 			<div class="categorie" >
@@ -15,7 +14,6 @@
 				<a href="index.php?page=ajouter_recette&idc={$line->id_categorie}" >Ajouter une recette</a><p>
 			</div>
 		{/foreach}
-	</div>
 	</div>
 
 {else}

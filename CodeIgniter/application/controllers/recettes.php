@@ -1,7 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class recettes extends CI_Controller {
-
+class Recettes extends MY_CONTROLLER {
+	
+	function __construct() {
+		parent::__construct();
+	}
+	
 	public function index() {
 		$this->liste_categories();
 	}
@@ -23,11 +27,13 @@ class recettes extends CI_Controller {
 		$data['categorie'] = $this->mCategorie->get($id_categorie);
 		
 		
-		/*foreach ($data['recettes'] as $line) {
-			echo $line->id_recette;
-			$data['recettes']['utilisateur'] = $this->mCategorie->get($id_categorie);
-		}*/
+		foreach ($data['recettes'] as $line) {
+			//echo $line->id_recette;
+			//$data['recettes']['utilisateur'] = $this->mCategorie->get($id_categorie);
+			$line->liste_categories = $this->mRecette->getCategories($line->id_recette);
+		}
 		
+		//printf("<pre>%s</pre>", print_r($data, true));
 		
 		$this->load->helper('url');
 		$this->load->view('liste_recettes', $data);
