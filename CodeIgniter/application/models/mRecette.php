@@ -6,7 +6,7 @@ class mRecette extends CI_Model {
 		parent::__construct();
 	}
 	
-	protected function get($id) {
+	public function get($id) {
 		$query = $this->db->get_where('Recette', array('id_recette' => $id));
 		
 		if($query->num_rows() > 0) {

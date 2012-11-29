@@ -7,11 +7,7 @@ class Home extends MY_CONTROLLER {
 	}
 	
 	public function index() {
-		$data = array();
-		$this->load->model('mCategorie');
-		$data['categories'] = $this->mCategorie->getAll();
-		
 		$this->load->helper('url');
-		$this->load->view('liste_categories', $data);
+		$this->load->view('home', null);
 	}
 }

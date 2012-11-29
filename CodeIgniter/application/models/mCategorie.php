@@ -26,6 +26,17 @@ class mCategorie extends CI_Model {
 			return array();
 	}
 	
+	public function getNbRecettes($id_categorie) {
+		$query = $this->db->query('SELECT COUNT(id_recette) as "nb_recettes" FROM appartient WHERE id_categorie = '.$id_categorie);
+		
+		if($query->num_rows() > 0) {
+			$categorie = $query->result();
+			return $categorie[0];
+		}
+		else
+			return null;
+	}
+	
 	/*
 		SELECT COUNT(id_recette) AS nb_recettes
 		FROM appartient

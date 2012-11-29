@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2012-11-21 11:49:30
+<?php /* Smarty version Smarty-3.1.7, created on 2012-11-21 11:58:25
          compiled from "application/views\liste_recettes.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:48150abc71be56e70-63927668%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '1d2802e02fc493475c9d2227275c17a2dd43130b' => 
     array (
       0 => 'application/views\\liste_recettes.tpl',
-      1 => 1353494968,
+      1 => 1353495502,
       2 => 'file',
     ),
     '611f477ef18e2c90b72cf51d0af15efaa5aa80cb' => 
@@ -80,8 +80,15 @@ $_smarty_tpl->tpl_vars['line']->_loop = true;
 ?>
 			<div class="recette">
 				<p><a href="<?php echo base_url(('index.php/Recettes/detail_recette/').($_smarty_tpl->tpl_vars['line']->value->id_recette));?>
-"><img class="img_recette" src="<?php echo base_url(((((('images/').($_smarty_tpl->tpl_vars['line']->value->login)).('/')).($_smarty_tpl->tpl_vars['line']->value->titre)).('/')).($_smarty_tpl->tpl_vars['line']->value->image_recette));?>
-" alt="Illustration recette" height="150" width="150" /></a></p>
+">
+				<?php if (is_null($_smarty_tpl->tpl_vars['line']->value->image_recette)){?>
+					<img class="img_recette" src="<?php echo base_url('images/default/recette.png');?>
+" alt="Illustration recette" height="150" width="150" />
+				<?php }else{ ?>
+					<img class="img_recette" src="<?php echo base_url(((((('images/').($_smarty_tpl->tpl_vars['line']->value->login)).('/')).($_smarty_tpl->tpl_vars['line']->value->titre)).('/')).($_smarty_tpl->tpl_vars['line']->value->image_recette));?>
+" alt="Illustration recette" height="150" width="150" />
+				<?php }?>
+				</a></p>
 				<h3><a href="<?php echo base_url(('index.php/Recettes/detail_recette/').($_smarty_tpl->tpl_vars['line']->value->id_recette));?>
 "> <?php echo $_smarty_tpl->tpl_vars['line']->value->titre;?>
 </a></h3>

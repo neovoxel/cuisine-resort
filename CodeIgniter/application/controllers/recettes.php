@@ -15,6 +15,10 @@ class Recettes extends MY_CONTROLLER {
 		$this->load->model('mCategorie');
 		$data['categories'] = $this->mCategorie->getAll();
 		
+		foreach ($data['categories'] as $line) {
+			$line->nb_recettes = $this->mCategorie->getNbRecettes($line->id_categorie)->nb_recettes;
+		}
+		
 		$this->load->helper('url');
 		$this->load->view('liste_categories', $data);
 	}
@@ -43,7 +47,8 @@ class Recettes extends MY_CONTROLLER {
 		$data = array();
 		$this->load->model('mRecette');
 		$data['recette'] = $this->mRecette->get($id_recette);
-		
+		$data['recette']->liste_categories = $this->mRecette->getCategories($id_recette);
+		printf("<pre>%s</pre>", print_r($data, true));
 		$this->load->helper('url');
 		$this->load->view('detail_recette', $data);
 	}

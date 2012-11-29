@@ -14,8 +14,12 @@
 		{foreach $recettes as $line}
 			<div class="recette">
 				<p><a href="{base_url('index.php/Recettes/detail_recette/'|cat:$line->id_recette)}">
-				<img class="img_recette" src="{base_url('images/'|cat:$line->login|cat:'/'|cat:$line->titre|cat:'/'|cat:$line->image_recette)}" alt="Illustration recette" height="150" width="150" />
-				{if isNull($line->image_recette)}</a></p>
+				{if is_null($line->image_recette)}
+					<img class="img_recette" src="{base_url('images/default/recette.png')}" alt="Illustration recette" height="150" width="150" />
+				{else}
+					<img class="img_recette" src="{base_url('images/'|cat:$line->login|cat:'/'|cat:$line->titre|cat:'/'|cat:$line->image_recette)}" alt="Illustration recette" height="150" width="150" />
+				{/if}
+				</a></p>
 				<h3><a href="{base_url('index.php/Recettes/detail_recette/'|cat:$line->id_recette)}"> {$line->titre}</a></h3>
 				<h4>Le {$line->date_recette} par <a href="{base_url('index.php/Membre/profil/'|cat:$line->id_utilisateur)}">{$line->login}</a></h4>
 				<p class="texte_recette">{$line->recette|truncate:250} <a href="{base_url('index.php/Recettes/detail_recette/'|cat:$line->id_recette)}"> Lire la suite</a></p>
