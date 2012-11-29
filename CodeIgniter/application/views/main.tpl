@@ -7,19 +7,16 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title></title>
+	<title>{block name=titre}Cuisine{/block}</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width">
-	<link rel="stylesheet" href="{base_url('assets/bootstrap/css/bootstrap.min.css')}">
-	<link rel="stylesheet" href="{base_url('assets/FortAwesome/css/font-awesome.css')}">
+	<link rel="stylesheet" href="{base_url('css/style.css')}">
 	<style>
 		body {
 			padding-top: 60px;
 			padding-bottom: 40px;
 		}
 	</style>
-	<link rel="stylesheet" href="{base_url('assets/bootstrap/css/bootstrap-responsive.min.css')}">
-	<link rel="stylesheet" href="{base_url('assets/bootstrap/css/main.css')}">
 	<script src="{base_url('assets/bootstrap/js/vendor/modernizr-2.6.1-respond-1.1.0.min.js')}"></script>
 </head>
 <body>
@@ -28,10 +25,11 @@
 	<![endif]-->
 	
 	<!-- This code is taken from http://twitter.github.com/bootstrap/examples/hero.html -->
-	{include 'header.tpl' scope=parent}
+	<div id="entete" >
+		{include 'header.tpl' scope=parent}
+	</div>
 	
-	<div class="container">
-		<h1>{block name="titre"}main.TITRE{/block}</h1>
+	<div id="contenu">
 		{block name=output_area}
 			zone principale
 		{/block}
@@ -39,7 +37,7 @@
 		<footer>
 			{include 'footer.tpl' scope=parent}
 		</footer>
-	</div> <!-- /container -->
+	</div> <!-- /contenu -->
 	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="{base_url('assets/bootstrap/js/vendor/jquery-1.8.2.min.js')}"><\/script>')</script>

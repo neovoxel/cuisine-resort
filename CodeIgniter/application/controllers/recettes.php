@@ -1,7 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class recettes extends CI_Controller {
-
+class Recettes extends MY_CONTROLLER {
+	
+	function __construct() {
+		parent::__construct();
+	}
+	
 	public function index() {
 		$this->liste_categories();
 	}
@@ -10,6 +14,10 @@ class recettes extends CI_Controller {
 		$data = array();
 		$this->load->model('mCategorie');
 		$data['categories'] = $this->mCategorie->getAll();
+		
+		foreach ($data['categories'] as $line) {
+			$line->nb_recettes = $this->mCategorie->getNbRecettes($line->id_categorie)->nb_recettes;
+		}
 		
 		$this->load->helper('url');
 		$this->load->view('liste_categories', $data);
@@ -23,11 +31,13 @@ class recettes extends CI_Controller {
 		$data['categorie'] = $this->mCategorie->get($id_categorie);
 		
 		
-		/*foreach ($data['recettes'] as $line) {
-			echo $line->id_recette;
-			$data['recettes']['utilisateur'] = $this->mCategorie->get($id_categorie);
-		}*/
+		foreach ($data['recettes'] as $line) {
+			//echo $line->id_recette;
+			//$data['recettes']['utilisateur'] = $this->mCategorie->get($id_categorie);
+			$line->liste_categories = $this->mRecette->getCategories($line->id_recette);
+		}
 		
+		//printf("<pre>%s</pre>", print_r($data, true));
 		
 		$this->load->helper('url');
 		$this->load->view('liste_recettes', $data);
@@ -36,7 +46,12 @@ class recettes extends CI_Controller {
 	public function detail_recette($id_recette) {
 		$data = array();
 		$this->load->model('mRecette');
+		$this->load->model('mUtilisateur');
 		$data['recette'] = $this->mRecette->get($id_recette);
+		$data['recette']->liste_categories = $this->mRecette->getCategories($id_recette);
+		$data['utilisateur'] = $this->mUtilisateur->get($data['recette']->id_utilisateur);
+			
+		printf("<pre>%s</pre>", print_r($data, true));
 		
 		$this->load->helper('url');
 		$this->load->view('detail_recette', $data);
