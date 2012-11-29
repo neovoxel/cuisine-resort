@@ -6,7 +6,7 @@ class mUtilisateur extends CI_Model {
 		parent::__construct();
 	}
 	
-	protected function get($id) {
+	public function get($id) {
 		$query = $this->db->get_where('Utilisateur', array('id_utilisateur' => $id));
 		
 		if($query->num_rows() > 0) {
