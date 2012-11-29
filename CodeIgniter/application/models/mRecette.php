@@ -57,6 +57,15 @@ EOF;
 			return array();
 	}
 	
+	public function getAllFromUtilisateur($id_utilisateur) {
+		$query = $this->db->get_where('Recette', array('id_utilisateur' => $id_utilisateur));
+		
+		if($query->num_rows() > 0)
+			return $query->result();
+		else
+			return null;
+	}
+	
 	public function update($id, $nom_recette, $image_recette) {
 		
 	}

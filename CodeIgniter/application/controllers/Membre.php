@@ -13,7 +13,7 @@ class Membre extends MY_Membre_Controller
 		$this->load->model('mUtilisateur');
 		$data['utilisateur'] = $this->mUtilisateur->get($id);
 		$this->load->helper('url');
-		$this->load->view('liste_categories', $data);
+		$this->load->view('profil', $data);
 	}
 }
 ?>
