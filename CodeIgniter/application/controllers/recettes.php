@@ -46,9 +46,13 @@ class Recettes extends MY_CONTROLLER {
 	public function detail_recette($id_recette) {
 		$data = array();
 		$this->load->model('mRecette');
+		$this->load->model('mUtilisateur');
 		$data['recette'] = $this->mRecette->get($id_recette);
 		$data['recette']->liste_categories = $this->mRecette->getCategories($id_recette);
+		$data['utilisateur'] = $this->mUtilisateur->get($data['recette']->id_utilisateur);
+			
 		printf("<pre>%s</pre>", print_r($data, true));
+		
 		$this->load->helper('url');
 		$this->load->view('detail_recette', $data);
 	}

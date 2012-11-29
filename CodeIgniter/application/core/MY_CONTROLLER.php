@@ -29,3 +29,33 @@ class MY_CONTROLLER extends CI_Controller {
 		
 	}
 }
+
+
+class MY_Membre_Controller extends MY_CONTROLLER
+{
+	function __construct()
+	{
+		parent::__construct();
+		if(!$this->isLogOn())
+		{
+			$this->load->helper('url');
+			redirect('home');
+		}
+	}
+}
+
+
+class MY_Admin_Controller extends MY_Membre_Controller
+{
+	function __construct()
+	{
+		parent::__construct();
+		if(!$this->isAdmin())
+		{
+			$this->load->helper('url');
+			redirect('home');
+		}
+	}
+}
+
+

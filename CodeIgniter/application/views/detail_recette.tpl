@@ -6,7 +6,12 @@
 {if $recette|default:''}
 <div id="detail_recette">
 		<div id="presentation">
-			<img class="img_recette" src="$image_recette" alt="Illustration recette" height="300" width="300" />
+			{if is_null($recette->image_recette)}
+				<img class="img_recette" src="{base_url('images/default/recette.png')}" alt="Illustration recette" height="300" width="300" />
+			{else}
+				<img class="img_recette" src="{base_url('images/'|cat:$utilisateur->login|cat:'/'|cat:$recette->titre|cat:'/'|cat:$recette->image_recette)}" alt="Illustration recette" height="300" width="300" />
+			{/if}
+			
 			<h1>{$recette->titre}</h1>
 			<ul>
 				<li>Catégories :
@@ -17,7 +22,7 @@
 				<li>Difficulté : {$recette->difficulte}</li>
 				<li>Nombre de personnes : {$recette->nb_pers}</li>
 			</ul>
-			<p class="auteur_recette">Recette proposée le {$recette->date_recette} par <a href="./index.php?page=profil&idp=$id_utilisateur">$nom_utilisateur</a></p>
+			<p class="auteur_recette">Recette proposée le {$recette->date_recette} par <a href="{base_url('index.php/Membre/profil/'|cat:$utilisateur->id_utilisateur)}">{$utilisateur->login}</a></p>
 			<hr />
 		</div>
 		<div id="ingredients">

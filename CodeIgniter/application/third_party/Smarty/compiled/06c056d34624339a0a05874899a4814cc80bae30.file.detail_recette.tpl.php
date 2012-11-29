@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2012-11-29 16:04:03
+<?php /* Smarty version Smarty-3.1.7, created on 2012-11-29 16:27:50
          compiled from "application/views\detail_recette.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:1105850b77606616353-97927737%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '06c056d34624339a0a05874899a4814cc80bae30' => 
     array (
       0 => 'application/views\\detail_recette.tpl',
-      1 => 1354201442,
+      1 => 1354202867,
       2 => 'file',
     ),
     '611f477ef18e2c90b72cf51d0af15efaa5aa80cb' => 
@@ -65,7 +65,14 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <?php if ((($tmp = @$_smarty_tpl->tpl_vars['recette']->value)===null||$tmp==='' ? '' : $tmp)){?>
 <div id="detail_recette">
 		<div id="presentation">
-			<img class="img_recette" src="$image_recette" alt="Illustration recette" height="300" width="300" />
+			<?php if (is_null($_smarty_tpl->tpl_vars['recette']->value->image_recette)){?>
+				<img class="img_recette" src="<?php echo base_url('images/default/recette.png');?>
+" alt="Illustration recette" height="300" width="300" />
+			<?php }else{ ?>
+				<img class="img_recette" src="<?php echo base_url(((((('images/').($_smarty_tpl->tpl_vars['utilisateur']->value->login)).('/')).($_smarty_tpl->tpl_vars['recette']->value->titre)).('/')).($_smarty_tpl->tpl_vars['recette']->value->image_recette));?>
+" alt="Illustration recette" height="300" width="300" />
+			<?php }?>
+			
 			<h1><?php echo $_smarty_tpl->tpl_vars['recette']->value->titre;?>
 </h1>
 			<ul>
@@ -87,7 +94,9 @@ $_smarty_tpl->tpl_vars['categorie_recette']->_loop = true;
 </li>
 			</ul>
 			<p class="auteur_recette">Recette proposée le <?php echo $_smarty_tpl->tpl_vars['recette']->value->date_recette;?>
- par <a href="./index.php?page=profil&idp=$id_utilisateur">$nom_utilisateur</a></p>
+ par <a href="<?php echo base_url(('index.php/Membre/profil/').($_smarty_tpl->tpl_vars['utilisateur']->value->id_utilisateur));?>
+"><?php echo $_smarty_tpl->tpl_vars['utilisateur']->value->login;?>
+</a></p>
 			<hr />
 		</div>
 		<div id="ingredients">
