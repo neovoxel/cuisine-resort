@@ -6,7 +6,7 @@ class Admin extends MY_Membre_Controller
 		$this->administation();
 	}
 	
-	function administration()
+	function administration($id)
 	{
 		// va charger le model pour administer le site
 	}

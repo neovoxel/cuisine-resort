@@ -7,9 +7,13 @@ class Membre extends MY_Membre_Controller
 		$this->profil();
 	}
 	
-	function profil()
+	function profil($id)
 	{
-		// va charger le model profil
+		$data = array();
+		$this->load->model('mUtilisateur');
+		$data['utilisateur'] = $this->mUtilisateur->get($id);
+		$this->load->helper('url');
+		$this->load->view('profil', $data);
 	}
 }
 ?>
