@@ -22,16 +22,15 @@
 				<li>Difficulté : {$recette->difficulte}</li>
 				<li>Nombre de personnes : {$recette->nb_pers}</li>
 			</ul>
-			<p class="auteur_recette">Recette proposée le {$recette->date_recette} par <a href="{base_url('index.php/Membre/profil/'|cat:$utilisateur->id_utilisateur)}">{$utilisateur->login}</a></p>
+			<p class="auteur_recette">Recette proposée le {$recette->date_recette} par <a href="{base_url('index.php/home/profil/'|cat:$utilisateur->id_utilisateur)}">{$utilisateur->login}</a></p>
 			<hr />
 		</div>
 		<div id="ingredients">
 			<h2>Ingrédients :</h2>
 			<ul>
-
-		foreach ($result_ingredients as $line)
-			echo '<li>'.formatIngredient($line['quantite'], $line['nom_unite'], $line['nom_ingredient']).'</li>';
-		echo <<< EOF
+			{foreach $ingredients as $ingredient}
+				<li>{$ingredient->quantite} {$ingredient->nom_unite} {$ingredient->nom_ingredient}</li>
+			{/foreach}
 			</ul>
 		<hr />
 		</div>

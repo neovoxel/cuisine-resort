@@ -6,7 +6,7 @@ class mIngredient extends CI_Model {
 		parent::__construct();
 	}
 	
-	protected function get($id) {
+	public function get($id) {
 		$query = $this->db->get_where('Ingredient', array('id_ingredient' => $id));
 		
 		if($query->num_rows() > 0) {
@@ -25,7 +25,6 @@ class mIngredient extends CI_Model {
 		else
 			return array();
 	}
-	
 	
 	public function update($id, $nom_ingredient, $image_ingredient) {
 		

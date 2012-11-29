@@ -57,6 +57,23 @@ EOF;
 			return array();
 	}
 	
+	public function getIngredients($id_recette) {
+		$requette = <<< EOF
+SELECT nom_ingredient, quantite, nom_unite
+FROM recette R INNER JOIN compose C ON R.id_recette=C.id_recette
+INNER JOIN ingredient I ON C.id_ingredient=I.id_ingredient
+INNER JOIN mesure M ON I.id_ingredient=M.id_ingredient
+INNER JOIN unite U ON M.id_unite=U.id_unite
+WHERE R.id_recette = $id_recette;
+EOF;
+		$query = $this->db->query($requette);
+		
+		if($query->num_rows() > 0)
+			return $query->result();
+		else
+			return array();
+	}
+	
 	public function update($id, $nom_recette, $image_recette) {
 		
 	}

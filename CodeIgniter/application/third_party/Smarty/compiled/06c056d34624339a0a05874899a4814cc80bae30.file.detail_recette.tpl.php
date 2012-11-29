@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2012-11-29 16:27:50
+<?php /* Smarty version Smarty-3.1.7, created on 2012-11-29 17:12:05
          compiled from "application/views\detail_recette.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:1105850b77606616353-97927737%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '06c056d34624339a0a05874899a4814cc80bae30' => 
     array (
       0 => 'application/views\\detail_recette.tpl',
-      1 => 1354202867,
+      1 => 1354205523,
       2 => 'file',
     ),
     '611f477ef18e2c90b72cf51d0af15efaa5aa80cb' => 
@@ -94,7 +94,7 @@ $_smarty_tpl->tpl_vars['categorie_recette']->_loop = true;
 </li>
 			</ul>
 			<p class="auteur_recette">Recette proposée le <?php echo $_smarty_tpl->tpl_vars['recette']->value->date_recette;?>
- par <a href="<?php echo base_url(('index.php/Membre/profil/').($_smarty_tpl->tpl_vars['utilisateur']->value->id_utilisateur));?>
+ par <a href="<?php echo base_url(('index.php/home/profil/').($_smarty_tpl->tpl_vars['utilisateur']->value->id_utilisateur));?>
 "><?php echo $_smarty_tpl->tpl_vars['utilisateur']->value->login;?>
 </a></p>
 			<hr />
@@ -102,10 +102,16 @@ $_smarty_tpl->tpl_vars['categorie_recette']->_loop = true;
 		<div id="ingredients">
 			<h2>Ingrédients :</h2>
 			<ul>
-
-		foreach ($result_ingredients as $line)
-			echo '<li>'.formatIngredient($line['quantite'], $line['nom_unite'], $line['nom_ingredient']).'</li>';
-		echo <<< EOF
+			<?php  $_smarty_tpl->tpl_vars['ingredient'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['ingredient']->_loop = false;
+ $_from = $_smarty_tpl->tpl_vars['ingredients']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
+foreach ($_from as $_smarty_tpl->tpl_vars['ingredient']->key => $_smarty_tpl->tpl_vars['ingredient']->value){
+$_smarty_tpl->tpl_vars['ingredient']->_loop = true;
+?>
+				<li><?php echo $_smarty_tpl->tpl_vars['ingredient']->value->quantite;?>
+ <?php echo $_smarty_tpl->tpl_vars['ingredient']->value->nom_unite;?>
+ <?php echo $_smarty_tpl->tpl_vars['ingredient']->value->nom_ingredient;?>
+</li>
+			<?php } ?>
 			</ul>
 		<hr />
 		</div>
