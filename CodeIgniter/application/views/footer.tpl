@@ -1,3 +1,3 @@
 
-<p>Footer !!!</p>
+<p>Copyright - Aucun droit réservé</p>
 
