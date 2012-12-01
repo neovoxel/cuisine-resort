@@ -29,4 +29,9 @@ class Home extends MY_CONTROLLER {
 		$this->load->helper('url');
 		$this->load->view('profil', $data);
 	}
+	
+	public function connexion() {
+		$this->load->helper('url');
+		$this->load->view('connexion', null);
+	}
 }
