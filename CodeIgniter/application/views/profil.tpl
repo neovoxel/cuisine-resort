@@ -38,7 +38,15 @@
 			<hr />
 		</div>
 		<div id="profil_commentaires">
-		<h2>Commentaires de {$utilisateur->login}</h2>
+			<h2>Commentaires de {$utilisateur->login}</h2>
+			<div id="liste_commentaires">
+			{foreach $commentaire as $line}
+				<div class="commentaire">
+					<h4>Le {$line->date_com} sur la recette <a href="{base_url('index.php/Recettes/detail_recette/'|cat:$line->id_recette)}">{$line->titre}</a></h4>
+					<p>{$line->commentaire}</p>
+				</div>
+			{/foreach}
+			</div>
 		</div>
 		</div>
 {/block}

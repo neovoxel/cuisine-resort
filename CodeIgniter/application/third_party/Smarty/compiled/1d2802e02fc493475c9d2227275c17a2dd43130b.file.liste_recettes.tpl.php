@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2012-12-01 16:05:13
+<?php /* Smarty version Smarty-3.1.7, created on 2012-12-01 16:34:36
          compiled from "application/views\liste_recettes.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:1495850ba1ca95e7bd4-83014226%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,13 +7,13 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '1d2802e02fc493475c9d2227275c17a2dd43130b' => 
     array (
       0 => 'application/views\\liste_recettes.tpl',
-      1 => 1353495502,
+      1 => 1354374805,
       2 => 'file',
     ),
     '611f477ef18e2c90b72cf51d0af15efaa5aa80cb' => 
     array (
       0 => 'application/views\\main.tpl',
-      1 => 1353492734,
+      1 => 1354374805,
       2 => 'file',
     ),
   ),
@@ -21,11 +21,11 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
-  'has_nocache_code' => false,
   'version' => 'Smarty-3.1.7',
   'unifunc' => 'content_50ba1ca9848ac',
+  'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
-<?php if ($_valid && !is_callable('content_50ba1ca9848ac')) {function content_50ba1ca9848ac($_smarty_tpl) {?><?php if (!is_callable('smarty_modifier_truncate')) include 'C:\\UwAmp\\www\\git\\cuisine-resort\\CodeIgniter\\application\\third_party\\Smarty\\plugins\\modifier.truncate.php';
+<?php if ($_valid && !is_callable('content_50ba1ca9848ac')) {function content_50ba1ca9848ac($_smarty_tpl) {?><?php if (!is_callable('smarty_modifier_truncate')) include 'C:\\UwAmp\\www\\cuisine-resort\\CodeIgniter\\application\\third_party\\Smarty\\plugins\\modifier.truncate.php';
 ?><!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->

@@ -16,12 +16,15 @@ class Home extends MY_CONTROLLER {
 		$data = array();
 		$this->load->model('mUtilisateur');
 		$this->load->model('mRecette');
+		$this->load->model('mCommentaire');
 		$data['utilisateur'] = $this->mUtilisateur->get($id);
 		$data['recettes'] = $this->mRecette->getAllFromUtilisateur($id);
 		
 		foreach ($data['recettes'] as $line) {
 			$line->liste_categories = $this->mRecette->getCategories($line->id_recette);
 		}
+		
+		$data['commentaire'] = $this->mCommentaire->getAllFromUtilisateur($id);
 		
 		$this->load->helper('url');
 		$this->load->view('profil', $data);
