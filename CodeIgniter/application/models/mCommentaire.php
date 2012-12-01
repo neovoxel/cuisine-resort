@@ -38,6 +38,18 @@ class mCommentaire extends CI_Model {
 			return null;
 	}
 	
+	public function getAllFromUtilisateur($id_utilisateur) {
+		$query = $this->db->query('SELECT id_com
+FROM commentaire C INNER JOIN utilisateur U ON C.id_recette=U.id_utilisateur
+WHERE U.id_utilisateur = $id_utilisateur;');
+		
+		if($query->num_rows() > 0) {
+			return $query->result();
+		}
+		else
+			return null;
+	}
+	
 	public function update($id, $nom_ingredient, $image_ingredient) {
 		
 	}
