@@ -24,7 +24,7 @@ class Home extends MY_CONTROLLER {
 			$line->liste_categories = $this->mRecette->getCategories($line->id_recette);
 		}
 		
-		$data['commentaire'] = $this->mCommentaire->getAllFromUtilisateur($id);
+		$data['commentaire'] = $this->mCommentaire->getComsFromUser($id);
 		
 		$this->load->helper('url');
 		$this->load->view('profil', $data);

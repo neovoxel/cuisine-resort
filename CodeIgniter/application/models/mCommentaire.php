@@ -50,32 +50,6 @@ WHERE R.id_recette = '.$id_recette);
 			return null;
 	}
 	
-	public function getAllFromRecette($id_recette) {
-		$query = $this->db->query('SELECT *
-	FROM commentaire C INNER JOIN recette R ON C.id_recette=R.id_recette
-	WHERE R.id_recette = '.$id_recette);
-		
-		if($query->num_rows() > 0) {
-			return $query->result();
-		}
-		else
-			return null;
-	}
-	
-	public function getAllFromUtilisateur($id_utilisateur) {
-		$query = $this->db->query('SELECT date_com, commentaire, R.id_recette, titre
-	FROM utilisateur U INNER JOIN commentaire C ON U.id_utilisateur=C.id_utilisateur
-	INNER JOIN recette R ON C.id_recette=R.id_recette
-	WHERE U.id_utilisateur = '.$id_utilisateur.'
-	ORDER BY date_com DESC;');
-		
-		if($query->num_rows() > 0) {
-			return $query->result();
-		}
-		else
-			return null;
-	}
-	
 	public function update($id, $nom_ingredient, $image_ingredient) {
 		
 	}
