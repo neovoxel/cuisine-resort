@@ -57,7 +57,6 @@ EOF;
 			return array();
 	}
 	
-<<<<<<< HEAD
 	public function getIngredients($id_recette) {
 		$requette = <<< EOF
 SELECT nom_ingredient, quantite, nom_unite
@@ -68,19 +67,20 @@ INNER JOIN unite U ON M.id_unite=U.id_unite
 WHERE R.id_recette = $id_recette;
 EOF;
 		$query = $this->db->query($requette);
-=======
-	public function getAllFromUtilisateur($id_utilisateur) {
-		$query = $this->db->get_where('Recette', array('id_utilisateur' => $id_utilisateur));
->>>>>>> 511a937ebe2e8d0c9b20f8dbbc509a72d4f645ed
 		
 		if($query->num_rows() > 0)
 			return $query->result();
 		else
-<<<<<<< HEAD
 			return array();
-=======
+	}
+	
+	public function getAllFromUtilisateur($id_utilisateur) {
+		$query = $this->db->get_where('Recette', array('id_utilisateur' => $id_utilisateur));
+		
+		if($query->num_rows() > 0)
+			return $query->result();
+		else
 			return null;
->>>>>>> 511a937ebe2e8d0c9b20f8dbbc509a72d4f645ed
 	}
 	
 	public function update($id, $nom_recette, $image_recette) {
