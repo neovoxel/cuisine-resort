@@ -26,10 +26,34 @@ class mCommentaire extends CI_Model {
 			return array();
 	}
 	
+	public function getComsFromUser($id_util) {
+		$query = $this->db->query('SELECT *
+FROM commentaire C INNER JOIN recette R ON C.id_recette=R.id_recette
+INNER JOIN utilisateur U ON C.id_utilisateur=U.id_utilisateur
+WHERE U.id_utilisateur = '.$id_util);
+		
+		if($query->num_rows() > 0)
+			return $query->result();
+		else
+			return null;
+	}
+	
+	public function getComsFromRecette($id_recette) {
+		$query = $this->db->query('SELECT *
+FROM commentaire C INNER JOIN recette R ON C.id_recette=R.id_recette
+INNER JOIN utilisateur U ON C.id_utilisateur=U.id_utilisateur
+WHERE R.id_recette = '.$id_recette);
+		
+		if($query->num_rows() > 0)
+			return $query->result();
+		else
+			return null;
+	}
+	
 	public function getAllFromRecette($id_recette) {
-		$query = $this->db->query('SELECT id_com
+		$query = $this->db->query('SELECT *
 	FROM commentaire C INNER JOIN recette R ON C.id_recette=R.id_recette
-	WHERE R.id_recette = $id_recette;');
+	WHERE R.id_recette = '.$id_recette);
 		
 		if($query->num_rows() > 0) {
 			return $query->result();

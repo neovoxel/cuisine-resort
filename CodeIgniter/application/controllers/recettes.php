@@ -45,10 +45,12 @@ class Recettes extends MY_CONTROLLER {
 		$data = array();
 		$this->load->model('mRecette');
 		$this->load->model('mUtilisateur');
+		$this->load->model('mCommentaire');
 		$data['recette'] = $this->mRecette->get($id_recette);
 		$data['recette']->liste_categories = $this->mRecette->getCategories($id_recette);
 		$data['utilisateur'] = $this->mUtilisateur->get($data['recette']->id_utilisateur);
 		$data['ingredients'] = $this->mRecette->getIngredients($id_recette);
+		$data['commentaires'] = $this->mCommentaire->getComsFromRecette($id_recette);
 			
 		//printf("<pre>%s</pre>", print_r($data, true));
 		

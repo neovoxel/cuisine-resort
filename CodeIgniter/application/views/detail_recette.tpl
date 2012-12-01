@@ -40,17 +40,18 @@
 			<hr />
 		</div>
 
-
-		if (!empty($result_commentaires)) {
-			echo <<< EOF
+		{if !is_null($commentaires)}
 			<h2>Commentaires :</h2>
 			<div id="liste_commentaires">
-
+			{foreach $commentaires as $com}
+				<div class="commentaire">
+					<h4><a href="{base_url('index.php/home/profil/'|cat:$com->id_utilisateur)}">{$com->login}</a> le {$com->date_com}</h4>
+					<p>{$com->commentaire}</p>
+				</div>
+			{/foreach}
 			
-			foreach ($result_commentaires as $line)
-				echo previewCommentaire($line['id_com']);
-			
-</div>
+			</div>
+		{/if}
 
 {else}
 	<div>Erreur : $categories vide !</div>

@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2012-12-01 16:09:30
+<?php /* Smarty version Smarty-3.1.7, created on 2012-12-01 16:45:18
          compiled from "application/views\detail_recette.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:894350ba1daabdfa22-36357619%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '06c056d34624339a0a05874899a4814cc80bae30' => 
     array (
       0 => 'application/views\\detail_recette.tpl',
-      1 => 1354205523,
+      1 => 1354376715,
       2 => 'file',
     ),
     '611f477ef18e2c90b72cf51d0af15efaa5aa80cb' => 
@@ -21,9 +21,9 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
-  'has_nocache_code' => false,
   'version' => 'Smarty-3.1.7',
   'unifunc' => 'content_50ba1daae27d6',
+  'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_50ba1daae27d6')) {function content_50ba1daae27d6($_smarty_tpl) {?><!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -123,17 +123,26 @@ $_smarty_tpl->tpl_vars['ingredient']->_loop = true;
 			<hr />
 		</div>
 
-
-		if (!empty($result_commentaires)) {
-			echo <<< EOF
+		<?php if (!is_null($_smarty_tpl->tpl_vars['commentaires']->value)){?>
 			<h2>Commentaires :</h2>
 			<div id="liste_commentaires">
-
+			<?php  $_smarty_tpl->tpl_vars['com'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['com']->_loop = false;
+ $_from = $_smarty_tpl->tpl_vars['commentaires']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
+foreach ($_from as $_smarty_tpl->tpl_vars['com']->key => $_smarty_tpl->tpl_vars['com']->value){
+$_smarty_tpl->tpl_vars['com']->_loop = true;
+?>
+				<div class="commentaire">
+					<h4><a href="<?php echo base_url(('index.php/home/profil/').($_smarty_tpl->tpl_vars['com']->value->id_utilisateur));?>
+"><?php echo $_smarty_tpl->tpl_vars['com']->value->login;?>
+</a> le <?php echo $_smarty_tpl->tpl_vars['com']->value->date_com;?>
+</h4>
+					<p><?php echo $_smarty_tpl->tpl_vars['com']->value->commentaire;?>
+</p>
+				</div>
+			<?php } ?>
 			
-			foreach ($result_commentaires as $line)
-				echo previewCommentaire($line['id_com']);
-			
-</div>
+			</div>
+		<?php }?>
 
 <?php }else{ ?>
 	<div>Erreur : $categories vide !</div>
