@@ -26,6 +26,18 @@ class mUtilisateur extends CI_Model {
 			return array();
 	}
 	
+	public function getPassword($login) {
+		//echo "<h1>$login</h1>";
+		
+		$query = $this->db->query("SELECT * FROM Utilisateur WHERE login = '".$login."'");
+		
+		if($query->num_rows() > 0) {
+			$categorie = $query->result();
+			return $categorie[0];
+		}
+		else
+			return null;
+	}
 	
 	public function update($id, $nom_utilisateur, $image_utilisateur) {
 		

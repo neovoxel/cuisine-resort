@@ -11,7 +11,7 @@ class Home extends MY_CONTROLLER {
 		$this->load->view('home', null);
 	}
 	
-	function profil($id)
+	public function profil($id)
 	{
 		$data = array();
 		$this->load->model('mUtilisateur');
@@ -31,7 +31,18 @@ class Home extends MY_CONTROLLER {
 	}
 	
 	public function connexion() {
-		$this->load->helper('url');
-		$this->load->view('connexion', null);
+		if (!parent::isLogOn()) {
+			$tmp = $this->input->post('form_log');
+			if (empty($tmp)) {
+				$this->load->helper('url');
+				$this->load->view('connexion');
+			}
+			else
+				parent::connexion();
+		}
+		else {
+			$this->load->helper('url');
+			redirect('home');
+		}
 	}
 }
