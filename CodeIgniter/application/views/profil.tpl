@@ -16,7 +16,7 @@
 
 		<div id="liste_recettes">
 		{foreach $recettes as $line}
-			<div class="recette">
+			<!-- <div class="recette">
 				<p><a href="{base_url('index.php/Recettes/detail_recette/'|cat:$line->id_recette)}">
 				{if is_null($line->image_recette)}
 					<img class="img_recette" src="{base_url('images/default/recette.png')}" alt="Illustration recette" height="150" width="150" />
@@ -32,7 +32,8 @@
 						<a href="{base_url('index.php/Recettes/liste_recettes/'|cat:$categorie_recette->id_categorie)}">{$categorie_recette->nom_categorie}</a>
 					{/foreach}
 				</p>
-			</div>
+			</div> -->
+			{include file='preview_recette.tpl' recette=$line inline nocache}
 		{/foreach}
 		</div>
 			<hr />
