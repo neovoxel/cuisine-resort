@@ -43,11 +43,12 @@
 		{if !is_null($commentaires)}
 			<h2>Commentaires :</h2>
 			<div id="liste_commentaires">
-			{foreach $commentaires as $com}
-				<div class="commentaire">
+			{foreach $commentaires as $line}
+				<!-- <div class="commentaire">
 					<h4><a href="{base_url('index.php/home/profil/'|cat:$com->id_utilisateur)}">{$com->login}</a> le {$com->date_com}</h4>
 					<p>{$com->commentaire}</p>
-				</div>
+				</div> -->
+				{include file='preview_commentaire.tpl' showRecette=0 com=$line inline nocache}
 			{/foreach}
 			
 			</div>

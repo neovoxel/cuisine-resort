@@ -1,4 +1,5 @@
 
+{assign var='showUser' value=$showUser|default:'1'}
 <div class="recette">
 	<p><a href="{base_url('index.php/Recettes/detail_recette/'|cat:$recette->id_recette)}">
 	{if is_null($recette->image_recette)}
@@ -8,7 +9,7 @@
 	{/if}
 	</a></p>
 	<h3><a href="{base_url('index.php/Recettes/detail_recette/'|cat:$recette->id_recette)}"> {$recette->titre}</a></h3>
-	<h4>Le {$recette->date_recette} par <a href="{base_url('index.php/Membre/profil/'|cat:$recette->id_utilisateur)}">{$recette->login}</a></h4>
+	<h4>Le {$recette->date_recette}{if $showUser==1} par <a href="{base_url('index.php/home/profil/'|cat:$recette->id_utilisateur)}">{$recette->login}</a>{/if}</h4>
 	<p class="texte_recette">{$recette->recette|truncate:250} <a href="{base_url('index.php/Recettes/detail_recette/'|cat:$recette->id_recette)}"> Lire la suite</a></p>
 	<p>Catégories :
 		{foreach $recette->liste_categories as $categorie_recette}

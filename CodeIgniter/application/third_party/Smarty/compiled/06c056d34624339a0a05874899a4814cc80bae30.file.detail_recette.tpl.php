@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2012-12-01 17:49:06
+<?php /* Smarty version Smarty-3.1.7, created on 2012-12-05 16:42:58
          compiled from "application/views\detail_recette.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:1351350ba35020be935-18168721%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '06c056d34624339a0a05874899a4814cc80bae30' => 
     array (
       0 => 'application/views\\detail_recette.tpl',
-      1 => 1354376715,
+      1 => 1354722176,
       2 => 'file',
     ),
     '611f477ef18e2c90b72cf51d0af15efaa5aa80cb' => 
@@ -16,14 +16,20 @@ $_valid = $_smarty_tpl->decodeProperties(array (
       1 => 1354377331,
       2 => 'file',
     ),
+    'bead5d1addf7753ac5ba523dda64dbe6d03eb913' => 
+    array (
+      0 => 'application/views\\preview_commentaire.tpl',
+      1 => 1354722097,
+      2 => 'file',
+    ),
   ),
   'nocache_hash' => '1351350ba35020be935-18168721',
   'function' => 
   array (
   ),
-  'has_nocache_code' => false,
   'version' => 'Smarty-3.1.7',
   'unifunc' => 'content_50ba3502398b1',
+  'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_50ba3502398b1')) {function content_50ba3502398b1($_smarty_tpl) {?><!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -131,19 +137,24 @@ $_smarty_tpl->tpl_vars['ingredient']->_loop = true;
 		<?php if (!is_null($_smarty_tpl->tpl_vars['commentaires']->value)){?>
 			<h2>Commentaires :</h2>
 			<div id="liste_commentaires">
-			<?php  $_smarty_tpl->tpl_vars['com'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['com']->_loop = false;
+			<?php  $_smarty_tpl->tpl_vars['line'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['line']->_loop = false;
  $_from = $_smarty_tpl->tpl_vars['commentaires']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
-foreach ($_from as $_smarty_tpl->tpl_vars['com']->key => $_smarty_tpl->tpl_vars['com']->value){
-$_smarty_tpl->tpl_vars['com']->_loop = true;
+foreach ($_from as $_smarty_tpl->tpl_vars['line']->key => $_smarty_tpl->tpl_vars['line']->value){
+$_smarty_tpl->tpl_vars['line']->_loop = true;
 ?>
-				<div class="commentaire">
+				<!-- <div class="commentaire">
 					<h4><a href="<?php echo base_url(('index.php/home/profil/').($_smarty_tpl->tpl_vars['com']->value->id_utilisateur));?>
 "><?php echo $_smarty_tpl->tpl_vars['com']->value->login;?>
 </a> le <?php echo $_smarty_tpl->tpl_vars['com']->value->date_com;?>
 </h4>
 					<p><?php echo $_smarty_tpl->tpl_vars['com']->value->commentaire;?>
 </p>
-				</div>
+				</div> -->
+				<?php /*  Call merged included template "preview_commentaire.tpl" */
+$_tpl_stack[] = $_smarty_tpl;
+ $_smarty_tpl = $_smarty_tpl->setupInlineSubTemplate('preview_commentaire.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, null, array('showRecette'=>0,'com'=>$_smarty_tpl->tpl_vars['line']->value), 0, '1351350ba35020be935-18168721');
+content_50bf6b8301e3e($_smarty_tpl);
+$_smarty_tpl = array_pop($_tpl_stack); /*  End of included template "preview_commentaire.tpl" */?>
 			<?php } ?>
 			
 			</div>
@@ -163,4 +174,20 @@ $_smarty_tpl->tpl_vars['com']->_loop = true;
 	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 </body>
-</html><?php }} ?>
+</html><?php }} ?><?php /* Smarty version Smarty-3.1.7, created on 2012-12-05 16:42:59
+         compiled from "application/views\preview_commentaire.tpl" */ ?>
+<?php if ($_valid && !is_callable('content_50bf6b8301e3e')) {function content_50bf6b8301e3e($_smarty_tpl) {?>
+<?php $_smarty_tpl->tpl_vars['showUser'] = new Smarty_variable((($tmp = @$_smarty_tpl->tpl_vars['showUser']->value)===null||$tmp==='' ? '1' : $tmp), null, 0);?>
+<?php $_smarty_tpl->tpl_vars['showRecette'] = new Smarty_variable((($tmp = @$_smarty_tpl->tpl_vars['showRecette']->value)===null||$tmp==='' ? '1' : $tmp), null, 0);?>
+<div class="commentaire">
+	<h4><?php if ($_smarty_tpl->tpl_vars['showUser']->value==1){?><a href="<?php echo base_url(('index.php/home/profil/').($_smarty_tpl->tpl_vars['com']->value->id_utilisateur));?>
+"><?php echo $_smarty_tpl->tpl_vars['com']->value->login;?>
+</a><?php }?> Le <?php echo $_smarty_tpl->tpl_vars['com']->value->date_com;?>
+<?php if ($_smarty_tpl->tpl_vars['showRecette']->value==1){?> sur la recette <a href="<?php echo base_url(('index.php/Recettes/detail_recette/').($_smarty_tpl->tpl_vars['com']->value->id_recette));?>
+"><?php echo $_smarty_tpl->tpl_vars['com']->value->titre;?>
+</a><?php }?></h4>
+	<p><?php echo $_smarty_tpl->tpl_vars['com']->value->commentaire;?>
+
+	</p>
+</div>
+<?php }} ?>

@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2012-12-05 16:16:43
+<?php /* Smarty version Smarty-3.1.7, created on 2012-12-05 16:51:57
          compiled from "application/views\liste_recettes.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:3008250ba3488cc9813-47761606%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -19,7 +19,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '9002d27a9f2ce3321eba936ddb3679b50b305570' => 
     array (
       0 => 'application/views\\preview_recette.tpl',
-      1 => 1354720600,
+      1 => 1354722328,
       2 => 'file',
     ),
   ),
@@ -125,7 +125,7 @@ $_smarty_tpl->tpl_vars['categorie_recette']->_loop = true;
 			<?php /*  Call merged included template "preview_recette.tpl" */
 $_tpl_stack[] = $_smarty_tpl;
  $_smarty_tpl = $_smarty_tpl->setupInlineSubTemplate('preview_recette.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, null, array('recette'=>$_smarty_tpl->tpl_vars['line']->value), 0, '3008250ba3488cc9813-47761606');
-content_50bf655b5d7ac($_smarty_tpl);
+content_50bf6d9d78342($_smarty_tpl);
 $_smarty_tpl = array_pop($_tpl_stack); /*  End of included template "preview_recette.tpl" */?>
 		<?php } ?>
 	</div>
@@ -143,11 +143,11 @@ $_smarty_tpl = array_pop($_tpl_stack); /*  End of included template "preview_rec
 	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 </body>
-</html><?php }} ?><?php /* Smarty version Smarty-3.1.7, created on 2012-12-05 16:16:43
+</html><?php }} ?><?php /* Smarty version Smarty-3.1.7, created on 2012-12-05 16:51:57
          compiled from "application/views\preview_recette.tpl" */ ?>
-<?php if ($_valid && !is_callable('content_50bf655b5d7ac')) {function content_50bf655b5d7ac($_smarty_tpl) {?><?php if (!is_callable('smarty_modifier_truncate')) include 'C:\\UwAmp\\www\\git\\cuisine-resort\\CodeIgniter\\application\\third_party\\Smarty\\plugins\\modifier.truncate.php';
+<?php if ($_valid && !is_callable('content_50bf6d9d78342')) {function content_50bf6d9d78342($_smarty_tpl) {?><?php if (!is_callable('smarty_modifier_truncate')) include 'C:\\UwAmp\\www\\git\\cuisine-resort\\CodeIgniter\\application\\third_party\\Smarty\\plugins\\modifier.truncate.php';
 ?>
-<?php $_smarty_tpl->tpl_vars['show'] = new Smarty_variable((($tmp = @'showUser')===null||$tmp==='' ? 1 : $tmp), null, 0);?>
+<?php $_smarty_tpl->tpl_vars['showUser'] = new Smarty_variable((($tmp = @$_smarty_tpl->tpl_vars['showUser']->value)===null||$tmp==='' ? '1' : $tmp), null, 0);?>
 <div class="recette">
 	<p><a href="<?php echo base_url(('index.php/Recettes/detail_recette/').($_smarty_tpl->tpl_vars['recette']->value->id_recette));?>
 ">
@@ -163,7 +163,7 @@ $_smarty_tpl = array_pop($_tpl_stack); /*  End of included template "preview_rec
 "> <?php echo $_smarty_tpl->tpl_vars['recette']->value->titre;?>
 </a></h3>
 	<h4>Le <?php echo $_smarty_tpl->tpl_vars['recette']->value->date_recette;?>
- <?php if ($_smarty_tpl->tpl_vars['show']->value==1){?>par <a href="<?php echo base_url(('index.php/Membre/profil/').($_smarty_tpl->tpl_vars['recette']->value->id_utilisateur));?>
+<?php if ($_smarty_tpl->tpl_vars['showUser']->value==1){?> par <a href="<?php echo base_url(('index.php/home/profil/').($_smarty_tpl->tpl_vars['recette']->value->id_utilisateur));?>
 "><?php echo $_smarty_tpl->tpl_vars['recette']->value->login;?>
 </a><?php }?></h4>
 	<p class="texte_recette"><?php echo smarty_modifier_truncate($_smarty_tpl->tpl_vars['recette']->value->recette,250);?>
