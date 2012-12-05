@@ -14,16 +14,16 @@ class MY_CONTROLLER extends CI_Controller {
 		redirect('home');
 	}*/
 	
-	public function isLogOn() {
+	public function _isLogOn() {
 		$tmp = $this->session->userdata('login');
 		return !empty($tmp);
 	}
 	
-	public function isAdmin() {
+	public function _isAdmin() {
 		return isLogOn() and true;
 	}
 	
-	public function connexion() {
+	public function authentification() {
 		//$this->load->library('session');
 		
 		//$this->form_validation->set_rules('pseudo', '"Nom d\'utilisateur"', 'trim|required|min_length[4]|max_length[30]|alpha_dash|encode_php_tags|xss_clean');

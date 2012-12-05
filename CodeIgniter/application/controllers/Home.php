@@ -31,14 +31,14 @@ class Home extends MY_CONTROLLER {
 	}
 	
 	public function connexion() {
-		if (!parent::isLogOn()) {
+		if (!parent::_isLogOn()) {
 			$tmp = $this->input->post('form_log');
 			if (empty($tmp)) {
 				$this->load->helper('url');
 				$this->load->view('connexion');
 			}
 			else
-				parent::connexion();
+				parent::authentification();
 		}
 		else {
 			$this->load->helper('url');
