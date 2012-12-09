@@ -23,7 +23,7 @@ class MY_CONTROLLER extends CI_Controller {
 		return $this->_isLogOn() and ($this->session->userdata('type_utilisateur') == 1);
 	}
 	
-	public function authentification() {
+	public function _authentification() {
 		//$this->load->library('session');
 		
 		//$this->form_validation->set_rules('pseudo', '"Nom d\'utilisateur"', 'trim|required|min_length[4]|max_length[30]|alpha_dash|encode_php_tags|xss_clean');
@@ -48,7 +48,11 @@ class MY_CONTROLLER extends CI_Controller {
                 //echo $this->session->userdata('id_utilisateur');
 				
 				$this->load->helper('url');
-				redirect('home');
+				$redirect_page = $this->input->post('redirectTo');
+				if (empty($redirect_page))
+					redirect('home');
+				else
+					redirect($redirect_page);
             }
             else {
                 $var['erreur'] = 'Le login et le mot de passe ne correspondent pas.';
@@ -107,10 +111,45 @@ class MY_Membre_Controller extends MY_CONTROLLER
 {
 	function __construct() {
 		parent::__construct();
-		if(!$this->isLogOn())
-		{
+		if(!$this->_isLogOn()) {
 			$this->load->helper('url');
 			redirect('home');
+		}
+	}
+	
+	public function ajouterCommentaire() {
+		if ($this->_isLogOn()) {
+			$tmp = $this->input->post('form_com');
+			$com = $this->input->post('commentaire');
+			$error = false;
+			
+			if (empty($tmp))
+				$error = true;
+			else if ($this->input->post('id_recette') == 0)
+				$error = true;
+			else if (empty($com))
+				$error = true;
+			
+			if (!$error) {
+				$this->load->helper('date');
+				$this->load->model('mCommentaire');
+				$this->mCommentaire->insert($this->session->userdata('id_utilisateur'), $this->input->post('id_recette'), $this->input->post('commentaire'), mdate("%Y-%m-%d %H:%i:%s", time()));
+				
+				$this->load->helper('url');
+				$redirect_page = $this->input->post('redirectTo');
+				if (empty($redirect_page))
+					redirect('home');
+				else
+					redirect($redirect_page);
+			}
+			else {
+				$this->load->helper('url');
+				redirect('home');
+			}
+		}
+		else {
+			$this->load->helper('url');
+			$this->load->view('connexion');
 		}
 	}
 }

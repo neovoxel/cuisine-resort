@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2012-12-04 20:07:01
+<?php /* Smarty version Smarty-3.1.7, created on 2012-12-09 16:22:27
          compiled from "application/views\connexion.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:1227950ba343b64c895-39804166%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,13 +7,19 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '3b33fd3c77a1dc51e7aa472b8a5bdf6deaa14572' => 
     array (
       0 => 'application/views\\connexion.tpl',
-      1 => 1354647116,
+      1 => 1355060885,
       2 => 'file',
     ),
     '611f477ef18e2c90b72cf51d0af15efaa5aa80cb' => 
     array (
       0 => 'application/views\\main.tpl',
       1 => 1354377331,
+      2 => 'file',
+    ),
+    '4daf1385a09eed492e9e4fa0e4008f6ca60b415a' => 
+    array (
+      0 => 'application/views\\form_connexion.tpl',
+      1 => 1355065043,
       2 => 'file',
     ),
   ),
@@ -67,19 +73,11 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 	<div id="contenu">
 		
 <div id="body">
-	<div id="page_connexion" >
-		<?php if ((($tmp = @$_smarty_tpl->tpl_vars['erreur']->value)===null||$tmp==='' ? '' : $tmp)){?><span style="color:red;"><?php echo $_smarty_tpl->tpl_vars['erreur']->value;?>
-</span><?php }?>
-		<form action="" method="post">
-		<fieldset id="formulaire_connexion">
-			<legend>Connexion</legend>
-			Login : <input type="text" name="login" <?php if ((($tmp = @$_smarty_tpl->tpl_vars['login']->value)===null||$tmp==='' ? '' : $tmp)){?>value="<?php echo $_smarty_tpl->tpl_vars['login']->value;?>
-"<?php }?> ><br />
-			Mot de passe : <input type="password" name="pwd" ><br />
-			<input type="submit" name="form_log" value="Connexion">
-		</fieldset>
-		</form>
-	</div>
+	<?php /*  Call merged included template "form_connexion.tpl" */
+$_tpl_stack[] = $_smarty_tpl;
+ $_smarty_tpl = $_smarty_tpl->setupInlineSubTemplate('form_connexion.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, null, array(), 0, '1227950ba343b64c895-39804166');
+content_50c4acb3890f6($_smarty_tpl);
+$_smarty_tpl = array_pop($_tpl_stack); /*  End of included template "form_connexion.tpl" */?>
 </div>
 
 		
@@ -91,4 +89,24 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 </body>
-</html><?php }} ?>
+</html><?php }} ?><?php /* Smarty version Smarty-3.1.7, created on 2012-12-09 16:22:27
+         compiled from "application/views\form_connexion.tpl" */ ?>
+<?php if ($_valid && !is_callable('content_50c4acb3890f6')) {function content_50c4acb3890f6($_smarty_tpl) {?>
+<?php $_smarty_tpl->tpl_vars['redirectTo'] = new Smarty_variable((($tmp = @$_smarty_tpl->tpl_vars['redirectTo']->value)===null||$tmp==='' ? '' : $tmp), null, 0);?>
+<div id="form_connexion" >
+	<?php if ((($tmp = @$_smarty_tpl->tpl_vars['erreur']->value)===null||$tmp==='' ? '' : $tmp)){?><span style="color:red;"><?php echo $_smarty_tpl->tpl_vars['erreur']->value;?>
+</span><?php }?>
+	<form action="<?php echo base_url('index.php/home/connexion');?>
+" method="post">
+	<fieldset id="formulaire_connexion">
+		<legend>Connexion</legend>
+		<input type="hidden" name="redirectTo" value="<?php echo $_smarty_tpl->tpl_vars['redirectTo']->value;?>
+">
+		Login : <input type="text" name="login" <?php if ((($tmp = @$_smarty_tpl->tpl_vars['login']->value)===null||$tmp==='' ? '' : $tmp)){?>value="<?php echo $_smarty_tpl->tpl_vars['login']->value;?>
+"<?php }?> ><br />
+		Mot de passe : <input type="password" name="pwd" ><br />
+		<input type="submit" name="form_log" value="Connexion">
+	</fieldset>
+	</form>
+</div>
+<?php }} ?>

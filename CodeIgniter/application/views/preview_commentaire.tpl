@@ -9,6 +9,5 @@
 		{elseif $ci->_isLogOn() && $ci->getUser()->userdata('id_utilisateur')==$com->id_utilisateur}<img class="img_sup_com" src="{base_url('images/sup_com.gif')}" title="Supprimer mon commentaire" alt="Supprimer mon commentaire" height="15" width="15" />{/if}
 		
 	</h4>
-	
 	<p>{$com->commentaire}</p>
 </div>

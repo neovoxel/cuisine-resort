@@ -40,15 +40,19 @@
 			<p>{$recette->recette}</p>
 			<hr />
 		</div>
-
+		
+		<h2>Commentaires :</h2>
 		{if !is_null($commentaires)}
-			<h2>Commentaires :</h2>
 			<div id="liste_commentaires">
 			{foreach $commentaires as $line}
 				{include file='preview_commentaire.tpl' showRecette=0 com=$line inline nocache}
 			{/foreach}
 			</div>
+		{else}
+			<p>Il n'y a aucun commentaire sur cette recette.</p>
 		{/if}
+		<!-- $smarty.server.HTTP_HOST|cat:$smarty.server.REQUEST_URI -->
+		{include file='add_commentaire.tpl' redirectTo='Recettes/detail_recette/'|cat:$recette->id_recette id_recette=$recette->id_recette inline nocache}
 
 {else}
 	<div>Erreur : $categories vide !</div>

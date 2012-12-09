@@ -1,14 +1,16 @@
 <?php
 
-class Membre extends MY_Membre_Controller
-{
-	function index()
-	{
+class Membre extends MY_Membre_Controller {
+	
+	function __construct() {
+		parent::__construct();
+	}
+	
+	public function index() {
 		$this->profil();
 	}
 	
-	function profil($id)
-	{
+	public function profil($id) {
 		$data = array();
 		$this->load->model('mUtilisateur');
 		$data['utilisateur'] = $this->mUtilisateur->get($id);

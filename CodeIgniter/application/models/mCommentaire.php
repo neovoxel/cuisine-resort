@@ -54,8 +54,17 @@ WHERE R.id_recette = '.$id_recette);
 		
 	}
 	
-	public function insert($nom_ingredient, $image_ingredient) {
-		
+	public function insert($id_utilisateur, $id_recette, $commentaire, $date_com) {
+		$data = array(
+		   'id_utilisateur' => $id_utilisateur,
+		   'id_recette' => $id_recette,
+		   'commentaire' => $commentaire,
+		   'date_com' => $date_com
+		);
+
+		$this->db->insert('commentaire', $data);
+
+		// Produces: INSERT INTO mytable (title, name, date) VALUES ('My title', 'My name', 'My date')
 	}
 	
 	public function delete($id) {

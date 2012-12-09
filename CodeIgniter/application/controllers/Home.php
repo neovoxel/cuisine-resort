@@ -11,8 +11,7 @@ class Home extends MY_CONTROLLER {
 		$this->load->view('home', null);
 	}
 	
-	public function profil($id)
-	{
+	public function profil($id) {
 		$data = array();
 		$this->load->model('mUtilisateur');
 		$this->load->model('mRecette');
@@ -31,14 +30,14 @@ class Home extends MY_CONTROLLER {
 	}
 	
 	public function connexion() {
-		if (!parent::_isLogOn()) {
+		if (!$this->_isLogOn()) {
 			$tmp = $this->input->post('form_log');
 			if (empty($tmp)) {
 				$this->load->helper('url');
 				$this->load->view('connexion');
 			}
 			else
-				parent::authentification();
+				$this->_authentification();
 		}
 		else {
 			$this->load->helper('url');
