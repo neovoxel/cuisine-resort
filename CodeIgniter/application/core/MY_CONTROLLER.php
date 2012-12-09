@@ -20,7 +20,7 @@ class MY_CONTROLLER extends CI_Controller {
 	}
 	
 	public function _isAdmin() {
-		return isLogOn() and true;
+		return $this->_isLogOn() and ($this->session->userdata('type_utilisateur') == 1);
 	}
 	
 	public function authentification() {
@@ -42,6 +42,7 @@ class MY_CONTROLLER extends CI_Controller {
 				$error = ($data->mdp != $pwd);
 			if (!$error) {
                 $this->session->set_userdata('id_utilisateur', $data->id_utilisateur);
+                $this->session->set_userdata('type_utilisateur', $data->type_utilisateur);
                 $this->session->set_userdata('login', $login);
 
                 //echo $this->session->userdata('id_utilisateur');
@@ -94,6 +95,10 @@ class MY_CONTROLLER extends CI_Controller {
 		$this->session->sess_destroy();
 		$this->load->helper('url');
         redirect('home/connexion');
+	}
+	
+	public function getUser() {
+		return $this->session;
 	}
 }
 

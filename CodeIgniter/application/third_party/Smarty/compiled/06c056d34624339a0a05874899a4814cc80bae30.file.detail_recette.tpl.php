@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2012-12-05 16:42:58
+<?php /* Smarty version Smarty-3.1.7, created on 2012-12-07 14:59:47
          compiled from "application/views\detail_recette.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:1351350ba35020be935-18168721%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '06c056d34624339a0a05874899a4814cc80bae30' => 
     array (
       0 => 'application/views\\detail_recette.tpl',
-      1 => 1354722176,
+      1 => 1354888132,
       2 => 'file',
     ),
     '611f477ef18e2c90b72cf51d0af15efaa5aa80cb' => 
@@ -19,7 +19,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'bead5d1addf7753ac5ba523dda64dbe6d03eb913' => 
     array (
       0 => 'application/views\\preview_commentaire.tpl',
-      1 => 1354722097,
+      1 => 1354887221,
       2 => 'file',
     ),
   ),
@@ -85,7 +85,8 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 			<?php }?>
 			
 			<h1><?php echo $_smarty_tpl->tpl_vars['recette']->value->titre;?>
-</h1>
+ <?php if ($_smarty_tpl->tpl_vars['ci']->value->_isLogOn()&&$_smarty_tpl->tpl_vars['ci']->value->getUser()->userdata('id_utilisateur')==$_smarty_tpl->tpl_vars['utilisateur']->value->id_utilisateur){?><img src="<?php echo base_url('images/edit_recette.gif');?>
+" title="Editer recette" alt="Editer recette" height="24" width="24" /><?php }?></h1>
 			<ul>
 				<li>Catégories :
 					<?php  $_smarty_tpl->tpl_vars['categorie_recette'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['categorie_recette']->_loop = false;
@@ -96,7 +97,8 @@ $_smarty_tpl->tpl_vars['categorie_recette']->_loop = true;
 						<a href="<?php echo base_url(('index.php/Recettes/liste_recettes/').($_smarty_tpl->tpl_vars['categorie_recette']->value->id_categorie));?>
 "><?php echo $_smarty_tpl->tpl_vars['categorie_recette']->value->nom_categorie;?>
 </a>
-					<?php } ?></li>
+					<?php } ?>
+				</li>
 				<li>Préparation : <?php echo $_smarty_tpl->tpl_vars['recette']->value->temps_prepar;?>
 </li>
 				<li>Difficulté : <?php echo $_smarty_tpl->tpl_vars['recette']->value->difficulte;?>
@@ -142,21 +144,12 @@ $_smarty_tpl->tpl_vars['ingredient']->_loop = true;
 foreach ($_from as $_smarty_tpl->tpl_vars['line']->key => $_smarty_tpl->tpl_vars['line']->value){
 $_smarty_tpl->tpl_vars['line']->_loop = true;
 ?>
-				<!-- <div class="commentaire">
-					<h4><a href="<?php echo base_url(('index.php/home/profil/').($_smarty_tpl->tpl_vars['com']->value->id_utilisateur));?>
-"><?php echo $_smarty_tpl->tpl_vars['com']->value->login;?>
-</a> le <?php echo $_smarty_tpl->tpl_vars['com']->value->date_com;?>
-</h4>
-					<p><?php echo $_smarty_tpl->tpl_vars['com']->value->commentaire;?>
-</p>
-				</div> -->
 				<?php /*  Call merged included template "preview_commentaire.tpl" */
 $_tpl_stack[] = $_smarty_tpl;
  $_smarty_tpl = $_smarty_tpl->setupInlineSubTemplate('preview_commentaire.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, null, array('showRecette'=>0,'com'=>$_smarty_tpl->tpl_vars['line']->value), 0, '1351350ba35020be935-18168721');
-content_50bf6b8301e3e($_smarty_tpl);
+content_50c1f653b2e97($_smarty_tpl);
 $_smarty_tpl = array_pop($_tpl_stack); /*  End of included template "preview_commentaire.tpl" */?>
 			<?php } ?>
-			
 			</div>
 		<?php }?>
 
@@ -174,20 +167,28 @@ $_smarty_tpl = array_pop($_tpl_stack); /*  End of included template "preview_com
 	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 </body>
-</html><?php }} ?><?php /* Smarty version Smarty-3.1.7, created on 2012-12-05 16:42:59
+</html><?php }} ?><?php /* Smarty version Smarty-3.1.7, created on 2012-12-07 14:59:47
          compiled from "application/views\preview_commentaire.tpl" */ ?>
-<?php if ($_valid && !is_callable('content_50bf6b8301e3e')) {function content_50bf6b8301e3e($_smarty_tpl) {?>
+<?php if ($_valid && !is_callable('content_50c1f653b2e97')) {function content_50c1f653b2e97($_smarty_tpl) {?>
 <?php $_smarty_tpl->tpl_vars['showUser'] = new Smarty_variable((($tmp = @$_smarty_tpl->tpl_vars['showUser']->value)===null||$tmp==='' ? '1' : $tmp), null, 0);?>
 <?php $_smarty_tpl->tpl_vars['showRecette'] = new Smarty_variable((($tmp = @$_smarty_tpl->tpl_vars['showRecette']->value)===null||$tmp==='' ? '1' : $tmp), null, 0);?>
 <div class="commentaire">
-	<h4><?php if ($_smarty_tpl->tpl_vars['showUser']->value==1){?><a href="<?php echo base_url(('index.php/home/profil/').($_smarty_tpl->tpl_vars['com']->value->id_utilisateur));?>
+	<h4>
+		<?php if ($_smarty_tpl->tpl_vars['showUser']->value==1){?><a href="<?php echo base_url(('index.php/home/profil/').($_smarty_tpl->tpl_vars['com']->value->id_utilisateur));?>
 "><?php echo $_smarty_tpl->tpl_vars['com']->value->login;?>
-</a><?php }?> Le <?php echo $_smarty_tpl->tpl_vars['com']->value->date_com;?>
+</a><?php }?>
+		Le <?php echo $_smarty_tpl->tpl_vars['com']->value->date_com;?>
 <?php if ($_smarty_tpl->tpl_vars['showRecette']->value==1){?> sur la recette <a href="<?php echo base_url(('index.php/Recettes/detail_recette/').($_smarty_tpl->tpl_vars['com']->value->id_recette));?>
 "><?php echo $_smarty_tpl->tpl_vars['com']->value->titre;?>
-</a><?php }?></h4>
+</a><?php }?>
+		<?php if ($_smarty_tpl->tpl_vars['ci']->value->_isAdmin()){?><img class="img_sup_com" src="<?php echo base_url('images/sup_com.gif');?>
+" title="Supprimer le commentaire" alt="Supprimer le commentaire" height="15" width="15" />
+		<?php }elseif($_smarty_tpl->tpl_vars['ci']->value->_isLogOn()&&$_smarty_tpl->tpl_vars['ci']->value->getUser()->userdata('id_utilisateur')==$_smarty_tpl->tpl_vars['com']->value->id_utilisateur){?><img class="img_sup_com" src="<?php echo base_url('images/sup_com.gif');?>
+" title="Supprimer mon commentaire" alt="Supprimer mon commentaire" height="15" width="15" /><?php }?>
+		
+	</h4>
+	
 	<p><?php echo $_smarty_tpl->tpl_vars['com']->value->commentaire;?>
-
-	</p>
+</p>
 </div>
 <?php }} ?>
