@@ -113,44 +113,42 @@ class MY_Membre_Controller extends MY_CONTROLLER
 		parent::__construct();
 		if(!$this->_isLogOn()) {
 			$this->load->helper('url');
-			redirect('home');
+			redirect('home/connexion');
 		}
 	}
 	
 	public function ajouterCommentaire() {
-		if ($this->_isLogOn()) {
-			$tmp = $this->input->post('form_com');
-			$com = $this->input->post('commentaire');
-			$error = false;
+		$tmp = $this->input->post('form_com');
+		$com = $this->input->post('commentaire');
+		$error = false;
+		
+		if (empty($tmp))
+			$error = true;
+		else if ($this->input->post('id_recette') == 0)
+			$error = true;
+		else if (empty($com))
+			$error = true;
+		
+		if (!$error) {
+			$this->load->helper('date');
+			$this->load->model('mCommentaire');
+			$this->mCommentaire->insert($this->session->userdata('id_utilisateur'), $this->input->post('id_recette'), $this->input->post('commentaire'), mdate("%Y-%m-%d %H:%i:%s", time()));
 			
-			if (empty($tmp))
-				$error = true;
-			else if ($this->input->post('id_recette') == 0)
-				$error = true;
-			else if (empty($com))
-				$error = true;
-			
-			if (!$error) {
-				$this->load->helper('date');
-				$this->load->model('mCommentaire');
-				$this->mCommentaire->insert($this->session->userdata('id_utilisateur'), $this->input->post('id_recette'), $this->input->post('commentaire'), mdate("%Y-%m-%d %H:%i:%s", time()));
-				
-				$this->load->helper('url');
-				$redirect_page = $this->input->post('redirectTo');
-				if (empty($redirect_page))
-					redirect('home');
-				else
-					redirect($redirect_page);
-			}
-			else {
-				$this->load->helper('url');
+			$this->load->helper('url');
+			$redirect_page = $this->input->post('redirectTo');
+			if (empty($redirect_page))
 				redirect('home');
-			}
+			else
+				redirect($redirect_page);
 		}
 		else {
 			$this->load->helper('url');
-			$this->load->view('connexion');
+			redirect('home');
 		}
+	}
+	
+	public function supprimerCommentaire() {
+		
 	}
 }
 
@@ -159,10 +157,9 @@ class MY_Admin_Controller extends MY_Membre_Controller
 {
 	function __construct() {
 		parent::__construct();
-		if(!$this->isAdmin())
-		{
+		if(!$this->_isAdmin()) {
 			$this->load->helper('url');
-			redirect('home');
+			redirect('home/connexion');
 		}
 	}
 }
