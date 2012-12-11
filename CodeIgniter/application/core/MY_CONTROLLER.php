@@ -107,8 +107,7 @@ class MY_CONTROLLER extends CI_Controller {
 }
 
 
-class MY_Membre_Controller extends MY_CONTROLLER
-{
+class MY_Membre_Controller extends MY_CONTROLLER {
 	function __construct() {
 		parent::__construct();
 		if(!$this->_isLogOn()) {
@@ -117,7 +116,7 @@ class MY_Membre_Controller extends MY_CONTROLLER
 		}
 	}
 	
-	public function ajouterCommentaire() {
+	public function _ajouterCommentaire() {
 		$tmp = $this->input->post('form_com');
 		$com = $this->input->post('commentaire');
 		$error = false;
@@ -146,15 +145,10 @@ class MY_Membre_Controller extends MY_CONTROLLER
 			redirect('home');
 		}
 	}
-	
-	public function supprimerCommentaire() {
-		
-	}
 }
 
 
-class MY_Admin_Controller extends MY_Membre_Controller
-{
+class MY_Admin_Controller extends MY_Membre_Controller {
 	function __construct() {
 		parent::__construct();
 		if(!$this->_isAdmin()) {
@@ -163,5 +157,4 @@ class MY_Admin_Controller extends MY_Membre_Controller
 		}
 	}
 }
-
 
