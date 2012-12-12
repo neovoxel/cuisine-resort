@@ -63,8 +63,7 @@ class MY_CONTROLLER extends CI_Controller {
         }
         else {
             //    Le formulaire est invalide ou vide
-			$this->load->helper('url');
-            $this->load->view('connexion');
+			$this->redirectTo('home/connexion');
         }
 		
 		/*if($this->form_validation->run())
@@ -141,18 +140,18 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 			$this->load->helper('date');
 			$this->load->model('mCommentaire');
 			$this->mCommentaire->insert($this->session->userdata('id_utilisateur'), $this->input->post('id_recette'), $this->input->post('commentaire'), mdate("%Y-%m-%d %H:%i:%s", time()));
-			
-			$this->load->helper('url');
 			$this->redirectTo($this->input->post('redirectTo'));
-			/*if (empty($redirect_page))
-				redirect('home');
-			else
-				redirect($redirect_page);*/
 		}
-		else {
-			$this->load->helper('url');
-			redirect('home');
-		}
+		else
+			$this->redirectTo('home');
+	}
+	
+	public function ajouterRecette() {
+		
+	}
+	
+	public function modifierRecette($id_recette) {
+		
 	}
 }
 
@@ -161,8 +160,7 @@ class MY_Admin_Controller extends MY_Membre_Controller {
 	function __construct() {
 		parent::__construct();
 		if(!$this->_isAdmin()) {
-			$this->load->helper('url');
-			redirect('home/connexion');
+			$this->redirectTo('home/connexion');
 		}
 	}
 }

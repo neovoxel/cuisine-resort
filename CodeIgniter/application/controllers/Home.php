@@ -47,9 +47,7 @@ class Home extends MY_CONTROLLER {
 			else
 				$this->_authentification();
 		}
-		else {
-			$this->load->helper('url');
-			redirect('home');
-		}
+		else
+			$this->redirectTo('home');
 	}
 }

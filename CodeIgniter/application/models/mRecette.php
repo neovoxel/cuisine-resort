@@ -92,10 +92,8 @@ EOF;
 	
 	public function getAllFromUtilisateur($id_utilisateur) {
 		$requette=<<<EOF
-SELECT c.id_categorie, r.id_recette, U.id_utilisateur, titre, recette, etat, temps_prepar, nb_pers difficult, image_recette, date_recette, login
-FROM categorie c INNER JOIN appartient a ON c.id_categorie = a.id_categorie
-INNER JOIN recette r ON a.id_recette = r.id_recette
-INNER JOIN utilisateur U ON R.id_utilisateur=U.id_utilisateur
+SELECT *
+FROM recette r INNER JOIN utilisateur U ON R.id_utilisateur=U.id_utilisateur
 WHERE u.id_utilisateur=$id_utilisateur;
 EOF;
 		$query = $this->db->query($requette);

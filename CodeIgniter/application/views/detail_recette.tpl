@@ -12,7 +12,11 @@
 				<img class="img_recette" src="{base_url('images/'|cat:$utilisateur->login|cat:'/'|cat:$recette->titre|cat:'/'|cat:$recette->image_recette)}" alt="Illustration recette" height="300" width="300" />
 			{/if}
 			
-			<h1>{$recette->titre} {if $ci->_isLogOn() && $ci->getUser()->userdata('id_utilisateur')==$utilisateur->id_utilisateur}<img src="{base_url('images/edit_recette.gif')}" title="Editer la recette" alt="Editer la recette" height="24" width="24" />{/if}</h1>
+			<h1>{$recette->titre}
+			{if $ci->_isLogOn() && $ci->getUser()->userdata('id_utilisateur')==$utilisateur->id_utilisateur}
+				<a href="{base_url('index.php/Membre/modifierRecette/'|cat:$recette->id_recette)}" ><img src="{base_url('images/edit_recette.gif')}" title="Editer la recette" alt="Editer la recette" height="24" width="24" /></a>
+			{/if}
+			</h1>
 			<ul>
 				<li>Catégories :
 					{foreach $recette->liste_categories as $categorie_recette}
