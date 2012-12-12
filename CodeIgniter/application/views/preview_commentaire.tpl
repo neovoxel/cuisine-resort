@@ -8,7 +8,11 @@
 		{if $ci->_isAdmin()}
 			<img class="img_sup_com" src="{base_url('images/sup_com.gif')}" title="Supprimer le commentaire" alt="Supprimer le commentaire" height="15" width="15" />
 		{elseif $ci->_isLogOn() && $ci->getUser()->userdata('id_utilisateur')==$com->id_utilisateur}
-			<a href="{base_url('index.php/Membre/supprimerCommentaire/'|cat:$com->id_com)}" ><img class="img_sup_com" src="{base_url('images/sup_com.gif')}" title="Supprimer mon commentaire" alt="Supprimer mon commentaire" height="15" width="15" /></a>
+			<form class="img_sup_com" action="{base_url('index.php/Membre/supprimerCommentaire')}" method="post" >
+				<input type="hidden" name="id_com" value="{$com->id_com}">
+				<input  type="submit" name="form_supp_com" value="Supp" >
+			</form>
+			<!-- <a href="{base_url('index.php/Membre/supprimerCommentaire/'|cat:$com->id_com)}" ><img class="img_sup_com" src="{base_url('images/sup_com.gif')}" title="Supprimer mon commentaire" alt="Supprimer mon commentaire" height="15" width="15" /></a> -->
 		{/if}
 	</h4>
 	<p>{$com->commentaire}</p>

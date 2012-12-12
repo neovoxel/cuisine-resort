@@ -116,7 +116,7 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 		}
 	}
 	
-	public function _ajouterCommentaire() {
+	public function ajouterCommentaire() {
 		$tmp = $this->input->post('form_com');
 		$com = $this->input->post('commentaire');
 		$error = false;
