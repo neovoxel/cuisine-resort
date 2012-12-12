@@ -19,27 +19,27 @@ class Membre extends MY_Membre_Controller {
 	}
 	
 	public function supprimerCommentaire() {
-		$tmp = $this->input->post('form_supp_com');
+		$tmp = $this->input->post('form_supp_com_x');
 		if (empty($tmp)) {
-			$this->load->helper('url');
-			redirect('home');
+			$this->redirectTo('');
 		}
 		else {
 			$id_com = $this->input->post('id_com');
+			$redirectPage = $this->input->post('redirectTo');
 			$this->load->model('mCommentaire');
 			$com = $this->mCommentaire->get($id_com);
 			
 			if (!is_null($com)) {
 				if ($com->id_utilisateur == $this->session->userdata('id_utilisateur')) {
 					$this->mCommentaire->delete($id_com);
-					$this->load->helper('url');
-					redirect('home');
+					$this->redirectTo($redirectPage);
 				}
 				else
-					echo 'NO';
+					$this->redirectTo($redirectPage);
 			}
 			else
-				echo 'NO';
+				$this->redirectTo($redirectPage);
+			
 			//printf("<pre>%s</pre>", print_r($com, true));
 		}
 	}
