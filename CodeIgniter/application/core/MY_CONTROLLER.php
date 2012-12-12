@@ -23,6 +23,41 @@ class MY_CONTROLLER extends CI_Controller {
 		return $this->_isLogOn() and ($this->session->userdata('type_utilisateur') == 1);
 	}
 	
+	public function _inscription(){
+		// On récup les infos
+		$login = $this->input->post('login');
+		$password = $this->input->post('password');
+		$passok = $this->input->post('passok');
+		$nom = $this->input->post('nom');
+		$prenom = $this->input->post('prenom');
+		$email = $this->input->post('email');
+		// On vérifie les données
+		if(!empty($login) and !empty($password) and !empty($passok) and !empty($email)) //Pas vide?
+		{
+			if($password===$passok)
+			{
+				//CHeck l'adresse mail
+				//CHeck la BDD si existe ou non
+			}
+			else
+			{
+				$var['erreur'] = 'Les passwords ne sont pas valides entre eux.';
+				$var['login'] = $login;
+				$var['nom'] = $nom;
+				$var['prenom'] = $prenom;
+				$var['email'] = $email;
+				$this->load->helper('url');
+                $this->load->view('inscription', $var);
+			}
+		}
+		else
+		{
+			$var['erreur'] = 'Les champs obligatoires ne sont pas tous remplis.';
+			$this->load->helper('url');
+            $this->load->view('inscription', $var);
+		}
+	}
+	
 	public function _authentification() {
 		//$this->load->library('session');
 		
