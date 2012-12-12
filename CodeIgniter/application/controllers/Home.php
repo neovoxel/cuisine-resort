@@ -37,6 +37,17 @@ class Home extends MY_CONTROLLER {
 		$this->load->view('profil', $data);
 	}
 	
+	public function inscription(){
+		if(!$this->_isLogOn()){
+			$tmp = $this->input->post('form_log');
+			if (empty($tmp)){
+				$this->load->helper('url');
+				$this->load->view('inscription');
+			}
+			else
+				$this->_inscription();
+		}
+	}
 	public function connexion() {
 		if (!$this->_isLogOn()) {
 			$tmp = $this->input->post('form_log');
