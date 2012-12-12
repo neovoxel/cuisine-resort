@@ -45,7 +45,7 @@
 		{if !is_null($commentaires)}
 			<div id="liste_commentaires">
 			{foreach $commentaires as $line}
-				{include file='preview_commentaire.tpl' showRecette=0 com=$line inline nocache}
+				{include file='preview_commentaire.tpl' redirectTo='Recettes/detail_recette/'|cat:$recette->id_recette showRecette=0 com=$line inline nocache}
 			{/foreach}
 			</div>
 		{else}

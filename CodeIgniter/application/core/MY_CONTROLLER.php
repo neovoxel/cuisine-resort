@@ -139,6 +139,15 @@ class MY_CONTROLLER extends CI_Controller {
 	public function getUser() {
 		return $this->session;
 	}
+	
+	protected function redirectTo($url) {
+		$this->load->helper('url');
+		$redirect_page = $url;
+		if (empty($redirect_page))
+			redirect('home');
+		else
+			redirect($redirect_page);
+	}
 }
 
 
@@ -151,7 +160,7 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 		}
 	}
 	
-	public function _ajouterCommentaire() {
+	public function ajouterCommentaire() {
 		$tmp = $this->input->post('form_com');
 		$com = $this->input->post('commentaire');
 		$error = false;
@@ -169,11 +178,11 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 			$this->mCommentaire->insert($this->session->userdata('id_utilisateur'), $this->input->post('id_recette'), $this->input->post('commentaire'), mdate("%Y-%m-%d %H:%i:%s", time()));
 			
 			$this->load->helper('url');
-			$redirect_page = $this->input->post('redirectTo');
-			if (empty($redirect_page))
+			$this->redirectTo($this->input->post('redirectTo'));
+			/*if (empty($redirect_page))
 				redirect('home');
 			else
-				redirect($redirect_page);
+				redirect($redirect_page);*/
 		}
 		else {
 			$this->load->helper('url');

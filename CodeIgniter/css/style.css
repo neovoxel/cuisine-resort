@@ -146,6 +146,7 @@ hr {
 .commentaire .img_sup_com {
 	float: right;
 	margin-right: 10px;
+	margin-top: -4px;
 }
 
 #liste_categories {
