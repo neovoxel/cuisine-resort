@@ -50,6 +50,7 @@ hr {
 	padding: 5px;
 	margin-top: 10px;
 	height: 180px;
+	-webkit-transition: All 0.6s; 
 }
 
 #liste_recettes .recette:hover {
