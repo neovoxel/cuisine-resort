@@ -7,7 +7,7 @@ class mCommentaire extends CI_Model {
 	}
 	
 	public function get($id) {
-		$query = $this->db->get_where('Commentaire', array('id_commentaire' => $id));
+		$query = $this->db->get_where('Commentaire', array('id_com' => $id));
 		
 		if($query->num_rows() > 0) {
 			$com = $query->result();
@@ -54,12 +54,18 @@ WHERE R.id_recette = '.$id_recette);
 		
 	}
 	
-	public function insert($nom_ingredient, $image_ingredient) {
-		
+	public function insert($id_utilisateur, $id_recette, $commentaire, $date_com) {
+		$data = array(
+		   'id_utilisateur' => $id_utilisateur,
+		   'id_recette' => $id_recette,
+		   'commentaire' => $commentaire,
+		   'date_com' => $date_com
+		);
+		$this->db->insert('commentaire', $data);
 	}
 	
 	public function delete($id) {
-		
+		$this->db->delete('commentaire', array('id_com' => $id)); 
 	}	
 }
 

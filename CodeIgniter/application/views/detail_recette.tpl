@@ -12,12 +12,13 @@
 				<img class="img_recette" src="{base_url('images/'|cat:$utilisateur->login|cat:'/'|cat:$recette->titre|cat:'/'|cat:$recette->image_recette)}" alt="Illustration recette" height="300" width="300" />
 			{/if}
 			
-			<h1>{$recette->titre}</h1>
+			<h1>{$recette->titre} {if $ci->_isLogOn() && $ci->getUser()->userdata('id_utilisateur')==$utilisateur->id_utilisateur}<img src="{base_url('images/edit_recette.gif')}" title="Editer la recette" alt="Editer la recette" height="24" width="24" />{/if}</h1>
 			<ul>
 				<li>Catégories :
 					{foreach $recette->liste_categories as $categorie_recette}
 						<a href="{base_url('index.php/Recettes/liste_recettes/'|cat:$categorie_recette->id_categorie)}">{$categorie_recette->nom_categorie}</a>
-					{/foreach}</li>
+					{/foreach}
+				</li>
 				<li>Préparation : {$recette->temps_prepar}</li>
 				<li>Difficulté : {$recette->difficulte}</li>
 				<li>Nombre de personnes : {$recette->nb_pers}</li>
@@ -39,20 +40,19 @@
 			<p>{$recette->recette}</p>
 			<hr />
 		</div>
-
+		
+		<h2>Commentaires :</h2>
 		{if !is_null($commentaires)}
-			<h2>Commentaires :</h2>
 			<div id="liste_commentaires">
 			{foreach $commentaires as $line}
-				<!-- <div class="commentaire">
-					<h4><a href="{base_url('index.php/home/profil/'|cat:$com->id_utilisateur)}">{$com->login}</a> le {$com->date_com}</h4>
-					<p>{$com->commentaire}</p>
-				</div> -->
 				{include file='preview_commentaire.tpl' showRecette=0 com=$line inline nocache}
 			{/foreach}
-			
 			</div>
+		{else}
+			<p>Il n'y a aucun commentaire sur cette recette.</p>
 		{/if}
+		<!-- $smarty.server.HTTP_HOST|cat:$smarty.server.REQUEST_URI -->
+		{include file='add_commentaire.tpl' redirectTo='Recettes/detail_recette/'|cat:$recette->id_recette id_recette=$recette->id_recette inline nocache}
 
 {else}
 	<div>Erreur : $categories vide !</div>
