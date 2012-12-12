@@ -47,7 +47,10 @@ class Home extends MY_CONTROLLER {
 			else
 				$this->_inscription();
 		}
+		else
+			$this->redirectTo('home');
 	}
+	
 	public function connexion() {
 		if (!$this->_isLogOn()) {
 			$tmp = $this->input->post('form_log');
