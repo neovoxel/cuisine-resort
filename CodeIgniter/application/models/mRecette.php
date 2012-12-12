@@ -57,6 +57,22 @@ EOF;
 			return array();
 	}
 	
+	public function getLatest($nb_recette)
+	{
+		$request = <<< EOF
+SELECT *
+FROM recette r INNER JOIN utilisateur u ON r.id_utilisateur=u.id_utilisateur
+ORDER BY date_recette DESC
+LIMIT 0, $nb_recette
+EOF;
+	$query = $this->db->query($request);
+		
+		if($query->num_rows() > 0)
+			return $query->result();
+		else
+			return array();
+	}
+	
 	public function getIngredients($id_recette) {
 		$requette = <<< EOF
 SELECT nom_ingredient, quantite, nom_unite

@@ -8,7 +8,15 @@ class Home extends MY_CONTROLLER {
 	
 	public function index() {
 		$this->load->helper('url');
-		$this->load->view('home', null);
+		$this->load->model('mUtilisateur');
+		$this->load->model('mRecette');
+		$data['recettes']=$this->mRecette->getLatest(3);
+		
+		foreach ($data['recettes'] as $line) {
+			$line->liste_categories = $this->mRecette->getCategories($line->id_recette);
+		}
+		
+		$this->load->view('home', $data);
 	}
 	
 	public function profil($id) {
