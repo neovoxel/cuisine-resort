@@ -113,8 +113,8 @@ EOF;
 	}
 	
 	public function delete($id) {
-		
-	}	
+		$this->db->delete('recette', array('id_recette' => $id));
+	}
 }
 
 ?>

@@ -66,7 +66,7 @@ WHERE R.id_recette = '.$id_recette);
 	
 	public function delete($id) {
 		$this->db->delete('commentaire', array('id_com' => $id)); 
-	}	
+	}
 }
 
 ?>

@@ -181,12 +181,13 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 			$this->redirectTo('home');
 	}
 	
-	public function ajouterRecette() {
+	public function editerRecette($id_recette) {
 		
 	}
 	
-	public function modifierRecette($id_recette) {
-		
+	public function ajouterRecette() {
+		$this->load->helper('url');
+		$this->load->view('ajouter_recette');
 	}
 }
 
@@ -196,6 +197,27 @@ class MY_Admin_Controller extends MY_Membre_Controller {
 		parent::__construct();
 		if(!$this->_isAdmin()) {
 			$this->redirectTo('home/connexion');
+		}
+	}
+	
+	public function supprimerCommentaire() {
+		$tmp = $this->input->post('form_supp_com_x');
+		if (empty($tmp))
+			$this->redirectTo('home');
+		else {
+			$id_com = $this->input->post('id_com');
+			$redirectPage = $this->input->post('redirectTo');
+			$this->load->model('mCommentaire');
+			$com = $this->mCommentaire->get($id_com);
+			
+			if (!is_null($com)) {
+				$this->mCommentaire->delete($id_com);
+				$this->redirectTo($redirectPage);
+			}
+			else
+				$this->redirectTo($redirectPage);
+			
+			//printf("<pre>%s</pre>", print_r($com, true));
 		}
 	}
 }

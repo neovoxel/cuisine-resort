@@ -11,7 +11,7 @@
 				<h1><a href="{base_url('index.php/recettes/liste_recettes/'|cat:$line->id_categorie)}">{$line->nom_categorie}</a></h1>
 				<p>Il y a actuellement {$line->nb_recettes} recettes dans cette catégorie.<br />
 				<a href="{base_url('index.php/recettes/liste_recettes/'|cat:$line->id_categorie)}" >Voir les recettes</a><br />
-				<a href="index.php?page=ajouter_recette&idc={$line->id_categorie}" >Ajouter une recette</a><p>
+				<a href="{base_url('index.php/Membre/ajouterRecette')}" >Ajouter une recette</a><p>
 			</div>
 		{/foreach}
 	</div>

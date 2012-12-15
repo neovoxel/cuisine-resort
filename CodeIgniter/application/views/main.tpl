@@ -11,20 +11,18 @@
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width">
 	<link rel="stylesheet" href="{base_url('css/style.css')}">
-	<style>
-		body {
-			padding-top: 60px;
-			padding-bottom: 40px;
-		}
-	</style>
-	<script src="{base_url('assets/bootstrap/js/vendor/modernizr-2.6.1-respond-1.1.0.min.js')}"></script>
+	<script>
+		function delete_com()
+		{ return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?'); }
+		function delete_recette()
+		{ return confirm('Êtes-vous sûr de vouloir supprimer cette recette ?'); }
+	</script>
 </head>
 <body>
 	<!--[if lt IE 7]>
 	<p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
 	<![endif]-->
 	
-	<!-- This code is taken from http://twitter.github.com/bootstrap/examples/hero.html -->
 	<div id="entete" >
 		{include 'header.tpl' scope=parent}
 	</div>

@@ -26,7 +26,7 @@ class Membre extends MY_Membre_Controller {
 		$data['commentaire'] = $this->mCommentaire->getComsFromUser($id);
 		
 		$this->load->helper('url');
-		$this->load->view('profil', $data);
+		$this->load->view('mon_profil', $data);
 	}
 	
 	public function supprimerCommentaire() {
@@ -49,8 +49,29 @@ class Membre extends MY_Membre_Controller {
 			}
 			else
 				$this->redirectTo($redirectPage);
+		}
+	}
+	
+	public function supprimerRecette() {
+		$tmp = $this->input->post('form_supp_recette_x');
+		if (empty($tmp))
+			$this->redirectTo('home');
+		else {
+			$id_recette = $this->input->post('id_recette');
+			$this->load->model('mRecette');
+			$recette = $this->mRecette->get($id_recette);
 			
-			//printf("<pre>%s</pre>", print_r($com, true));
+			if (!is_null($recette)) {
+				if ($recette->id_utilisateur == $this->session->userdata('id_utilisateur')) {
+					$this->mRecette->delete($id_recette);
+					$this->redirectTo('Membre/profil');
+				}
+				else
+					$this->redirectTo('home');
+			}
+			else
+				$this->redirectTo('home');
+			//printf("<pre>%s</pre>", print_r($recette, true));
 		}
 	}
 }
