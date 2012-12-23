@@ -6,7 +6,17 @@ body {
 hr {
 	color: black;
 }
-	
+
+fieldset {
+	border: 1px solid black;
+	border-radius: 0 20px 0 0;
+}
+
+.form_obligatoire {
+	color: #D80000;
+	font-weight: bold;
+}
+
 #entete {
 	width: 900px;
 	height: 300px;
@@ -206,11 +216,6 @@ hr {
 	margin: 0 auto;
 	display: block;
 	border-radius: 0 15px 0 0;
-}
-
-#add_com fieldset {
-	border: 1px solid black;
-	border-radius: 0 20px 0 0;
 }
 
 #add_com #add_com_form {

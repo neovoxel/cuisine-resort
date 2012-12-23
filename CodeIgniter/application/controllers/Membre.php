@@ -25,7 +25,6 @@ class Membre extends MY_Membre_Controller {
 		
 		$data['commentaire'] = $this->mCommentaire->getComsFromUser($id);
 		
-		$this->load->helper('url');
 		$this->load->view('mon_profil', $data);
 	}
 	

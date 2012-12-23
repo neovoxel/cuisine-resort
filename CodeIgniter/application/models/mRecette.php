@@ -108,11 +108,30 @@ EOF;
 		
 	}
 	
-	public function insert($nom_recette, $image_recette) {
+	public function insert($id_utilisateur, $titre, $recette, $temps_prepar, $nb_pers, $difficulte, $date_recette, $categories) {
+		$data = array(
+		   'id_utilisateur' => $id_utilisateur,
+		   'titre' => $titre,
+		   'etat' => 1,
+		   'recette' => $recette,
+		   'temps_prepar' => $temps_prepar,
+		   'nb_pers' => $nb_pers,
+		   'difficulte' => $difficulte,
+		   'date_recette' => $date_recette
+		);
+		$this->db->insert('recette', $data);
 		
+		$id_recette = $this->db->get_where('Recette', $data);
+		$id_recette = $id_recette->result();
+		$id_recette = $id_recette[0]->id_recette;
+		
+		foreach ($categories as $line)
+			$this->db->insert('appartient', array('id_recette' => $id_recette, 'id_categorie' => $line));
 	}
 	
-	public function delete($id) {
+	public function delete($id) { 
+		$this->db->delete('commentaire', array('id_recette' => $id));
+		$this->db->delete('appartient', array('id_recette' => $id));
 		$this->db->delete('recette', array('id_recette' => $id));
 	}
 }

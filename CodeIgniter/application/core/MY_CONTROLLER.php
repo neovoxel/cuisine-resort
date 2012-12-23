@@ -6,6 +6,7 @@ class MY_CONTROLLER extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->library('session');
+		$this->load->helper('url');
 		$user;
 	}
 	
@@ -46,14 +47,12 @@ class MY_CONTROLLER extends CI_Controller {
 				$var['nom'] = $nom;
 				$var['prenom'] = $prenom;
 				$var['email'] = $email;
-				$this->load->helper('url');
                 $this->load->view('inscription', $var);
 			}
 		}
 		else
 		{
 			$var['erreur'] = 'Les champs obligatoires ne sont pas tous remplis.';
-			$this->load->helper('url');
             $this->load->view('inscription', $var);
 		}
 	}
@@ -82,7 +81,6 @@ class MY_CONTROLLER extends CI_Controller {
 
                 //echo $this->session->userdata('id_utilisateur');
 				
-				$this->load->helper('url');
 				$redirect_page = $this->input->post('redirectTo');
 				if (empty($redirect_page))
 					redirect('home');
@@ -92,7 +90,6 @@ class MY_CONTROLLER extends CI_Controller {
             else {
                 $var['erreur'] = 'Le login et le mot de passe ne correspondent pas.';
 				$var['login'] = $login;
-				$this->load->helper('url');
                 $this->load->view('connexion', $var);
             }
         }
@@ -131,7 +128,6 @@ class MY_CONTROLLER extends CI_Controller {
 	
 	public function deconnexion() {
 		$this->session->sess_destroy();
-		$this->load->helper('url');
         redirect('home/connexion');
 	}
 	
@@ -140,7 +136,6 @@ class MY_CONTROLLER extends CI_Controller {
 	}
 	
 	protected function redirectTo($url) {
-		$this->load->helper('url');
 		$redirect_page = $url;
 		if (empty($redirect_page))
 			redirect('home');
@@ -154,7 +149,6 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 	function __construct() {
 		parent::__construct();
 		if(!$this->_isLogOn()) {
-			$this->load->helper('url');
 			redirect('home/connexion');
 		}
 	}
@@ -182,12 +176,71 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 	}
 	
 	public function editerRecette($id_recette) {
+		if (empty($id_recette))
+			$this->redirectTo('Membre/ajouterRecette');
 		
+		$this->load->model('mRecette');
+		$data = $this->mRecette->get($id_recette);
+		
+		if ($data->id_utilisateur == $this->session->userdata('id_utilisateur')) {
+			
+			$this->load->view('editer_recette');
+		}
+		else
+			$this->redirectTo('home');
 	}
 	
 	public function ajouterRecette() {
-		$this->load->helper('url');
-		$this->load->view('ajouter_recette');
+		$titre = $this->input->post('titre');
+		if (empty($titre)) {
+			$this->load->view('editer_recette');
+		}
+		else {
+			$data = array();
+			$data['recette'] = $this->input->post();
+			$erreur = false;
+			
+			$categories = $this->input->post('categorie_entree').$this->input->post('categorie_plat').$this->input->post('categorie_dessert');
+			if (empty($categories))
+				$erreur = true;
+			
+			if (empty($data['recette']['texte_recette']))
+				$erreur = true;
+			
+			if ($erreur === true) {
+				$data['erreur'] = 1;
+				$this->load->view('editer_recette', $data);
+			}
+			else {
+				$data = $data['recette'];
+				
+				$categorie_entree = $this->input->post('categorie_entree');
+				$categorie_plat = $this->input->post('categorie_plat');
+				$categorie_dessert = $this->input->post('categorie_dessert');
+				$categories = array();
+				
+				if (!empty($categorie_entree))
+					$categories[0] = $categorie_entree;
+				if (!empty($categorie_plat))
+					$categories[1] = $categorie_plat;
+				if (!empty($categorie_dessert))
+					$categories[2] = $categorie_dessert;
+				
+				$this->load->helper('date');
+				$this->load->model('mRecette');
+				$this->mRecette->insert($this->session->userdata('id_utilisateur'),
+										$data['titre'],
+										$data['texte_recette'],
+										$data['tps_h'].':'.$data['tps_m'].':'.$data['tps_s'],
+										$data['nb_pers'],
+										$data['difficulte'],
+										mdate("%Y-%m-%d", time()),
+										$categories);
+				$this->redirectTo('Membre/profil');
+			}
+			
+			//printf("<pre>%s</pre>", print_r($data, true));
+		}
 	}
 }
 

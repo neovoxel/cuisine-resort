@@ -14,7 +14,7 @@
 			
 			<h1>{$recette->titre}
 			{if $ci->_isLogOn() && $ci->getUser()->userdata('id_utilisateur')==$utilisateur->id_utilisateur}
-				<a href="{base_url('index.php/Membre/modifierRecette/'|cat:$recette->id_recette)}" ><img src="{base_url('images/edit_recette.gif')}" title="Editer la recette" alt="Editer la recette" height="24" width="24" /></a>
+				<a href="{base_url('index.php/Membre/editerRecette/'|cat:$recette->id_recette)}" ><img src="{base_url('images/edit_recette.gif')}" title="Editer la recette" alt="Editer la recette" height="24" width="24" /></a>
 			{/if}
 			</h1>
 			<ul>
