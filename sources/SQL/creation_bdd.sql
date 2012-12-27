@@ -34,18 +34,12 @@ CREATE TABLE Recette
 	id_utilisateur	int,
 	titre			varchar(100) not null,
 	recette			text not null,
-	etat			integer not null default 0,
+	etat			enum('private', 'waiting', 'public') not null default 'private',
 	temps_prepar	time default null,
 	nb_pers			int default 1,
-	difficulte		int default 0,
+	difficulte		enum('facile', 'moyen', 'difficile', 'Tdifficile') default 'facile',
 	image_recette	text default null,
-	date_recette	DATE not null,
-	
-	constraint CST_Etat_Recette
-		check (etat = 0 OR etat = 1 OR etat = 2),
-	
-	constraint CST_Difficulte_Recette
-		check (difficulte = 0 OR difficulte = 1 OR difficulte = 2 OR difficulte = 3)
+	date_recette	DATE not null
 ) ENGINE=INNODB;
 
 
@@ -70,8 +64,9 @@ CREATE TABLE Compose
 (
 	id_recette		int,
 	id_ingredient	int,
+	id_unite		int,
 	quantite		float not null,
-	constraint PK_Compose primary key (id_recette, id_ingredient)
+	constraint PK_Compose primary key (id_recette, id_ingredient, id_unite)
 ) ENGINE=INNODB;
 
 
@@ -80,14 +75,6 @@ CREATE TABLE Ingredient
 	id_ingredient	int auto_increment,
 	nom_ingredient	varchar(25),
 	constraint PK_Ingredient primary key (id_ingredient, nom_ingredient)
-) ENGINE=INNODB;
-
-
-CREATE TABLE Mesure
-(
-	id_ingredient int,
-	id_unite int,
-	constraint PK_Mesure primary key (id_ingredient, id_unite)
 ) ENGINE=INNODB;
 
 
@@ -112,10 +99,6 @@ ADD constraint FK_Appartient_Categorie foreign key (id_categorie) references Cat
 
 ALTER TABLE Compose
 ADD constraint FK_Compose_Recette foreign key (id_recette) references Recette (id_recette),
-ADD constraint FK_Compose_Ingredient foreign key (id_ingredient) references Ingredient (id_ingredient);
-
-ALTER TABLE Mesure
-ADD constraint FK_Mesure_Ingredient foreign key (id_ingredient) references Ingredient (id_ingredient),
-ADD constraint FK_Mesure_Unite foreign key (id_unite) references Unite (id_unite);
-
+ADD constraint FK_Compose_Ingredient foreign key (id_ingredient) references Ingredient (id_ingredient),
+ADD constraint FK_Compose_Unite foreign key (id_unite) references Unite (id_unite);
 

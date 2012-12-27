@@ -75,12 +75,10 @@ EOF;
 	
 	public function getIngredients($id_recette) {
 		$requette = <<< EOF
-SELECT nom_ingredient, quantite, nom_unite
-FROM recette R INNER JOIN compose C ON R.id_recette=C.id_recette
-INNER JOIN ingredient I ON C.id_ingredient=I.id_ingredient
-INNER JOIN mesure M ON I.id_ingredient=M.id_ingredient
-INNER JOIN unite U ON M.id_unite=U.id_unite
-WHERE R.id_recette = $id_recette;
+SELECT *
+FROM Compose C INNER JOIN Ingredient I ON C.id_ingredient=I.id_ingredient
+INNER JOIN Unite U ON C.id_unite=U.id_unite
+WHERE id_recette = $id_recette;
 EOF;
 		$query = $this->db->query($requette);
 		
@@ -108,30 +106,50 @@ EOF;
 		
 	}
 	
-	public function insert($id_utilisateur, $titre, $recette, $temps_prepar, $nb_pers, $difficulte, $date_recette, $categories) {
+	public function insert(	$id_utilisateur,
+							$titre,
+							$recette,
+							$temps_prepar,
+							$nb_pers,
+							$difficulte,
+							$date_recette,
+							$categories,
+							$ingredients,
+							$unites,
+							$quantites) {
 		$data = array(
 		   'id_utilisateur' => $id_utilisateur,
 		   'titre' => $titre,
-		   'etat' => 1,
+		   'etat' => 'private',
 		   'recette' => $recette,
 		   'temps_prepar' => $temps_prepar,
 		   'nb_pers' => $nb_pers,
 		   'difficulte' => $difficulte,
 		   'date_recette' => $date_recette
 		);
-		$this->db->insert('recette', $data);
+		$this->db->insert('recette', $data);	// Insertion de la recette
 		
-		$id_recette = $this->db->get_where('Recette', $data);
-		$id_recette = $id_recette->result();
-		$id_recette = $id_recette[0]->id_recette;
+		$id_recette = $this->db->insert_id();
 		
 		foreach ($categories as $line)
-			$this->db->insert('appartient', array('id_recette' => $id_recette, 'id_categorie' => $line));
+			$this->db->insert('appartient', array('id_recette' => $id_recette, 'id_categorie' => $line));	// Insertion de la recette dans sa/ses catégorie(s)
+		
+		for ($i = 0 ; $i < count($quantites) ; $i++) {
+			$data = array(
+			   'id_recette' => $id_recette,
+			   'id_ingredient' => $ingredients[$i],
+			   'id_unite' => $unites[$i],
+			   'quantite' => $quantites[$i]
+			);
+			$this->db->insert('compose', $data);	// Insertion des ingredients de la recette
+		}
+		
 	}
 	
 	public function delete($id) { 
 		$this->db->delete('commentaire', array('id_recette' => $id));
 		$this->db->delete('appartient', array('id_recette' => $id));
+		$this->db->delete('compose', array('id_recette' => $id));
 		$this->db->delete('recette', array('id_recette' => $id));
 	}
 }

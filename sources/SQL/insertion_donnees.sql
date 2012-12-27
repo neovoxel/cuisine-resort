@@ -40,24 +40,6 @@ INSERT INTO Ingredient(nom_ingredient)
 INSERT INTO Ingredient(nom_ingredient)
 	VALUES('biscuits');
 
-INSERT INTO Mesure(id_ingredient, id_unite)
-	VALUES(1,3);
-
-INSERT INTO Mesure(id_ingredient, id_unite)
-	VALUES(2,4);
-
-INSERT INTO Mesure(id_ingredient, id_unite)
-	VALUES(3,3);
-	
-INSERT INTO Mesure(id_ingredient, id_unite)
-	VALUES(4,3);
-	
-INSERT INTO Mesure(id_ingredient, id_unite)
-	VALUES(5,1);
-	
-INSERT INTO Mesure(id_ingredient, id_unite)
-	VALUES(6,1);
-
 INSERT INTO Categorie(nom_categorie,image_categorie)
 	VALUES('Entrées','entrees.jpg');
 
@@ -68,13 +50,13 @@ INSERT INTO Categorie(nom_categorie,image_categorie)
 	VALUES('Desserts','desserts.jpg');
 
 INSERT INTO Recette(id_utilisateur,titre,recette,etat,temps_prepar,nb_pers,difficulte,date_recette)
-	VALUES(1,'Soupe au Pistou','Et bien dans une casserole, tu mets des haricots et de la sauce tomate. Beh ouais!',1,'00:30:00',2,1,'2012-10-03');
+	VALUES(1,'Soupe au Pistou','Et bien dans une casserole, tu mets des haricots et de la sauce tomate. Beh ouais!','public','00:30:00',2,'facile','2012-10-03');
 
 INSERT INTO Recette(id_utilisateur,titre,recette,etat,temps_prepar,nb_pers,difficulte,image_recette,date_recette)
-	VALUES(2,'Gateau au caca','Si je dis : onctueux, succulent, délicieux et appétissant. Vous répondez ? Gateau au caca, bien sûr!\nEn exclusivité pour le site, je propose de vous délivrer la si recherchée recette de ce fameux met.\nMais avant cela, je tiens à remercier mon ami Adrien, non seulement parce que c\'est un cuisinier de génie mais surtout parce qu\'il m\'autorise à vous communiquer sa recette!',2,'01:30:00',2,2,'img.jpg','2012-10-05');
+	VALUES(2,'Gateau au caca','Si je dis : onctueux, succulent, délicieux et appétissant. Vous répondez ? Gateau au caca, bien sûr!\nEn exclusivité pour le site, je propose de vous délivrer la si recherchée recette de ce fameux met.\nMais avant cela, je tiens à remercier mon ami Adrien, non seulement parce que c\'est un cuisinier de génie mais surtout parce qu\'il m\'autorise à vous communiquer sa recette!','private','01:30:00',2,'moyen','img.jpg','2012-10-05');
 
 INSERT INTO Recette(id_utilisateur,titre,recette,etat,temps_prepar,nb_pers,difficulte,image_recette,date_recette)
-	VALUES(1,'Tiramisu','Séparer les blancs des jaunes. Mélanger les jaunes + sucre + sucre vanillé. Ajouter le mascarpone au fouet.\n\nMonter les blancs en neige et les incorporer délicatement à la spatule au mélange précédent.\n\nPréparer du café noir.\n\nMouiller les biscuits dans le café.\n\nTapisser le fond du moule avec les biscuits. Recouvrir d\'une couche de crème, œuf, sucre, mascarpone. Alterner biscuits et crème.\nTerminer par une couche de crème. Saupoudrer de cacao.\n\nMettre au réfrigérateur 4 heures minimum.',1,'04:30:00',8,0,'image.jpg','2012-09-26');
+	VALUES(1,'Tiramisu','Séparer les blancs des jaunes. Mélanger les jaunes + sucre + sucre vanillé. Ajouter le mascarpone au fouet.\n\nMonter les blancs en neige et les incorporer délicatement à la spatule au mélange précédent.\n\nPréparer du café noir.\n\nMouiller les biscuits dans le café.\n\nTapisser le fond du moule avec les biscuits. Recouvrir d\'une couche de crème, œuf, sucre, mascarpone. Alterner biscuits et crème.\nTerminer par une couche de crème. Saupoudrer de cacao.\n\nMettre au réfrigérateur 4 heures minimum.','public','04:30:00',8,'difficile','image.jpg','2012-09-26');
 
 INSERT INTO Appartient(id_recette,id_categorie)
 	VALUES(1,2);
@@ -88,32 +70,32 @@ INSERT INTO Appartient(id_recette,id_categorie)
 INSERT INTO Appartient(id_recette,id_categorie)
 	VALUES(3,3);
 	
-INSERT INTO Compose(id_recette,id_ingredient,quantite)
-	VALUES(1,1,2);
+INSERT INTO Compose(id_recette,id_ingredient,id_unite,quantite)
+	VALUES(1,1,3,2);
 	
-INSERT INTO Compose(id_recette,id_ingredient,quantite)
-	VALUES(1,2,3);
+INSERT INTO Compose(id_recette,id_ingredient,id_unite,quantite)
+	VALUES(1,2,4,3);
 
-INSERT INTO Compose(id_recette,id_ingredient,quantite)
-	VALUES(1,5,2);
+INSERT INTO Compose(id_recette,id_ingredient,id_unite,quantite)
+	VALUES(1,5,1,2);
 	
-INSERT INTO Compose(id_recette,id_ingredient,quantite)
-	VALUES(2,3,80);
+INSERT INTO Compose(id_recette,id_ingredient,id_unite,quantite)
+	VALUES(2,3,3,80);
 	
-INSERT INTO Compose(id_recette,id_ingredient,quantite)
-	VALUES(2,4,200);
+INSERT INTO Compose(id_recette,id_ingredient,id_unite,quantite)
+	VALUES(2,4,3,200);
 	
-INSERT INTO Compose(id_recette,id_ingredient,quantite)
-	VALUES(2,5,3);
+INSERT INTO Compose(id_recette,id_ingredient,id_unite,quantite)
+	VALUES(2,5,1,3);
 
-INSERT INTO Compose(id_recette,id_ingredient,quantite)
-	VALUES(3,5,3);
+INSERT INTO Compose(id_recette,id_ingredient,id_unite,quantite)
+	VALUES(3,5,1,3);
 	
-INSERT INTO Compose(id_recette,id_ingredient,quantite)
-	VALUES(3,4,100);
+INSERT INTO Compose(id_recette,id_ingredient,id_unite,quantite)
+	VALUES(3,4,3,100);
 
-INSERT INTO Compose(id_recette,id_ingredient,quantite)
-	VALUES(3,6,24);
+INSERT INTO Compose(id_recette,id_ingredient,id_unite,quantite)
+	VALUES(3,6,1,24);
 
 INSERT INTO Commentaire(id_utilisateur,id_recette,commentaire,date_com)
 	VALUES(3,1,'Owi ! Ma copine va adorer ! :)','2012-10-02 18:23:42');

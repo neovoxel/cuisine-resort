@@ -18,7 +18,7 @@
 		
 		<div id="liste_recettes">
 		{foreach $recettes as $line}
-			{include file='preview_recette.tpl' showUser=0 recette=$line inline nocache}
+			{include file='preview_recette.tpl' showUser=0 showEtat=1 recette=$line inline nocache}
 		{/foreach}
 		</div>
 		

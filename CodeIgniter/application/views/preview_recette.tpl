@@ -1,5 +1,6 @@
 
 {assign var='showUser' value=$showUser|default:'1'}
+{assign var='showEtat' value=$showEtat|default:'0'}
 <div class="recette">
 	<p>
 		<a href="{base_url('index.php/Recettes/detail_recette/'|cat:$recette->id_recette)}">
@@ -13,6 +14,9 @@
 	
 	<h3>
 		<a href="{base_url('index.php/Recettes/detail_recette/'|cat:$recette->id_recette)}"> {$recette->titre}</a>
+		
+		{if $showEtat==1} {$recette->etat}{/if}
+		
 		{if $ci->_isLogOn() && $ci->getUser()->userdata('id_utilisateur')==$recette->id_utilisateur}
 			<form class="img_edit_recette" action="{base_url('index.php/Membre/supprimerRecette')}" method="post" >
 				<input type="hidden" name="id_recette" value="{$recette->id_recette}">

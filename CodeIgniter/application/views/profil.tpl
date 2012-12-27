@@ -8,7 +8,7 @@
 			<img src="{base_url('images/edit_recette.gif')}" title="Editer la recette" alt="Editer la recette" height="24" width="24" />
 		{/if}
 		</h1>
-		<p>{$utilisateur->type_utilisateur}<br />
+		<p>{if $utilisateur->type_utilisateur==1}Administrateur{else}Membre{/if}<br />
 		Nom : {$utilisateur->nom_utilisateur}<br />
 		Prénom : {$utilisateur->prenom}<br />
 		e-mail : {$utilisateur->email}<br />
@@ -20,7 +20,9 @@
 
 		<div id="liste_recettes">
 		{foreach $recettes as $line}
-			{include file='preview_recette.tpl' showUser=0 recette=$line inline nocache}
+			{if $line->etat=='public'}
+				{include file='preview_recette.tpl' showUser=0 recette=$line inline nocache}
+			{/if}
 		{/foreach}
 		</div>
 		<hr />

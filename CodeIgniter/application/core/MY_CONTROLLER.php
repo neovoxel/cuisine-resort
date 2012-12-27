@@ -192,19 +192,38 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 	
 	public function ajouterRecette() {
 		$titre = $this->input->post('titre');
+		
+		$this->load->model('mIngredient');
+		$this->load->model('mUnite');
+		$this->load->model('mCategorie');
+		$data = array();
+		$data['ingredients'] = $this->mIngredient->getAll();
+		$data['unites'] = $this->mUnite->getAll();
+		$data['categories'] = $this->mCategorie->getAll();
+		
 		if (empty($titre)) {
-			$this->load->view('editer_recette');
+			$this->load->view('editer_recette', $data);
 		}
 		else {
-			$data = array();
 			$data['recette'] = $this->input->post();
-			$erreur = false;
+			$erreur = true;
 			
-			$categories = $this->input->post('categorie_entree').$this->input->post('categorie_plat').$this->input->post('categorie_dessert');
-			if (empty($categories))
-				$erreur = true;
+			foreach ($data['categories'] as $categorie) {
+				$tmp = $this->input->post('categorie_'.$categorie->id_categorie);
+				if (!empty($tmp))
+					$erreur = false;
+			}
 			
 			if (empty($data['recette']['texte_recette']))
+				$erreur = true;
+			
+			if (empty($data['recette']['quantites']))
+				$erreur = true;
+			
+			if (empty($data['recette']['unites']))
+				$erreur = true;
+			
+			if (empty($data['recette']['ingredients']))
 				$erreur = true;
 			
 			if ($erreur === true) {
@@ -212,19 +231,19 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 				$this->load->view('editer_recette', $data);
 			}
 			else {
+				$categories = array();
+				$i = 0;
+				foreach ($data['categories'] as $categorie) {
+					$tmp = $this->input->post('categorie_'.$categorie->id_categorie);
+					if (!empty($tmp))
+						$categories[$i++] = $tmp;
+				}
+				
 				$data = $data['recette'];
 				
-				$categorie_entree = $this->input->post('categorie_entree');
-				$categorie_plat = $this->input->post('categorie_plat');
-				$categorie_dessert = $this->input->post('categorie_dessert');
-				$categories = array();
-				
-				if (!empty($categorie_entree))
-					$categories[0] = $categorie_entree;
-				if (!empty($categorie_plat))
-					$categories[1] = $categorie_plat;
-				if (!empty($categorie_dessert))
-					$categories[2] = $categorie_dessert;
+				$quantites = explode(';', $data['quantites']);
+				$unites = explode(';', $data['unites']);
+				$ingredients = explode(';', $data['ingredients']);
 				
 				$this->load->helper('date');
 				$this->load->model('mRecette');
@@ -235,7 +254,11 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 										$data['nb_pers'],
 										$data['difficulte'],
 										mdate("%Y-%m-%d", time()),
-										$categories);
+										$categories,
+										$ingredients,
+										$unites,
+										$quantites);
+				
 				$this->redirectTo('Membre/profil');
 			}
 			
