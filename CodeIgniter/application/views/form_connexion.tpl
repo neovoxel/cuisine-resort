@@ -1,7 +1,7 @@
 
 {assign var='redirectTo' value=$redirectTo|default:''}
 <div id="form_connexion" >
-	{if $erreur|default:''}<span style="color:red;">{$erreur}</span>{/if}
+	{if $erreur|default:''}<span class="erreur">{$erreur}</span>{/if}
 	<form action="{base_url('index.php/home/connexion')}" method="post">
 	<fieldset id="formulaire_connexion">
 		<legend>Connexion</legend>

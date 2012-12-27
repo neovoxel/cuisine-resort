@@ -22,7 +22,7 @@
 				<input type="hidden" name="id_recette" value="{$recette->id_recette}">
 				<input border=0 src="{base_url('images/sup_recette.png')}" type=image align="middle" name="form_supp_recette" value="submit" onclick="javascript:return delete_recette()" >
 			</form>
-			<form class="img_edit_recette" action="{base_url('index.php/Membre/editerRecette')}" method="post" >
+			<form class="img_edit_recette" action="{base_url('index.php/Membre/editerRecette/'|cat:$recette->id_recette)}" method="post" >
 				<input type="hidden" name="id_recette" value="{$recette->id_recette}">
 				<input border=0 src="{base_url('images/edit_recette.gif')}" type=image align="middle" name="form_edit_recette" value="submit" >
 			</form>

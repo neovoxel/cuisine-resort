@@ -180,11 +180,46 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 			$this->redirectTo('Membre/ajouterRecette');
 		
 		$this->load->model('mRecette');
-		$data = $this->mRecette->get($id_recette);
+		$data = array();
+		$recette = $this->mRecette->get($id_recette);
 		
-		if ($data->id_utilisateur == $this->session->userdata('id_utilisateur')) {
+		if ($recette->id_utilisateur == $this->session->userdata('id_utilisateur')) {
+			$this->load->model('mIngredient');
+			$this->load->model('mUnite');
+			$this->load->model('mCategorie');
 			
-			$this->load->view('editer_recette');
+			$data['ingredients'] = $this->mIngredient->getAll();
+			$data['unites'] = $this->mUnite->getAll();
+			$data['categories'] = $this->mCategorie->getAll();
+			
+			$categories_recette = $this->mRecette->getCategories($id_recette);
+			
+			foreach ($categories_recette as $categorie)
+				$tabRecette['categorie_'.$categorie->id_categorie] = $categorie->nom_categorie;
+			
+			$tabRecette['titre'] = $recette->titre;
+			$tabRecette['texte_recette'] = $recette->recette;
+			$tabRecette['nb_pers'] = $recette->nb_pers;
+			$tabRecette['difficulte'] = $recette->difficulte;
+			
+			$temps_prepar = explode(':', $recette->temps_prepar);
+			$tabRecette['tps_h'] = $temps_prepar[0];
+			$tabRecette['tps_m'] = $temps_prepar[1];
+			$tabRecette['tps_s'] = $temps_prepar[2];
+			
+			$ingredients_recette = $this->mRecette->getIngredients($id_recette);
+			$tabRecette['quantites'] = $ingredients_recette[0]->quantite;
+			$tabRecette['unites'] = $ingredients_recette[0]->id_unite;
+			$tabRecette['ingredients'] = $ingredients_recette[0]->id_ingredient;
+			
+			for ($i = 1 ; $i < count($ingredients_recette) ; $i++) {
+				$tabRecette['quantites'] .= ';'.$ingredients_recette[$i]->quantite;
+				$tabRecette['unites'] .= ';'.$ingredients_recette[$i]->id_unite;
+				$tabRecette['ingredients'] .= ';'.$ingredients_recette[$i]->id_ingredient;
+			}
+			
+			$data['recette'] = $tabRecette;
+			$this->load->view('editer_recette', $data);
 		}
 		else
 			$this->redirectTo('home');
