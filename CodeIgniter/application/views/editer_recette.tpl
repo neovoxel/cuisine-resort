@@ -35,32 +35,83 @@
 		var unite = getSelectText("unite");
 		var ingredient = getSelectText("ingredient");
 		var id_ingredient = quantite + "_" + getSelectValue("unite") + "_" + getSelectValue("ingredient") + "_" + Math.round(Math.random()*100000);
-		var action = '<a href="javascript:supprimerIngredient(\'' + id_ingredient + '\')" ><img src="{base_url(\'images/sup_ingredient.gif\')}" alt="Supprimer ingrédient" title="Supprimer ingrédient" /></a>';
+		var supprimer = '<a href="javascript:supprimerIngredient(\'' + id_ingredient + '\')" ><img src="{base_url('images/sup_ingredient.gif')}" alt="Supprimer ingrédient" title="Supprimer ingrédient" /></a>';
+		var modifier = '<img src="{base_url('images/edit_ingredient.png')}" alt="Modifier ingrédient" title="Modifier ingrédient" />';
+		var actions = modifier + " " + supprimer;
 		
 		var text  = '<div class="' + id_ingredient + '" style="display: table-row;" >';
 			text += '<span class="cell">' + quantite	+ "</span>";
 			text += '<span class="cell">' + unite		+ "</span>";
 			text += '<span class="cell">' + ingredient	+ "</span>";
-			text += '<span class="cell">' + action		+ "</span>";
+			text += '<span class="cell">' + actions		+ "</span>";
 			text += "</div>";
 		document.getElementById("ingredients_ajoutes").innerHTML += text;
 		
 		appendValue("quantites", quantite);
 		appendValue("unites", getSelectValue("unite"));
 		appendValue("ingredients", getSelectValue("ingredient"));
-		appendValue("ids", id_ingredient);
+		appendValue("uniqueIDs", id_ingredient);
 		
 		document.getElementById("quantite").value = 1;
 		resetSelect("unite");
 		resetSelect("ingredient");
 	}
 	
-	function findIngredient(id_ingredient) {
-		var ids = document.getElementById("ids").value;
-		if (ids != "") {
-			var pos = ids.indexOf(id_ingredient);
-			if (pos != -1) {
-				return pos;
+	function findAndDelete(tab) {
+		var quantites = document.getElementsByName("quantites")[0].value;
+		quantites = quantites.split(";");
+		
+		var unites = document.getElementsByName("unites")[0].value;
+		unites = unites.split(";");
+		
+		var ingredients = document.getElementsByName("ingredients")[0].value;
+		ingredients = ingredients.split(";");
+		
+		var uniqueIDs = document.getElementsByName("uniqueIDs")[0].value;
+		uniqueIDs = uniqueIDs.split(";");
+		
+		for (var i = 0 ; i < quantites.length ; i++) {
+			if (quantites[i] == tab[0] && unites[i] == tab[1] && ingredients[i] == tab[2] && uniqueIDs[i] == tab[3]) {
+				var str_quantites	= "";
+				var str_unites		= "";
+				var str_ingredients	= "";
+				var str_uniqueIDs	= "";
+				
+				if (i == 0) {
+					for (var j = 1 ; j < quantites.length ; j++) {
+						str_quantites	+= quantites[j] + ";";
+						str_unites		+= unites[j] + ";";
+						str_ingredients	+= ingredients[j] + ";";
+						str_uniqueIDs	+= uniqueIDs[j] + ";";
+					}
+					
+					str_quantites	= str_quantites.substring(0, str_quantites.length-1);
+					str_unites		= str_unites.substring(0, str_unites.length-1);
+					str_ingredients	= str_ingredients.substring(0, str_ingredients.length-1);
+					str_uniqueIDs	= str_uniqueIDs.substring(0, str_uniqueIDs.length-1);
+				}
+				else {
+					str_quantites	= quantites[0];
+					str_unites		= unites[0];
+					str_ingredients	= ingredients[0];
+					str_uniqueIDs	= uniqueIDs[0];
+					
+					for (var j = 1 ; j < quantites.length ; j++) {
+						if (i != j) {
+							str_quantites	+= ";" + quantites[j];
+							str_unites		+= ";" + unites[j];
+							str_ingredients	+= ";" + ingredients[j];
+							str_uniqueIDs	+= ";" + uniqueIDs[j];
+						}
+					}
+				}
+				
+				document.getElementsByName("quantites")[0].value	= str_quantites;
+				document.getElementsByName("unites")[0].value		= str_unites;
+				document.getElementsByName("ingredients")[0].value	= str_ingredients;
+				document.getElementsByName("uniqueIDs")[0].value	= str_uniqueIDs;
+				
+				return true;
 			}
 		}
 		return false;
@@ -68,9 +119,15 @@
 	
 	function supprimerIngredient(id_ingredient) {
 		if (confirm("Êtes-vous sûr de vouloir supprimer cet ingrédient ?")) {
-			document.getElementsByClassName(id_ingredient)[0].innerHTML = "";
-			
-			findIngredient(id_ingredient);
+			var tab = id_ingredient.split("_");
+			tab[3] = id_ingredient;
+			if (!findAndDelete(tab))
+				alert("Erreur lors de la suppression de l'ingrédient.");
+			else {
+				var parent = document.getElementById("ingredients_ajoutes");
+				var element = document.getElementsByClassName(id_ingredient)[0];
+				parent.removeChild(element);
+			}
 		}
 	}
 </script>
@@ -78,7 +135,7 @@
 <div id="editer_recette">
 	<h1>Editer une recette</h1>
 	{if $erreur|default:''}<span class="erreur" >Erreur : certains champs sont invalides</span><br />{/if}
-	<form method="post">
+	<form enctype="multipart/form-data" method="post">
 		Titre de la recette <span class="form_obligatoire" >*</span> :
 			<input name="titre" type="text" size="25" {if $recette|default:''}value="{$recette['titre']}"{/if}>
 			<br />
@@ -121,7 +178,7 @@
 			<input type="hidden" name="quantites"	{if $recette['quantites']|default:''}value="{$recette['quantites']}"{else}value=""{/if}>
 			<input type="hidden" name="unites"		{if $recette['unites']|default:''}value="{$recette['unites']}"{else}value=""{/if}>
 			<input type="hidden" name="ingredients"	{if $recette['ingredients']|default:''}value="{$recette['ingredients']}"{else}value=""{/if}>
-			<input type="hidden" name="ids"	value="" >
+			<input type="hidden" name="uniqueIDs"	{if $recette['uniqueIDs']|default:''}value="{$recette['uniqueIDs']}"{else}value=""{/if}>
 			
 			<div id="ingredients_ajoutes" class="table">
 				<div class="trow">
@@ -134,9 +191,10 @@
 					{$qtts=explode(';',$recette['quantites'])}
 					{$uns=explode(';',$recette['unites'])}
 					{$ings=explode(';',$recette['ingredients'])}
+					{$ids=explode(';',$recette['uniqueIDs'])}
 					{$i=0}
 					{foreach $qtts as $line}
-						<div class="row">
+						<div class="{$ids[$i]}" style="display: table-row;" >
 							<span class="cell">{$qtts[$i]}</span>
 							{foreach $unites as $line_unite}
 								{if $line_unite->id_unite==$uns[$i]}
@@ -150,7 +208,7 @@
 									{break}
 								{/if}
 							{/foreach}
-							<span class="cell"><img src="{base_url('images/sup_ingredient.gif')}" title="Supprimer ingrédient" /></span>
+							<span class="cell"><a href="javascript:supprimerIngredient('{$ids[$i]}')" ><img src="{base_url('images/sup_ingredient.gif')}" alt="Supprimer ingrédient" title="Supprimer ingrédient" /></a></span>
 							{$i=$i+1}
 						</div>
 						

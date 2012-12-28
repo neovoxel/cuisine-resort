@@ -24,6 +24,10 @@ fieldset {
 	margin: auto; 
 }
 
+.table div:hover {
+	background-color: #909090;
+}
+
 .row {
 	display: table-row;
 }

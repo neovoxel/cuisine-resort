@@ -211,11 +211,13 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 			$tabRecette['quantites'] = $ingredients_recette[0]->quantite;
 			$tabRecette['unites'] = $ingredients_recette[0]->id_unite;
 			$tabRecette['ingredients'] = $ingredients_recette[0]->id_ingredient;
+			$tabRecette['uniqueIDs'] = $ingredients_recette[0]->quantite.'_'.$ingredients_recette[0]->id_unite.'_'.$ingredients_recette[0]->id_ingredient.'_'.rand(0, 100000);
 			
 			for ($i = 1 ; $i < count($ingredients_recette) ; $i++) {
 				$tabRecette['quantites'] .= ';'.$ingredients_recette[$i]->quantite;
 				$tabRecette['unites'] .= ';'.$ingredients_recette[$i]->id_unite;
 				$tabRecette['ingredients'] .= ';'.$ingredients_recette[$i]->id_ingredient;
+				$tabRecette['uniqueIDs'] .= ';'.$ingredients_recette[$i]->quantite.'_'.$ingredients_recette[$i]->id_unite.'_'.$ingredients_recette[$i]->id_ingredient.'_'.rand(0, 100000);
 			}
 			
 			$data['recette'] = $tabRecette;
