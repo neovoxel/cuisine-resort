@@ -6,8 +6,8 @@
 	<fieldset id="formulaire_connexion">
 		<legend>Connexion</legend>
 		<input type="hidden" name="redirectTo" value="{$redirectTo}">
-		Login : <input type="text" name="login" {if $login|default:''}value="{$login}"{/if} ><br />
-		Mot de passe : <input type="password" name="pwd" ><br />
+		<label>Login</label> <input type="text" name="login" {if $login|default:''}value="{$login}"{/if} ><br />
+		<label>Mot de passe</label> <input type="password" name="pwd" ><br />
 		<input type="submit" name="form_log" value="Connexion">
 	</fieldset>
 	</form>
