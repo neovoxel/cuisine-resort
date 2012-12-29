@@ -9,7 +9,7 @@
 			{if is_null($recette->image_recette)}
 				<img class="img_recette" src="{base_url('images/default/recette.png')}" alt="Illustration recette" height="300" width="300" />
 			{else}
-				<img class="img_recette" src="{base_url('images/'|cat:$utilisateur->login|cat:'/'|cat:$recette->titre|cat:'/'|cat:$recette->image_recette)}" alt="Illustration recette" height="300" width="300" />
+				<img class="img_recette" src="{base_url('images/'|cat:$utilisateur->login|cat:'/'|cat:$recette->id_recette|cat:'/'|cat:$recette->image_recette)}" alt="Illustration recette" height="300" width="300" />
 			{/if}
 			
 			<h1>{$recette->titre}

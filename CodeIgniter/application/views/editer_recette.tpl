@@ -1,6 +1,6 @@
 
 {extends 'main.tpl'}
-{block name="titre"}Editer une recette{/block}
+{block name="titre"}{if $recette['id_recette']|default:''}Editer{else}Ajouter{/if} une recette{/block}
 {block name="output_area"}
 
 <script type="text/javascript" >
@@ -228,9 +228,28 @@
 </script>
 
 <div id="editer_recette">
-	<h1>Editer une recette</h1>
+	{if $recette['image_recette']|default:''}
+		<img class="img_recette" src="{base_url('images/'|cat:$recette['login']|cat:'/'|cat:$recette['id_recette']|cat:'/'|cat:$recette['image_recette'])}" alt="Illustration recette" height="300" width="300" />
+	{elseif $recette['id_recette']|default:''}
+		<img class="img_recette" src="{base_url('images/default/recette.png')}" alt="Illustration recette" height="300" width="300" />
+	{/if}
+	<h1>{if $recette['id_recette']|default:''}Editer{else}Ajouter{/if} une recette</h1>
+	{if $recette['etat']|default:''}
+		{if $recette['etat']=='private'}
+			<p>Votre recette est actuellement privée et n'est visible que par vous.<br />
+			<a>Cliquez ici</a> pour effectuer une demande de validation auprès d'un administrateur.</p>
+		{elseif $recette['etat']=='waiting'}
+			<p>Votre recette est en cours de validation par un administrateur. Vous serez notifié(e) par mail lors de sa publication.<br />
+			Toute modification de votre recette la rendra de nouveau privée et vous devrez refaire une demande de validation auprès d'un administrateur pour la rendre publique.</p>
+		{elseif $recette['etat']=='public'}
+			<p>Votre recette est actuellement publique et visible par tout le monde.<br />
+			Toute modification de celle-ci la rendra de nouveau privée et vous devrez refaire une demande de validation auprès d'un administrateur pour la rendre publique.</p>
+		{/if}
+	{/if}
+	
 	{if $erreur|default:''}<span class="erreur" >Erreur : certains champs sont invalides</span><br />{/if}
 	<form enctype="multipart/form-data" method="post">
+		<p><span class="form_obligatoire" >*</span> Champs obligatoires</p>
 		<fieldset>
 			<legend>Informations</legend>
 			{if $recette['id_recette']|default:''}<input type="hidden" name="id_recette" value="{$recette['id_recette']}" >{/if}
@@ -238,6 +257,11 @@
 				<input name="titre" type="text" size="25" {if $recette|default:''}value="{$recette['titre']}"{else}value="Titre de la recette"{/if}>
 				<br />
 				
+			{if $recette['date_recette']|default:''}
+				<label>Date de création</label> {$recette['date_recette']}
+				<br />
+			{/if}
+			
 			<label>Catégorie(s) <span class="form_obligatoire" >*</span></label>
 				{foreach $categories as $line}
 					<input type="checkbox" value="{$line->id_categorie}" name="categorie_{$line->id_categorie}" {if $recette['categorie_'|cat:$line->id_categorie]|default:''}checked="checked"{/if}>{$line->nom_categorie}
@@ -343,10 +367,12 @@
 		</fieldset>
 		<br />
 		
-		Image de la recette :
-			<input type="file" name="image_recette" />
+		<label>Image de la recette</label>
+			<input type="hidden" name="MAX_FILE_SIZE" value="1048576" />
+			<input type="file" name="userfile" /> (.gif .jpg .png)
 			<br />
-			
+			<span style="color: orange; text-decoration: underline;">Attention :</span> L'image ne doit pas dépasser la taille de 300 x 300 pixels et ne doit pas peser plus de 1Mo.<br />
+			<br />
 		<input type="submit" value="Sauvegarder" > <input type="reset">
 	</form>
 </div>
