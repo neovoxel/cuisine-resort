@@ -57,6 +57,7 @@ class MY_CONTROLLER extends CI_Controller {
 					if(!$this->mUtilisateur->checkIfLoginExist($login) and !$this->mUtilisateur->checkIfEmailExist($email)) //Tout est bon
 					{
 						$this->mUtilisateur->insert($login, $password, $nom, $prenom, $email);
+						mkdir("./images/$login");
 						$headers = 'From: webmaster@cuisine-resort.com' . "\r\n" .
 								   'X-Mailer: PHP/' . phpversion();
 						mail($email,"Bienvenue sur Cuisine-resort!", "Toute l'équipe de Cuisine-resort vous souhaite la bienvenue!",$headers);
