@@ -25,34 +25,101 @@ class MY_CONTROLLER extends CI_Controller {
 	}
 	
 	public function _inscription(){
-		// On r�cup les infos
+		// On récup les infos
 		$login = $this->input->post('login');
 		$password = $this->input->post('password');
 		$passok = $this->input->post('passok');
 		$nom = $this->input->post('nom');
 		$prenom = $this->input->post('prenom');
 		$email = $this->input->post('email');
-		// On v�rifie les donn�es
-		if(!empty($login) and !empty($password) and !empty($passok) and !empty($email)) //Pas vide?
+		$emailok = $this->input->post('emailok');
+		// On vérifie les données
+		if(!empty($login) and !empty($password) and !empty($passok) and !empty($email) and !empty($emailok)) //Pas vide?
 		{
-			if($password===$passok)
+			if($password===$passok and $email===$emailok)
 			{
 				//CHeck l'adresse mail
-				//CHeck la BDD si existe ou non
+				$atom   = '[-a-z0-9!#$%&\'*+\\/=?^_`{|}~]';   // caractères autorisés avant l'arobase
+				$domain = '([a-z0-9]([-a-z0-9]*[a-z0-9]+)?)'; // caractères autorisés après l'arobase (nom de domaine)
+											   
+				$regex = '/^' . $atom . '+' .   // Une ou plusieurs fois les caractères autorisés avant l'arobase
+				'(\.' . $atom . '+)*' .         // Suivis par zéro point ou plus
+												// séparés par des caractères autorisés avant l'arobase
+				'@' .                           // Suivis d'un arobase
+				'(' . $domain . '{1,63}\.)+' .  // Suivis par 1 à 63 caractères autorisés pour le nom de domaine
+												// séparés par des points
+				$domain . '{2,63}$/i';          // Suivi de 2 à 63 caractères autorisés pour le nom de domaine
+				
+				if(preg_match($regex,$email))
+				{
+					//CHeck si mail ou pseudo existe dans BDD
+					$this->load->model('mUtilisateur');
+					if(!$this->mUtilisateur->checkIfLoginExist($login) and !$this->mUtilisateur->checkIfEmailExist($email)) //Tout est bon
+					{
+						$this->mUtilisateur->insert($login, $password, $nom, $prenom, $email);
+						mkdir("./images/$login");
+						$headers = 'From: webmaster@cuisine-resort.com' . "\r\n" .
+								   'X-Mailer: PHP/' . phpversion();
+						mail($email,"Bienvenue sur Cuisine-resort!", "Toute l'équipe de Cuisine-resort vous souhaite la bienvenue!",$headers);
+						$var['ok'] = true;
+						$var['login'] = $login;
+						$this->load->view('inscription', $var);
+					}
+					else if($this->mUtilisateur->checkIfLoginExist($login)) //Le pseudo est déjà pris!
+					{
+						$var['erreur'] = 'Ce pseudonyme est déjà pris! Veuillez en choisir un autre.';
+						$var['login'] = $login;
+						$var['nom'] = $nom;
+						$var['prenom'] = $prenom;
+						$var['email'] = $email;
+						$var['ok'] = false;
+						$this->load->view('inscription', $var);
+					}
+					else if($this->mUtilisateur->checkIfEmailExist($email)) //L'email existe déjà!
+					{
+						$var['erreur'] = 'Votre adresse email est déjà utilisée! Les doubles comptes sont interdis.';
+						$var['login'] = $login;
+						$var['nom'] = $nom;
+						$var['prenom'] = $prenom;
+						$var['ok'] = false;
+						$this->load->view('inscription', $var);
+					}
+				}
+				else // L'adresse mail n'est pas bonne
+				{
+					$var['erreur'] = 'Votre adresse email est invalide!';
+					$var['login'] = $login;
+					$var['nom'] = $nom;
+					$var['prenom'] = $prenom;
+					$var['ok'] = false;
+					$this->load->view('inscription', $var);
+				}
 			}
-			else
+			else if($password!==$passok) //Mot de passe fail
 			{
-				$var['erreur'] = 'Les passwords ne sont pas valides entre eux.';
+				$var['erreur'] = 'Les passwords ne correspondent pas.';
 				$var['login'] = $login;
 				$var['nom'] = $nom;
 				$var['prenom'] = $prenom;
 				$var['email'] = $email;
+				$var['ok'] = false;
+                $this->load->view('inscription', $var);
+			}
+			else if($email!==$emailok) //Mail fail
+			{
+				$var['erreur'] = 'Les emails ne correspondent pas.';
+				$var['login'] = $login;
+				$var['nom'] = $nom;
+				$var['prenom'] = $prenom;
+				$var['email'] = $email;
+				$var['ok'] = false;
                 $this->load->view('inscription', $var);
 			}
 		}
 		else
 		{
 			$var['erreur'] = 'Les champs obligatoires ne sont pas tous remplis.';
+			$var['ok'] = false;
             $this->load->view('inscription', $var);
 		}
 	}
@@ -102,7 +169,7 @@ class MY_CONTROLLER extends CI_Controller {
         {
             $this->load->model('members_model', 'Members');
            
-            // On r�cup�re le mot de passe associ� au pseudo
+            // On récupère le mot de passe associé au pseudo
             $data = $this->Members->get_pass($this->input->post('pseudo'));
 
             if ($data->password == hash('sha256', $this->input->post('pass'))) {

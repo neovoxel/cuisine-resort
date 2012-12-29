@@ -26,6 +26,18 @@ class mUtilisateur extends CI_Model {
 			return array();
 	}
 	
+	public function checkIfLoginExist($login)
+	{
+		$query=$this->db->get_where('utilisateur', array('login' => $login));
+		return $query->num_rows()==0?false:true; //Si query est vide (aucun pseudo identique) alors renvoie null
+	}
+	
+	public function checkIfEmailExist($email)
+	{
+		$query=$this->db->get_where('utilisateur', array('email' => $email));
+		return $query->num_rows()==0?false:true; //Si query est vide (aucun email identique) alors renvoie null
+	}
+	
 	public function getPassword($login) {
 		//echo "<h1>$login</h1>";
 		
@@ -43,8 +55,16 @@ class mUtilisateur extends CI_Model {
 		
 	}
 	
-	public function insert($nom_utilisateur, $image_utilisateur) {
-		
+	public function insert($login, $password, $nom_utilisateur, $prenom, $email) {
+		$data = array(
+		   'login' => $login,
+		   'mdp' => $password,
+		   'nom_utilisateur' => $nom_utilisateur,
+		   'prenom' => $prenom,
+		   'email' => $email,
+		   'type_utilisateur' => 0
+		);
+		$this->db->insert('utilisateur', $data);
 	}
 	
 	public function delete($id) {
