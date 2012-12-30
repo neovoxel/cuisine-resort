@@ -1,231 +1,310 @@
 
 {extends 'main.tpl'}
 {block name="titre"}{if $recette['id_recette']|default:''}Editer{else}Ajouter{/if} une recette{/block}
-{block name="output_area"}
-
+{block name="scripts_area"}
 <script type="text/javascript" >
-	function getSelectValue(selectId) {
-		var selectElmt = document.getElementById(selectId);
-		return selectElmt.options[selectElmt.selectedIndex].value;
-	}
-	
-	function getSelectText(selectId) {
-		var selectElmt = document.getElementById(selectId);
-		return selectElmt.options[selectElmt.selectedIndex].text;
-	}
-	
-	function setSelected(selectId, index) {
-		var selectElmt = document.getElementById(selectId);
-		selectElmt.options[selectElmt.selectedIndex].selected = false;
-		selectElmt.options[index].selected = true;
-	}
-	
-	function getSelectIndexFromValue(selectId, value) {
-		var select = document.getElementById(selectId);
-		
-		for (var i = 0 ; i < select.options.length ; i++) {
-			if (select.options[i].value == value)
-				return i;
+
+function getXMLHTTP() {
+	var xhr;
+	try { xhr = new XMLHttpRequest(); }
+	catch (e) {
+		try { xhr = new ActiveXObject('Msxml2.XMLHTTP'); }
+		catch (e2) {
+			try { xhr = new ActiveXObject('Microsoft.XMLHTTP'); }
+			catch (e3) { xhr = false; }
 		}
-		return -1;
 	}
+	return xhr;
+}
+
+function ajouterIngredientAJAX() {
+	var xhr_object = getXMLHTTP();
+	var nom_ingredient = document.getElementById('nom_ingredient').value;
 	
-	function appendValue(element, value) {
-		if (document.getElementsByName(element)[0].value != "")
-			document.getElementsByName(element)[0].value += ";" + value;
-		else
-			document.getElementsByName(element)[0].value = value;
-	}
-	
-	function mClone(original, copie) {
-		var source = document.getElementById(original);
-		var destination = document.getElementById(copie);
-		destination.appendChild(source.cloneNode(true));
-	}
-	
-	function generateCell(content) {
-		return '<span class="cell">' + content	+ "</span>";
-	}
-	
-	function generateRow(quantite, unite, ingredient, actions) {
-		var text  = generateCell(quantite);
-			text += generateCell(unite);
-			text += generateCell(ingredient);
-			text += generateCell(actions);
-		return text;
-	}
-	
-	function generateActions(id_ingredient) {
-		var supprimer = '<a href="javascript:supprimerIngredient(\'' + id_ingredient + '\')" ><img src="{base_url('images/sup_ingredient.gif')}" alt="Supprimer ingrédient" title="Supprimer ingrédient" /></a>';
-		var modifier = '<a href="javascript:modifierIngredient(\'' + id_ingredient + '\')" ><img src="{base_url('images/edit_ingredient.png')}" alt="Modifier ingrédient" title="Modifier ingrédient" /></a>';
-		var appliquer = '<a href="javascript:appliquerModification(\'' + id_ingredient + '\')" ><img src="{base_url('images/ok.png')}" alt="Appliquer modifications" title="Appliquer modifications" /></a>';
-		var annuler = '<a href="javascript:annulerModification(\'' + id_ingredient + '\')" ><img src="{base_url('images/annuler.png')}" alt="Annuler modifications" title="Annuler modifications" /></a>';
-		var actions = { "supprimer" : supprimer, "modifier" : modifier, "appliquer" : appliquer, "annuler" : annuler };
-		return actions;
-	}
-	
-	function ajouterIngredient() {
-		if (document.getElementById("quantite").value <= 0 || getSelectValue("unite") == 0 || getSelectValue("ingredient") == 0)
-			return alert("Erreur : Quantité / Unité / Ingrédient invalide");
-		
-		var quantite = document.getElementById("quantite").value;
-		var unite = getSelectText("unite");
-		var ingredient = getSelectText("ingredient");
-		var id_ingredient = quantite + "_" + getSelectValue("unite") + "_" + getSelectValue("ingredient") + "_" + Math.round(Math.random()*100000);
-		var actions = generateActions(id_ingredient);
-		actions = actions["modifier"] + " " + actions["supprimer"];
-		
-		var text  = '<div id="' + id_ingredient + '" class="row" >';
-			text += generateRow(quantite, unite, ingredient, actions);
-			text += "</div>";
-		document.getElementById("ingredients_ajoutes").innerHTML += text;
-		
-		appendValue("quantites", quantite);
-		appendValue("unites", getSelectValue("unite"));
-		appendValue("ingredients", getSelectValue("ingredient"));
-		appendValue("uniqueIDs", id_ingredient);
-		
-		document.getElementById("quantite").value = 1;
-		setSelected("unite", 0);
-		setSelected("ingredient", 0);
-	}
-	
-	function findAndDelete(tab) {
-		var quantites = document.getElementsByName("quantites")[0].value;
-		quantites = quantites.split(";");
-		
-		var unites = document.getElementsByName("unites")[0].value;
-		unites = unites.split(";");
-		
-		var ingredients = document.getElementsByName("ingredients")[0].value;
-		ingredients = ingredients.split(";");
-		
-		var uniqueIDs = document.getElementsByName("uniqueIDs")[0].value;
-		uniqueIDs = uniqueIDs.split(";");
-		
-		for (var i = 0 ; i < quantites.length ; i++) {
-			if (quantites[i] == tab[0] && unites[i] == tab[1] && ingredients[i] == tab[2] && uniqueIDs[i] == tab[3]) {
-				var str_quantites	= "";
-				var str_unites		= "";
-				var str_ingredients	= "";
-				var str_uniqueIDs	= "";
-				
-				if (i == 0) {
-					for (var j = 1 ; j < quantites.length ; j++) {
-						str_quantites	+= quantites[j] + ";";
-						str_unites		+= unites[j] + ";";
-						str_ingredients	+= ingredients[j] + ";";
-						str_uniqueIDs	+= uniqueIDs[j] + ";";
-					}
-					
-					str_quantites	= str_quantites.substring(0, str_quantites.length-1);
-					str_unites		= str_unites.substring(0, str_unites.length-1);
-					str_ingredients	= str_ingredients.substring(0, str_ingredients.length-1);
-					str_uniqueIDs	= str_uniqueIDs.substring(0, str_uniqueIDs.length-1);
-				}
-				else {
-					str_quantites	= quantites[0];
-					str_unites		= unites[0];
-					str_ingredients	= ingredients[0];
-					str_uniqueIDs	= uniqueIDs[0];
-					
-					for (var j = 1 ; j < quantites.length ; j++) {
-						if (i != j) {
-							str_quantites	+= ";" + quantites[j];
-							str_unites		+= ";" + unites[j];
-							str_ingredients	+= ";" + ingredients[j];
-							str_uniqueIDs	+= ";" + uniqueIDs[j];
+	if (nom_ingredient != "") {
+		if (confirm("Êtes-vous sûr de vouloir créer l'ingrédient '" + nom_ingredient + "' ?")) {
+			xhr_object.onreadystatechange = function() {
+				if (xhr_object.readyState == 4) {
+					if (xhr_object.status == 200) {
+						var response = xhr_object.responseText;
+						response = response.split(';');
+						alert(response[0]);
+						if (response[1] != "") {
+							var select = document.getElementById("ingredient");
+							select.options[select.options.length] = new Option(response[2], response[1] );
 						}
 					}
+					else
+						alert("Error code : " + xhr_object.status);
+					
+					document.getElementById('nom_ingredient').value = "Nom de l'ingrédient";
+				}
+			};
+			
+			xhr_object.open("POST", "{base_url('index.php/Membre/ajouterIngredient')}", true);
+			xhr_object.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+			xhr_object.send("nom_ingredient=" + nom_ingredient);
+		}
+	}
+}
+
+function ajouterUniteAJAX() {
+	var xhr_object = getXMLHTTP();
+	var nom_unite = document.getElementById('nom_unite').value;
+	
+	if (nom_unite != "") {
+		if (confirm("Êtes-vous sûr de vouloir créer l'unité '" + nom_unite + "' ?")) {
+			xhr_object.onreadystatechange = function() {
+				if (xhr_object.readyState == 4) {
+					if (xhr_object.status == 200) {
+						var response = xhr_object.responseText;
+						response = response.split(';');
+						alert(response[0]);
+						if (response[1] != "") {
+							var select = document.getElementById("unite");
+							select.options[select.options.length] = new Option(response[2], response[1] );
+						}
+					}
+					else
+						alert("Error code : " + xhr_object.status);
+					
+					document.getElementById('nom_unite').value = "Nom de l'unité";
+				}
+			};
+			
+			xhr_object.open("POST", "{base_url('index.php/Membre/ajouterUnite')}", true);
+			xhr_object.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+			xhr_object.send("nom_unite=" + nom_unite);
+		}
+	}
+}
+
+function getSelectValue(selectId) {
+	var selectElmt = document.getElementById(selectId);
+	return selectElmt.options[selectElmt.selectedIndex].value;
+}
+
+function getSelectText(selectId) {
+	var selectElmt = document.getElementById(selectId);
+	return selectElmt.options[selectElmt.selectedIndex].text;
+}
+
+function setSelected(selectId, index) {
+	var selectElmt = document.getElementById(selectId);
+	selectElmt.options[selectElmt.selectedIndex].selected = false;
+	selectElmt.options[index].selected = true;
+}
+
+function getSelectIndexFromValue(selectId, value) {
+	var select = document.getElementById(selectId);
+	
+	for (var i = 0 ; i < select.options.length ; i++) {
+		if (select.options[i].value == value)
+			return i;
+	}
+	return -1;
+}
+
+function appendValue(element, value) {
+	if (document.getElementsByName(element)[0].value != "")
+		document.getElementsByName(element)[0].value += ";" + value;
+	else
+		document.getElementsByName(element)[0].value = value;
+}
+
+function mClone(original, copie) {
+	var source = document.getElementById(original);
+	var destination = document.getElementById(copie);
+	destination.appendChild(source.cloneNode(true));
+}
+
+function generateCell(content) {
+	return '<span class="cell">' + content	+ "</span>";
+}
+
+function generateRow(quantite, unite, ingredient, actions) {
+	var text  = generateCell(quantite);
+		text += generateCell(unite);
+		text += generateCell(ingredient);
+		text += generateCell(actions);
+	return text;
+}
+
+function generateActions(id_ingredient) {
+	var supprimer = '<a href="javascript:supprimerIngredient(\'' + id_ingredient + '\')" ><img src="{base_url('images/sup_ingredient.gif')}" alt="Supprimer ingrédient" title="Supprimer ingrédient" /></a>';
+	var modifier = '<a href="javascript:modifierIngredient(\'' + id_ingredient + '\')" ><img src="{base_url('images/edit_ingredient.png')}" alt="Modifier ingrédient" title="Modifier ingrédient" /></a>';
+	var appliquer = '<a href="javascript:appliquerModification(\'' + id_ingredient + '\')" ><img src="{base_url('images/ok.png')}" alt="Appliquer modifications" title="Appliquer modifications" /></a>';
+	var annuler = '<a href="javascript:annulerModification(\'' + id_ingredient + '\')" ><img src="{base_url('images/annuler.png')}" alt="Annuler modifications" title="Annuler modifications" /></a>';
+	var actions = { "supprimer" : supprimer, "modifier" : modifier, "appliquer" : appliquer, "annuler" : annuler };
+	return actions;
+}
+
+function ajouterIngredient() {
+	if (document.getElementById("quantite").value <= 0 || getSelectValue("unite") == 0 || getSelectValue("ingredient") == 0)
+		return alert("Erreur : Quantité / Unité / Ingrédient invalide");
+	
+	var quantite = document.getElementById("quantite").value;
+	var unite = getSelectText("unite");
+	var ingredient = getSelectText("ingredient");
+	var id_ingredient = quantite + "_" + getSelectValue("unite") + "_" + getSelectValue("ingredient") + "_" + Math.round(Math.random()*100000);
+	var actions = generateActions(id_ingredient);
+	actions = actions["modifier"] + " " + actions["supprimer"];
+	
+	var text  = '<div id="' + id_ingredient + '" class="row" >';
+		text += generateRow(quantite, unite, ingredient, actions);
+		text += "</div>";
+	document.getElementById("ingredients_ajoutes").innerHTML += text;
+	
+	appendValue("quantites", quantite);
+	appendValue("unites", getSelectValue("unite"));
+	appendValue("ingredients", getSelectValue("ingredient"));
+	appendValue("uniqueIDs", id_ingredient);
+	
+	document.getElementById("quantite").value = 1;
+	setSelected("unite", 0);
+	setSelected("ingredient", 0);
+}
+
+function findAndDelete(tab) {
+	var quantites = document.getElementsByName("quantites")[0].value;
+	quantites = quantites.split(";");
+	
+	var unites = document.getElementsByName("unites")[0].value;
+	unites = unites.split(";");
+	
+	var ingredients = document.getElementsByName("ingredients")[0].value;
+	ingredients = ingredients.split(";");
+	
+	var uniqueIDs = document.getElementsByName("uniqueIDs")[0].value;
+	uniqueIDs = uniqueIDs.split(";");
+	
+	for (var i = 0 ; i < quantites.length ; i++) {
+		if (quantites[i] == tab[0] && unites[i] == tab[1] && ingredients[i] == tab[2] && uniqueIDs[i] == tab[3]) {
+			var str_quantites	= "";
+			var str_unites		= "";
+			var str_ingredients	= "";
+			var str_uniqueIDs	= "";
+			
+			if (i == 0) {
+				for (var j = 1 ; j < quantites.length ; j++) {
+					str_quantites	+= quantites[j] + ";";
+					str_unites		+= unites[j] + ";";
+					str_ingredients	+= ingredients[j] + ";";
+					str_uniqueIDs	+= uniqueIDs[j] + ";";
 				}
 				
-				document.getElementsByName("quantites")[0].value	= str_quantites;
-				document.getElementsByName("unites")[0].value		= str_unites;
-				document.getElementsByName("ingredients")[0].value	= str_ingredients;
-				document.getElementsByName("uniqueIDs")[0].value	= str_uniqueIDs;
-				
-				return true;
+				str_quantites	= str_quantites.substring(0, str_quantites.length-1);
+				str_unites		= str_unites.substring(0, str_unites.length-1);
+				str_ingredients	= str_ingredients.substring(0, str_ingredients.length-1);
+				str_uniqueIDs	= str_uniqueIDs.substring(0, str_uniqueIDs.length-1);
 			}
-		}
-		return false;
-	}
-	
-	function supprimerIngredient(id_ingredient) {
-		if (confirm("Êtes-vous sûr de vouloir supprimer cet ingrédient ?")) {
-			var tab = id_ingredient.split("_");
-			tab[3] = id_ingredient;
-			if (!findAndDelete(tab))
-				alert("Erreur lors de la suppression de l'ingrédient.");
 			else {
-				var parent = document.getElementById("ingredients_ajoutes");
-				var element = document.getElementById(id_ingredient);
-				parent.removeChild(element);
+				str_quantites	= quantites[0];
+				str_unites		= unites[0];
+				str_ingredients	= ingredients[0];
+				str_uniqueIDs	= uniqueIDs[0];
+				
+				for (var j = 1 ; j < quantites.length ; j++) {
+					if (i != j) {
+						str_quantites	+= ";" + quantites[j];
+						str_unites		+= ";" + unites[j];
+						str_ingredients	+= ";" + ingredients[j];
+						str_uniqueIDs	+= ";" + uniqueIDs[j];
+					}
+				}
 			}
+			
+			document.getElementsByName("quantites")[0].value	= str_quantites;
+			document.getElementsByName("unites")[0].value		= str_unites;
+			document.getElementsByName("ingredients")[0].value	= str_ingredients;
+			document.getElementsByName("uniqueIDs")[0].value	= str_uniqueIDs;
+			
+			return true;
 		}
 	}
-	
-	function modifierIngredient(id_ingredient) {
-		var tab = id_ingredient.split("_");
-		tab[3] = id_ingredient;
-		
-		var actions = generateActions(id_ingredient);
-		actions = actions["appliquer"] + " " + actions["annuler"];
-		
-		var text  = generateCell('<input id="quantite_' + id_ingredient + '" type="number" size="2" value="' + tab[0] + '" >');
-			text += '<span class="cell" id="unite_' + id_ingredient + '"></span>';
-			text += '<span class="cell" id="ingredient_' + id_ingredient + '"></span>';
-			text += generateCell(actions);
-		
-		var element = document.getElementById(id_ingredient);
-		element.innerHTML = text;
-		
-		mClone("unite", "unite_" + id_ingredient);
-		document.getElementById("unite_" + id_ingredient).childNodes[0].id = "select_unite_" + id_ingredient;
-		setSelected("select_unite_" + id_ingredient, getSelectIndexFromValue("unite", tab[1]));
-		
-		mClone("ingredient", "ingredient_" + id_ingredient);
-		document.getElementById("ingredient_" + id_ingredient).childNodes[0].id = "select_ingredient_" + id_ingredient;
-		setSelected("select_ingredient_" + id_ingredient, getSelectIndexFromValue("ingredient", tab[2]));
-	}
-	
-	function appliquerModification(id_ingredient) {
+	return false;
+}
+
+function supprimerIngredient(id_ingredient) {
+	if (confirm("Êtes-vous sûr de vouloir supprimer cet ingrédient ?")) {
 		var tab = id_ingredient.split("_");
 		tab[3] = id_ingredient;
 		if (!findAndDelete(tab))
-			alert("Erreur lors de la modification de l'ingrédient.");
+			alert("Erreur lors de la suppression de l'ingrédient.");
 		else {
-			var quantite = document.getElementById("quantite_" + id_ingredient).value;
-			var unite = getSelectText("select_unite_" + id_ingredient);
-			var ingredient = getSelectText("select_ingredient_" + id_ingredient);
-			var new_id_ingredient = quantite + "_" + getSelectValue("select_unite_" + id_ingredient) + "_" + getSelectValue("select_ingredient_" + id_ingredient) + "_" + Math.round(Math.random()*100000);
-			var actions = generateActions(id_ingredient);
-			actions = actions["modifier"] + " " + actions["supprimer"];
-		
-			appendValue("quantites", quantite);
-			appendValue("unites", getSelectValue("select_unite_" + id_ingredient));
-			appendValue("ingredients", getSelectValue("select_ingredient_" + id_ingredient));
-			appendValue("uniqueIDs", new_id_ingredient);
-			
+			var parent = document.getElementById("ingredients_ajoutes");
 			var element = document.getElementById(id_ingredient);
-			element.innerHTML = generateRow(quantite, unite, ingredient, actions);
-			element.id = new_id_ingredient;
+			parent.removeChild(element);
 		}
 	}
+}
+
+function modifierIngredient(id_ingredient) {
+	var tab = id_ingredient.split("_");
+	tab[3] = id_ingredient;
 	
-	function annulerModification(id_ingredient) {
-		var tab = id_ingredient.split("_");
-		tab[3] = id_ingredient;
-		
-		var quantite = tab[0];
-		var unite = document.getElementById("unite").options[getSelectIndexFromValue("unite", tab[1])].text;
-		var ingredient = document.getElementById("ingredient").options[getSelectIndexFromValue("ingredient", tab[2])].text;
+	var actions = generateActions(id_ingredient);
+	actions = actions["appliquer"] + " " + actions["annuler"];
+	
+	var text  = generateCell('<input id="quantite_' + id_ingredient + '" type="number" size="2" value="' + tab[0] + '" >');
+		text += '<span class="cell" id="unite_' + id_ingredient + '"></span>';
+		text += '<span class="cell" id="ingredient_' + id_ingredient + '"></span>';
+		text += generateCell(actions);
+	
+	var element = document.getElementById(id_ingredient);
+	element.innerHTML = text;
+	
+	mClone("unite", "unite_" + id_ingredient);
+	document.getElementById("unite_" + id_ingredient).childNodes[0].id = "select_unite_" + id_ingredient;
+	setSelected("select_unite_" + id_ingredient, getSelectIndexFromValue("unite", tab[1]));
+	
+	mClone("ingredient", "ingredient_" + id_ingredient);
+	document.getElementById("ingredient_" + id_ingredient).childNodes[0].id = "select_ingredient_" + id_ingredient;
+	setSelected("select_ingredient_" + id_ingredient, getSelectIndexFromValue("ingredient", tab[2]));
+}
+
+function appliquerModification(id_ingredient) {
+	var tab = id_ingredient.split("_");
+	tab[3] = id_ingredient;
+	if (!findAndDelete(tab))
+		alert("Erreur lors de la modification de l'ingrédient.");
+	else {
+		var quantite = document.getElementById("quantite_" + id_ingredient).value;
+		var unite = getSelectText("select_unite_" + id_ingredient);
+		var ingredient = getSelectText("select_ingredient_" + id_ingredient);
+		var new_id_ingredient = quantite + "_" + getSelectValue("select_unite_" + id_ingredient) + "_" + getSelectValue("select_ingredient_" + id_ingredient) + "_" + Math.round(Math.random()*100000);
 		var actions = generateActions(id_ingredient);
 		actions = actions["modifier"] + " " + actions["supprimer"];
-		
-		document.getElementById(id_ingredient).innerHTML = generateRow(quantite, unite, ingredient, actions);
-	}
 	
+		appendValue("quantites", quantite);
+		appendValue("unites", getSelectValue("select_unite_" + id_ingredient));
+		appendValue("ingredients", getSelectValue("select_ingredient_" + id_ingredient));
+		appendValue("uniqueIDs", new_id_ingredient);
+		
+		var element = document.getElementById(id_ingredient);
+		element.innerHTML = generateRow(quantite, unite, ingredient, actions);
+		element.id = new_id_ingredient;
+	}
+}
+
+function annulerModification(id_ingredient) {
+	var tab = id_ingredient.split("_");
+	tab[3] = id_ingredient;
+	
+	var quantite = tab[0];
+	var unite = document.getElementById("unite").options[getSelectIndexFromValue("unite", tab[1])].text;
+	var ingredient = document.getElementById("ingredient").options[getSelectIndexFromValue("ingredient", tab[2])].text;
+	var actions = generateActions(id_ingredient);
+	actions = actions["modifier"] + " " + actions["supprimer"];
+	
+	document.getElementById(id_ingredient).innerHTML = generateRow(quantite, unite, ingredient, actions);
+}
+
+
+
 </script>
+{/block}
+{block name="output_area"}
 
 <div id="editer_recette">
 	{if $recette['image_recette']|default:''}
@@ -358,6 +437,21 @@
 				{/foreach}
 			</select>
 			<input type="button" onclick="javascript:ajouterIngredient()" value="Ajouter l'ingrédient" >
+			<hr />
+			<p><span style="font-weight: bold;">L'ingrédient / unité que vous cherchez n'existe pas ?</span><br />
+			Vous pouvez l'ajouter à notre base de données en remplissant le formulaire ci-dessous !</p>
+			
+			<div class="no_table">
+				<div class="row">
+					<span class="cell"><input id="nom_unite" type="text" size="25" value="Nom de l'unité" onclick="this.value='';"></span>
+					<span class="cell"><input id="nom_ingredient" type="text" size="25" value="Nom de l'ingrédient" onclick="this.value='';"></span>
+				</div>
+				<div class="row">
+					<span class="cell"><input type="button" onclick="javascript:ajouterUniteAJAX()" value="Créer une unité" ></span>
+					<span class="cell"><input type="button" onclick="javascript:ajouterIngredientAJAX()" value="Créer un ingrédient" ></span>
+				</div>
+			</div>
+			
 		</fieldset>
 		<br />
 		

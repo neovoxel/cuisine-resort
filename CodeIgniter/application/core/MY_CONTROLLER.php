@@ -457,6 +457,45 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 		//printf("<pre>%s</pre>", print_r($data, true));
 	}
 	
+	function ajouterIngredient() {
+		$nom_ingredient = $this->input->post('nom_ingredient');
+		
+		if (empty($nom_ingredient))
+			$result = 'Erreur : Paramètre vide.;;';
+		else {
+			$this->load->model('mIngredient');
+			$ingredient = $this->mIngredient->getByName($nom_ingredient);
+			
+			if (is_null($ingredient)) {
+				$id_ingredient = $this->mIngredient->insert($nom_ingredient);
+				$result = "L'ingrédient '".$nom_ingredient."' a été ajouté avec succès.;".$id_ingredient.";".$nom_ingredient;
+			}
+			else
+				$result = "Erreur : L'ingrédient '".$nom_ingredient."' existe déjà.;;";
+		}
+		
+		echo $result;
+	}
+	
+	function ajouterUnite() {
+		$nom_unite = $this->input->post('nom_unite');
+		
+		if (empty($nom_unite))
+			$result = 'Erreur : Paramètre vide.;;';
+		else {
+			$this->load->model('mUnite');
+			$unite = $this->mUnite->getByName($nom_unite);
+			
+			if (is_null($unite)) {
+				$id_unite = $this->mUnite->insert($nom_unite);
+				$result = "L'unité '".$nom_unite."' a été ajoutée avec succès.;".$id_unite.";".$nom_unite;
+			}
+			else
+				$result = "Erreur : L'unité '".$nom_unite."' existe déjà.;;";
+		}
+		
+		echo $result;
+	}
 }
 
 

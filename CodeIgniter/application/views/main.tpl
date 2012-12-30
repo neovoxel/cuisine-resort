@@ -11,12 +11,13 @@
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width">
 	<link rel="stylesheet" href="{base_url('css/style.css')}">
-	<script>
+	<script type="text/javascript" >
 		function delete_com()
 		{ return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?'); }
 		function delete_recette()
 		{ return confirm('Êtes-vous sûr de vouloir supprimer cette recette ?'); }
 	</script>
+	{block name=scripts_area}{/block}
 </head>
 <body>
 	<!--[if lt IE 7]>
