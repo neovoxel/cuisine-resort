@@ -198,6 +198,21 @@ class MY_CONTROLLER extends CI_Controller {
         redirect('home/connexion');
 	}
 	
+	protected function do_upload() {
+		$config['upload_path']	 = './uploads/';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size']		 = '1024';
+		$config['max_width']	 = '300';
+		$config['max_height']	 = '300';
+
+		$this->load->library('upload', $config);
+
+		if ($this->upload->do_upload())
+			return $this->upload->data();
+		else
+			return false;
+	}
+	
 	public function getUser() {
 		return $this->session;
 	}
@@ -242,6 +257,40 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 			$this->redirectTo('home');
 	}
 	
+	private function verifyRecette() {
+		$this->load->model('mCategorie');
+		$categories = $this->mCategorie->getAll();
+		
+		$recette = $this->input->post();
+		$erreur = true;
+		
+		foreach ($categories as $categorie) {
+			$tmp = $this->input->post('categorie_'.$categorie->id_categorie);
+			if (!empty($tmp))
+				$erreur = false;
+		}
+		
+		if ($erreur)
+			return false;
+		
+		if (empty($recette['titre']))
+			return false;
+		
+		if (empty($recette['texte_recette']))
+			return false;
+		
+		if (empty($recette['quantites']))
+			return false;
+		
+		if (empty($recette['unites']))
+			return false;
+		
+		if (empty($recette['ingredients']))
+			return false;
+		
+		return true;	// Pas d'erreur
+	}
+	
 	public function editerRecette($id_recette) {
 		if (empty($id_recette))
 			$this->redirectTo('Membre/ajouterRecette');
@@ -251,8 +300,11 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 		$recette = $this->mRecette->get($id_recette);
 		
 		if ($recette->id_utilisateur == $this->session->userdata('id_utilisateur')) {
-			$titre = $this->input->post('titre');
-			if (empty($titre)) {
+			if (!$this->verifyRecette()) {
+				$titre = $this->input->post('titre');
+				if (!empty($titre))
+					$data['erreur'] = 1;
+				
 				$this->load->model('mIngredient');
 				$this->load->model('mUnite');
 				$this->load->model('mCategorie');
@@ -271,6 +323,12 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 				$tabRecette['texte_recette'] = $recette->recette;
 				$tabRecette['nb_pers'] = $recette->nb_pers;
 				$tabRecette['difficulte'] = $recette->difficulte;
+				$tabRecette['etat'] = $recette->etat;
+				$tabRecette['date_recette'] = $recette->date_recette;
+				$tabRecette['login'] = $this->session->userdata('login');
+				
+				if (!empty($recette->image_recette))
+					$tabRecette['image_recette'] = $recette->image_recette;
 				
 				$temps_prepar = explode(':', $recette->temps_prepar);
 				$tabRecette['tps_h'] = $temps_prepar[0];
@@ -293,55 +351,12 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 				$data['recette'] = $tabRecette;
 				$this->load->view('editer_recette', $data);
 			}
-			else {
-				echo 'update !';
-			}
-		}
-		else
-			$this->redirectTo('home');
-	}
-	
-	public function ajouterRecette() {
-		$titre = $this->input->post('titre');
-		
-		$this->load->model('mIngredient');
-		$this->load->model('mUnite');
-		$this->load->model('mCategorie');
-		$data = array();
-		$data['ingredients'] = $this->mIngredient->getAll();
-		$data['unites'] = $this->mUnite->getAll();
-		$data['categories'] = $this->mCategorie->getAll();
-		
-		if (empty($titre)) {
-			$this->load->view('editer_recette', $data);
-		}
-		else {
-			$data['recette'] = $this->input->post();
-			$erreur = true;
-			
-			foreach ($data['categories'] as $categorie) {
-				$tmp = $this->input->post('categorie_'.$categorie->id_categorie);
-				if (!empty($tmp))
-					$erreur = false;
-			}
-			
-			if (empty($data['recette']['texte_recette']))
-				$erreur = true;
-			
-			if (empty($data['recette']['quantites']))
-				$erreur = true;
-			
-			if (empty($data['recette']['unites']))
-				$erreur = true;
-			
-			if (empty($data['recette']['ingredients']))
-				$erreur = true;
-			
-			if ($erreur === true) {
-				$data['erreur'] = 1;
-				$this->load->view('editer_recette', $data);
-			}
-			else {
+			else {	// Update
+				$data['recette'] = $this->input->post();
+				
+				$this->load->model('mCategorie');
+				$data['categories'] = $this->mCategorie->getAll();
+				
 				$categories = array();
 				$i = 0;
 				foreach ($data['categories'] as $categorie) {
@@ -352,19 +367,19 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 				
 				$data = $data['recette'];
 				
-				$quantites = explode(';', $data['quantites']);
-				$unites = explode(';', $data['unites']);
+				$quantites	 = explode(';', $data['quantites']);
+				$unites		 = explode(';', $data['unites']);
 				$ingredients = explode(';', $data['ingredients']);
 				
 				$this->load->helper('date');
 				$this->load->model('mRecette');
-				$this->mRecette->insert($this->session->userdata('id_utilisateur'),
+				$this->mRecette->update($id_recette,
+										$this->session->userdata('id_utilisateur'),
 										$data['titre'],
 										$data['texte_recette'],
 										$data['tps_h'].':'.$data['tps_m'].':'.$data['tps_s'],
 										$data['nb_pers'],
 										$data['difficulte'],
-										mdate("%Y-%m-%d", time()),
 										$categories,
 										$ingredients,
 										$unites,
@@ -372,10 +387,76 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 				
 				$this->redirectTo('Membre/profil');
 			}
-			
-			//printf("<pre>%s</pre>", print_r($data, true));
 		}
+		else
+			$this->redirectTo('home');
 	}
+	
+	public function ajouterRecette() {
+		$data['recette'] = $this->input->post();
+		
+		$this->load->model('mIngredient');
+		$this->load->model('mUnite');
+		$this->load->model('mCategorie');
+		
+		$data['ingredients'] = $this->mIngredient->getAll();
+		$data['unites'] = $this->mUnite->getAll();
+		$data['categories'] = $this->mCategorie->getAll();
+		
+		if (empty($data['recette']['titre'])) {
+			$this->load->view('editer_recette', $data);
+		}
+		else if ($this->verifyRecette()) {
+			$categories = array();
+			$i = 0;
+			foreach ($data['categories'] as $categorie) {
+				$tmp = $this->input->post('categorie_'.$categorie->id_categorie);
+				if (!empty($tmp))
+					$categories[$i++] = $tmp;
+			}
+			
+			$data = $data['recette'];
+			
+			$image_recette = $this->do_upload();
+			if ($image_recette !== false)
+				$image_recette = $image_recette['file_name'];
+			else
+				$image_recette = '';
+			
+			$quantites	 = explode(';', $data['quantites']);
+			$unites		 = explode(';', $data['unites']);
+			$ingredients = explode(';', $data['ingredients']);
+			
+			$this->load->helper('date');
+			$this->load->model('mRecette');
+			$id_recette = $this->mRecette->insert($this->session->userdata('id_utilisateur'),
+									$data['titre'],
+									$data['texte_recette'],
+									$data['tps_h'].':'.$data['tps_m'].':'.$data['tps_s'],
+									$data['nb_pers'],
+									$data['difficulte'],
+									$image_recette,
+									mdate("%Y-%m-%d", time()),
+									$categories,
+									$ingredients,
+									$unites,
+									$quantites);
+			
+			if (!empty($image_recette)) {
+				mkdir('./images/'.$this->session->userdata('login').'/'.$id_recette);
+				rename("./uploads/".$image_recette, './images/'.$this->session->userdata('login').'/'.$id_recette.'/'.$image_recette);
+			}
+			
+			$this->redirectTo('Membre/profil');
+		}
+		else {
+			$data['erreur'] = 1;
+			$this->load->view('editer_recette', $data);
+		}
+		
+		//printf("<pre>%s</pre>", print_r($data, true));
+	}
+	
 }
 
 

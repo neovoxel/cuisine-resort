@@ -102,8 +102,44 @@ EOF;
 			return array();
 	}
 	
-	public function update($id, $nom_recette, $image_recette) {
+	public function update(	$id_recette,
+							$id_utilisateur,
+							$titre,
+							$recette,
+							$temps_prepar,
+							$nb_pers,
+							$difficulte,
+							$categories,
+							$ingredients,
+							$unites,
+							$quantites) {
+		$data = array(
+		   'id_utilisateur' => $id_utilisateur,
+		   'titre' => $titre,
+		   'etat' => 'private',
+		   'recette' => $recette,
+		   'temps_prepar' => $temps_prepar,
+		   'nb_pers' => $nb_pers,
+		   'difficulte' => $difficulte
+		);
 		
+		$this->db->where('id_recette', $id_recette);
+		$this->db->update('recette', $data);
+		
+		$this->db->delete('appartient', array('id_recette' => $id_recette));
+		foreach ($categories as $line)
+			$this->db->insert('appartient', array('id_recette' => $id_recette, 'id_categorie' => $line));
+		
+		$this->db->delete('compose', array('id_recette' => $id_recette));
+		for ($i = 0 ; $i < count($quantites) ; $i++) {
+			$data = array(
+			   'id_recette' => $id_recette,
+			   'id_ingredient' => $ingredients[$i],
+			   'id_unite' => $unites[$i],
+			   'quantite' => $quantites[$i]
+			);
+			$this->db->insert('compose', $data);
+		}
 	}
 	
 	public function insert(	$id_utilisateur,
@@ -112,6 +148,7 @@ EOF;
 							$temps_prepar,
 							$nb_pers,
 							$difficulte,
+							$image_recette,
 							$date_recette,
 							$categories,
 							$ingredients,
@@ -127,6 +164,10 @@ EOF;
 		   'difficulte' => $difficulte,
 		   'date_recette' => $date_recette
 		);
+		
+		if (!empty($image_recette))
+			$data['image_recette'] = $image_recette;
+		
 		$this->db->insert('recette', $data);	// Insertion de la recette
 		
 		$id_recette = $this->db->insert_id();
@@ -143,7 +184,7 @@ EOF;
 			);
 			$this->db->insert('compose', $data);	// Insertion des ingredients de la recette
 		}
-		
+		return $id_recette;
 	}
 	
 	public function delete($id) { 
