@@ -56,23 +56,19 @@ class Membre extends MY_Membre_Controller {
 				{
 					//CHeck si mail dans BDD
 					$this->load->model('mUtilisateur');
-					if(!$this->mUtilisateur->checkIfLoginExist($login) and !$this->mUtilisateur->checkIfEmailExist($email)) //Tout est bon
+					if(!$this->mUtilisateur->checkIfEmailExist($email) or $email===$this->mUtilisateur->get($id)->email) //Tout est bon
 					{
-						$this->mUtilisateur->insert($login, $password, $nom, $prenom, $email);
-						mkdir("./images/$login");
-						$headers = 'From: webmaster@cuisine-resort.com' . "\r\n" .
-								   'X-Mailer: PHP/' . phpversion();
-						mail($email,"Bienvenue sur Cuisine-resort!", "Toute l'équipe de Cuisine-resort vous souhaite la bienvenue!",$headers);
-						$var['ok'] = true;
-						$var['login'] = $login;
-						$this->load->view('inscription', $var);
+						$this->mUtilisateur->update($id, $nom, $prenom, $email);
+						$this->redirectTo("Membre/profil");
 					}
-					else if($this->mUtilisateur->checkIfEmailExist($email)) //L'email existe déjà!
+					else //L'email existe déjà!
 					{
 						$var['erreur'] = 'Votre adresse email est déjà utilisée! Les doubles comptes sont interdis.';
 						$var['utilisateur']=$this->mUtilisateur->get($id);
 						$this->load->view('edit_profil', $var);;
 					}
+				}
+			}
 		}
 		else { //Sinon on affiche page d'édition
 			$this->load->model('mUtilisateur');
