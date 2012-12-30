@@ -3,7 +3,7 @@
 {block name="output_area"}
 <div id="mon_profil">
 	<div id="profil_details">
-		<h2>Informations personnelles</h2>
+		<h2>Informations personnelles <a href="{base_url('index.php/Membre/edit')}"><img src="{base_url('images/edit_ingredient.png')}" alt="Editer profil"></a></h2>
 		<p>{$utilisateur->type_utilisateur}<br />
 		Nom : {$utilisateur->nom_utilisateur}<br />
 		Prénom : {$utilisateur->prenom}<br />

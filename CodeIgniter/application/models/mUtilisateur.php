@@ -51,7 +51,16 @@ class mUtilisateur extends CI_Model {
 			return null;
 	}
 	
-	public function update($id, $nom_utilisateur, $image_utilisateur) {
+	public function update($id, $nom, $prenom, $email) {	
+		$data = array(
+		   'id_utilisateur' => $id,
+		   'nom_utilisateur' => $nom,
+		   'prenom' => $prenom,
+		   'email' => $email
+		);
+		
+		$this->db->where('id_utilisateur', $id);
+		$this->db->update('utilisateur', $data);
 		
 	}
 	
