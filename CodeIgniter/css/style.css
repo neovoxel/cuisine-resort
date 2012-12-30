@@ -298,6 +298,16 @@ label {
 	width: 120px;
 }
 
+#formulaire_inscription {
+	width: 450px;
+	margin: 0 auto;
+	display: block;
+}
+
+#formulaire_inscription label {
+	width: 220px;
+}
+
 #add_com #add_com_form {
 	width: 80%;
 	margin: 0 auto;
