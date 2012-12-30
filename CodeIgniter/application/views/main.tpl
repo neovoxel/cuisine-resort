@@ -11,12 +11,6 @@
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width">
 	<link rel="stylesheet" href="{base_url('css/style.css')}">
-	<script type="text/javascript" >
-		function delete_com()
-		{ return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?'); }
-		function delete_recette()
-		{ return confirm('Êtes-vous sûr de vouloir supprimer cette recette ?'); }
-	</script>
 	{block name=scripts_area}{/block}
 </head>
 <body>
@@ -40,7 +34,7 @@
 		<footer>
 			{include 'footer.tpl' scope=parent}
 		</footer>
-	</div> <!-- /contenu -->
+	</div>
 	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 </body>

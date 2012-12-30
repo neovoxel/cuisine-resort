@@ -1,6 +1,14 @@
 
 {extends 'main.tpl'}
 {block name="titre"}Détail recette{/block}
+{block name="scripts_area"}
+<script type="text/javascript" >
+	function delete_com()
+	{ return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?'); }
+	function delete_recette()
+	{ return confirm('Êtes-vous sûr de vouloir supprimer cette recette ?'); }
+</script>
+{/block}
 {block name="output_area"}
 <div id="body">
 {if $recette|default:''}
