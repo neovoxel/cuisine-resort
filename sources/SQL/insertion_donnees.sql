@@ -1,11 +1,11 @@
 INSERT INTO Utilisateur(login,nom_utilisateur,prenom,mdp,email,type_utilisateur)
-	VALUES('Pistou','Robert','Jean-Guy','supermdp','robert@jambon.net',0);
+	VALUES('Pistou','Robert','Jean-Guy','967520ae23e8ee14888bae72809031b98398ae4a636773e18fff917d77679334','robert@jambon.net',0);
 
 INSERT INTO Utilisateur(login,nom_utilisateur,prenom,mdp,email,type_utilisateur)
-	VALUES('torresflo','Torres','Flo','motdepasse','torresflo@hotmail.fr',0);
+	VALUES('torresflo','Torres','Flo','967520ae23e8ee14888bae72809031b98398ae4a636773e18fff917d77679334','torresflo@hotmail.fr',0);
 
 INSERT INTO Utilisateur(login,mdp,email,type_utilisateur)
-	VALUES('AlexMexicanos','alexlefou','alexmexicanos@hotmail.fr',0);
+	VALUES('AlexMexicanos','967520ae23e8ee14888bae72809031b98398ae4a636773e18fff917d77679334','alexmexicanos@hotmail.fr',0);
 
 INSERT INTO Unite(nom_unite)
 	VALUES('Sans unité');

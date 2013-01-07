@@ -314,16 +314,7 @@ function annulerModification(id_ingredient) {
 	{/if}
 	<h1>{if $recette['id_recette']|default:''}Editer{else}Ajouter{/if} une recette</h1>
 	{if $recette['etat']|default:''}
-		{if $recette['etat']=='private'}
-			<p>Votre recette est actuellement privée et n'est visible que par vous.<br />
-			<a>Cliquez ici</a> pour effectuer une demande de validation auprès d'un administrateur.</p>
-		{elseif $recette['etat']=='waiting'}
-			<p>Votre recette est en cours de validation par un administrateur. Vous serez notifié(e) par mail lors de sa publication.<br />
-			Toute modification de votre recette la rendra de nouveau privée et vous devrez refaire une demande de validation auprès d'un administrateur pour la rendre publique.</p>
-		{elseif $recette['etat']=='public'}
-			<p>Votre recette est actuellement publique et visible par tout le monde.<br />
-			Toute modification de celle-ci la rendra de nouveau privée et vous devrez refaire une demande de validation auprès d'un administrateur pour la rendre publique.</p>
-		{/if}
+		{include file='info_etat_recette.tpl' etat=$recette['etat'] inline nocache}
 	{/if}
 	
 	{if $erreur|default:''}<span class="erreur" >Erreur : certains champs sont invalides</span><br />{/if}

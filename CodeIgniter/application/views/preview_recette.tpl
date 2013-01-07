@@ -1,6 +1,14 @@
 
 {assign var='showUser' value=$showUser|default:'1'}
 {assign var='showEtat' value=$showEtat|default:'0'}
+{$display=0}
+{if $recette->etat=="public"}{$display=1}
+{elseif $ci->_isLogOn()}
+	{if $ci->getUser()->userdata('id_utilisateur')==$recette->id_utilisateur}{$display=1}
+	{elseif $recette->etat=="waiting" && $ci->_isAdmin()}{$display=1}
+	{/if}
+{/if}
+{if $display==1}
 <div class="recette">
 	<p>
 		<a href="{base_url('index.php/Recettes/detail_recette/'|cat:$recette->id_recette)}">
@@ -15,7 +23,7 @@
 	<h3>
 		<a href="{base_url('index.php/Recettes/detail_recette/'|cat:$recette->id_recette)}"> {$recette->titre}</a>
 		
-		{if $showEtat==1} {$recette->etat}{/if}
+		{if $showEtat==1}<img src="{base_url('images/'|cat:$recette->etat|cat:'.png')}" alt="{$recette->etat}" title="{$recette->etat}" height="24" width="24" />{/if}
 		
 		{if $ci->_isLogOn() && $ci->getUser()->userdata('id_utilisateur')==$recette->id_utilisateur}
 			<form class="img_edit_recette" action="{base_url('index.php/Membre/supprimerRecette')}" method="post" >
@@ -40,3 +48,4 @@
 		{/foreach}
 	</p>
 </div>
+{/if}

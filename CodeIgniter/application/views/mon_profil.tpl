@@ -1,10 +1,18 @@
 {extends 'main.tpl'}
 {block name="titre"}Profil de {$utilisateur->login}{/block}
+{block name="scripts_area"}
+<script type="text/javascript" >
+	function delete_com()
+	{ return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?'); }
+	function delete_recette()
+	{ return confirm('Êtes-vous sûr de vouloir supprimer cette recette ?'); }
+</script>
+{/block}
 {block name="output_area"}
 <div id="mon_profil">
 	<div id="profil_details">
-		<h2>Informations personnelles <a href="{base_url('index.php/Membre/edit')}"><img src="{base_url('images/edit_ingredient.png')}" alt="Editer profil"></a></h2>
-		<p>{$utilisateur->type_utilisateur}<br />
+		<h2>Informations personnelles <a href="{base_url('index.php/Membre/edit')}"><img src="{base_url('images/edit_recette.gif')}" alt="Editer profil"></a></h2>
+		<p>{if $utilisateur->type_utilisateur==1}Administrateur{else}Membre{/if}<br />
 		Nom : {$utilisateur->nom_utilisateur}<br />
 		Prénom : {$utilisateur->prenom}<br />
 		e-mail : {$utilisateur->email}<br />

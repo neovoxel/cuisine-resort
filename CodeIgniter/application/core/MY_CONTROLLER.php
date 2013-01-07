@@ -10,11 +10,6 @@ class MY_CONTROLLER extends CI_Controller {
 		$user;
 	}
 	
-	/*public function index() {
-		$this->load->helper('url');
-		redirect('home');
-	}*/
-	
 	public function _isLogOn() {
 		$tmp = $this->session->userdata('login');
 		return !empty($tmp);
@@ -56,7 +51,7 @@ class MY_CONTROLLER extends CI_Controller {
 					$this->load->model('mUtilisateur');
 					if(!$this->mUtilisateur->checkIfLoginExist($login) and !$this->mUtilisateur->checkIfEmailExist($email)) //Tout est bon
 					{
-						$this->mUtilisateur->insert($login, $password, $nom, $prenom, $email);
+						$this->mUtilisateur->insert($login, hash('sha256', $password), $nom, $prenom, $email);
 						mkdir("./images/$login");
 						$headers = 'From: webmaster@cuisine-resort.com' . "\r\n" .
 								   'X-Mailer: PHP/' . phpversion();
@@ -125,11 +120,6 @@ class MY_CONTROLLER extends CI_Controller {
 	}
 	
 	public function _authentification() {
-		//$this->load->library('session');
-		
-		//$this->form_validation->set_rules('pseudo', '"Nom d\'utilisateur"', 'trim|required|min_length[4]|max_length[30]|alpha_dash|encode_php_tags|xss_clean');
-        //$this->form_validation->set_rules('pass',    '"Mot de passe"',       'trim|required|min_length[4]|max_length[30]|alpha_dash|encode_php_tags|xss_clean');
-		
 		$login = $this->input->post('login');
 		$pwd = $this->input->post('pwd');
 		
@@ -140,19 +130,13 @@ class MY_CONTROLLER extends CI_Controller {
 			
 			$error = is_null($data);
 			if (!$error)
-				$error = ($data->mdp != $pwd);
+				$error = ($data->mdp != hash('sha256', $pwd));
 			if (!$error) {
                 $this->session->set_userdata('id_utilisateur', $data->id_utilisateur);
                 $this->session->set_userdata('type_utilisateur', $data->type_utilisateur);
                 $this->session->set_userdata('login', $login);
-
-                //echo $this->session->userdata('id_utilisateur');
 				
-				$redirect_page = $this->input->post('redirectTo');
-				if (empty($redirect_page))
-					redirect('home');
-				else
-					redirect($redirect_page);
+				$this->redirectTo($this->input->post('redirectTo'));
             }
             else {
                 $var['erreur'] = 'Le login et le mot de passe ne correspondent pas.';
@@ -160,37 +144,8 @@ class MY_CONTROLLER extends CI_Controller {
                 $this->load->view('connexion', $var);
             }
         }
-        else {
-            //    Le formulaire est invalide ou vide
+        else //    Le formulaire est invalide ou vide
 			$this->redirectTo('home/connexion');
-        }
-		
-		/*if($this->form_validation->run())
-        {
-            $this->load->model('members_model', 'Members');
-           
-            // On récupère le mot de passe associé au pseudo
-            $data = $this->Members->get_pass($this->input->post('pseudo'));
-
-            if ($data->password == hash('sha256', $this->input->post('pass'))) {
-                $this->session->set_userdata('member-id', $data->id);
-                $this->session->set_userdata('pseudo', $this->input->post('pseudo'));
-
-                echo $this->session->userdata('member-id');
-
-                $this->load->view('connexion-reussie');
-            }
-            else {
-                $var['erreur'] = 'Le pseudo et le mot de passe ne correspondent pas.';
-                $this->load->view('connexion', $var);
-            }
-           
-        }
-        else
-        {
-            //    Le formulaire est invalide ou vide
-            $this->load->view('connexion');
-        }*/
 	}
 	
 	public function deconnexion() {
@@ -198,23 +153,27 @@ class MY_CONTROLLER extends CI_Controller {
         redirect('home/connexion');
 	}
 	
+	public function getUser() {
+		return $this->session;
+	}
+	
 	protected function do_upload() {
 		$config['upload_path']	 = './uploads/';
-		$config['allowed_types'] = 'gif|jpg|png';
-		$config['max_size']		 = '1024';
-		$config['max_width']	 = '300';
+		$config['allowed_types'] = 'jpg|jpeg|gif|png';
+		$config['max_size']		 = '1024';	// Ko
+		$config['max_width']	 = '300';	// px
 		$config['max_height']	 = '300';
 
 		$this->load->library('upload', $config);
 
-		if ($this->upload->do_upload())
-			return $this->upload->data();
+		if ($this->upload->do_upload()) {
+			$data = $this->upload->data();
+			$image_recette = "image_".rand(1000, 100000).$data['file_ext'];
+			rename("./uploads/".$data['file_name'], "./uploads/".$image_recette);
+			return $image_recette;
+		}
 		else
-			return false;
-	}
-	
-	public function getUser() {
-		return $this->session;
+			return '';
 	}
 	
 	protected function redirectTo($url) {
@@ -230,8 +189,15 @@ class MY_CONTROLLER extends CI_Controller {
 class MY_Membre_Controller extends MY_CONTROLLER {
 	function __construct() {
 		parent::__construct();
-		if(!$this->_isLogOn()) {
+		if(!$this->_isLogOn())
 			redirect('home/connexion');
+	}
+	
+	protected function deleteFiles($path) {
+		$rep = opendir($path);
+		while($file = readdir($rep)) {
+			if ($file != '..' && $file != '.' && $file != '')
+				unlink($path.$file);
 		}
 	}
 	
@@ -309,8 +275,8 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 				$this->load->model('mUnite');
 				$this->load->model('mCategorie');
 				
-				$data['ingredients'] = $this->mIngredient->getAll();
-				$data['unites'] = $this->mUnite->getAll();
+				$data['ingredients']= $this->mIngredient->getAll();
+				$data['unites']		= $this->mUnite->getAll();
 				$data['categories'] = $this->mCategorie->getAll();
 				
 				$tabRecette['id_recette'] = $id_recette;
@@ -319,13 +285,13 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 				foreach ($categories_recette as $categorie)
 					$tabRecette['categorie_'.$categorie->id_categorie] = $categorie->nom_categorie;
 				
-				$tabRecette['titre'] = $recette->titre;
+				$tabRecette['titre']		 = $recette->titre;
 				$tabRecette['texte_recette'] = $recette->recette;
-				$tabRecette['nb_pers'] = $recette->nb_pers;
-				$tabRecette['difficulte'] = $recette->difficulte;
-				$tabRecette['etat'] = $recette->etat;
-				$tabRecette['date_recette'] = $recette->date_recette;
-				$tabRecette['login'] = $this->session->userdata('login');
+				$tabRecette['nb_pers']		 = $recette->nb_pers;
+				$tabRecette['difficulte']	 = $recette->difficulte;
+				$tabRecette['etat']			 = $recette->etat;
+				$tabRecette['date_recette']	 = $recette->date_recette;
+				$tabRecette['login']		 = $this->session->userdata('login');
 				
 				if (!empty($recette->image_recette))
 					$tabRecette['image_recette'] = $recette->image_recette;
@@ -336,16 +302,16 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 				$tabRecette['tps_s'] = $temps_prepar[2];
 				
 				$ingredients_recette = $this->mRecette->getIngredients($id_recette);
-				$tabRecette['quantites'] = $ingredients_recette[0]->quantite;
-				$tabRecette['unites'] = $ingredients_recette[0]->id_unite;
-				$tabRecette['ingredients'] = $ingredients_recette[0]->id_ingredient;
-				$tabRecette['uniqueIDs'] = $ingredients_recette[0]->quantite.'_'.$ingredients_recette[0]->id_unite.'_'.$ingredients_recette[0]->id_ingredient.'_'.rand(0, 100000);
+				$tabRecette['quantites']	= $ingredients_recette[0]->quantite;
+				$tabRecette['unites']		= $ingredients_recette[0]->id_unite;
+				$tabRecette['ingredients']	= $ingredients_recette[0]->id_ingredient;
+				$tabRecette['uniqueIDs']	= $ingredients_recette[0]->quantite.'_'.$ingredients_recette[0]->id_unite.'_'.$ingredients_recette[0]->id_ingredient.'_'.rand(10, 100000);
 				
 				for ($i = 1 ; $i < count($ingredients_recette) ; $i++) {
-					$tabRecette['quantites'] .= ';'.$ingredients_recette[$i]->quantite;
-					$tabRecette['unites'] .= ';'.$ingredients_recette[$i]->id_unite;
-					$tabRecette['ingredients'] .= ';'.$ingredients_recette[$i]->id_ingredient;
-					$tabRecette['uniqueIDs'] .= ';'.$ingredients_recette[$i]->quantite.'_'.$ingredients_recette[$i]->id_unite.'_'.$ingredients_recette[$i]->id_ingredient.'_'.rand(0, 100000);
+					$tabRecette['quantites']	.= ';'.$ingredients_recette[$i]->quantite;
+					$tabRecette['unites']		.= ';'.$ingredients_recette[$i]->id_unite;
+					$tabRecette['ingredients']	.= ';'.$ingredients_recette[$i]->id_ingredient;
+					$tabRecette['uniqueIDs']	.= ';'.$ingredients_recette[$i]->quantite.'_'.$ingredients_recette[$i]->id_unite.'_'.$ingredients_recette[$i]->id_ingredient.'_'.rand(10, 100000);
 				}
 				
 				$data['recette'] = $tabRecette;
@@ -367,6 +333,9 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 				
 				$data = $data['recette'];
 				
+				$image_recette = $this->do_upload();
+				$this->deleteFiles('./images/'.$this->session->userdata('login').'/'.$id_recette.'/');
+				
 				$quantites	 = explode(';', $data['quantites']);
 				$unites		 = explode(';', $data['unites']);
 				$ingredients = explode(';', $data['ingredients']);
@@ -380,10 +349,16 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 										$data['tps_h'].':'.$data['tps_m'].':'.$data['tps_s'],
 										$data['nb_pers'],
 										$data['difficulte'],
+										$image_recette,
 										$categories,
 										$ingredients,
 										$unites,
 										$quantites);
+				
+				if (!empty($image_recette)) {
+					mkdir('./images/'.$this->session->userdata('login').'/'.$id_recette);
+					rename("./uploads/".$image_recette, './images/'.$this->session->userdata('login').'/'.$id_recette.'/'.$image_recette);
+				}
 				
 				$this->redirectTo('Membre/profil');
 			}
@@ -399,9 +374,9 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 		$this->load->model('mUnite');
 		$this->load->model('mCategorie');
 		
-		$data['ingredients'] = $this->mIngredient->getAll();
-		$data['unites'] = $this->mUnite->getAll();
-		$data['categories'] = $this->mCategorie->getAll();
+		$data['ingredients']= $this->mIngredient->getAll();
+		$data['unites']		= $this->mUnite->getAll();
+		$data['categories']	= $this->mCategorie->getAll();
 		
 		if (empty($data['recette']['titre'])) {
 			$this->load->view('editer_recette', $data);
@@ -418,10 +393,6 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 			$data = $data['recette'];
 			
 			$image_recette = $this->do_upload();
-			if ($image_recette !== false)
-				$image_recette = $image_recette['file_name'];
-			else
-				$image_recette = '';
 			
 			$quantites	 = explode(';', $data['quantites']);
 			$unites		 = explode(';', $data['unites']);
@@ -430,17 +401,17 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 			$this->load->helper('date');
 			$this->load->model('mRecette');
 			$id_recette = $this->mRecette->insert($this->session->userdata('id_utilisateur'),
-									$data['titre'],
-									$data['texte_recette'],
-									$data['tps_h'].':'.$data['tps_m'].':'.$data['tps_s'],
-									$data['nb_pers'],
-									$data['difficulte'],
-									$image_recette,
-									mdate("%Y-%m-%d", time()),
-									$categories,
-									$ingredients,
-									$unites,
-									$quantites);
+													$data['titre'],
+													$data['texte_recette'],
+													$data['tps_h'].':'.$data['tps_m'].':'.$data['tps_s'],
+													$data['nb_pers'],
+													$data['difficulte'],
+													$image_recette,
+													mdate("%Y-%m-%d", time()),
+													$categories,
+													$ingredients,
+													$unites,
+													$quantites);
 			
 			if (!empty($image_recette)) {
 				mkdir('./images/'.$this->session->userdata('login').'/'.$id_recette);
@@ -502,9 +473,8 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 class MY_Admin_Controller extends MY_Membre_Controller {
 	function __construct() {
 		parent::__construct();
-		if(!$this->_isAdmin()) {
-			$this->redirectTo('home/connexion');
-		}
+		if(!$this->_isAdmin())
+			$this->redirectTo('Membre/index');
 	}
 	
 	public function supprimerCommentaire() {

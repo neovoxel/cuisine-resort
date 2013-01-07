@@ -12,7 +12,15 @@
 {block name="output_area"}
 <div id="body">
 {if $recette|default:''}
-<div id="detail_recette">
+	{$display=0}
+	{if $recette->etat=="public"}{$display=1}
+	{elseif $ci->_isLogOn()}
+		{if $ci->getUser()->userdata('id_utilisateur')==$utilisateur->id_utilisateur}{$display=1}
+		{elseif $recette->etat=="waiting" && $ci->_isAdmin()}{$display=1}
+		{/if}
+	{/if}
+	{if $display==1}
+	<div id="detail_recette">
 		<div id="presentation">
 			{if is_null($recette->image_recette)}
 				<img class="img_recette" src="{base_url('images/default/recette.png')}" alt="Illustration recette" height="300" width="300" />
@@ -25,6 +33,9 @@
 				<a href="{base_url('index.php/Membre/editerRecette/'|cat:$recette->id_recette)}" ><img src="{base_url('images/edit_recette.gif')}" title="Editer la recette" alt="Editer la recette" height="24" width="24" /></a>
 			{/if}
 			</h1>
+			
+			{if $recette->etat!="public"}{include file='info_etat_recette.tpl' etat=$recette->etat inline nocache}{/if}
+			
 			<ul>
 				<li>Catégories :
 					{foreach $recette->liste_categories as $categorie_recette}
@@ -39,7 +50,7 @@
 			<hr />
 		</div>
 		<div id="ingredients">
-			<h2>Ingrédients :</h2>
+			<h2>Ingrédients</h2>
 			<ul>
 			{foreach $ingredients as $ingredient}
 				<li>{$ingredient->quantite} {$ingredient->nom_unite} {$ingredient->nom_ingredient}</li>
@@ -48,12 +59,12 @@
 		<hr />
 		</div>
 		<div id="preparation">
-			<h2>Préparation : ({$recette->temps_prepar})</h2>
-			<p>{$recette->recette}</p>
+			<h2>Préparation ({$recette->temps_prepar})</h2>
+			<p>{nl2br($recette->recette)}</p>
 			<hr />
 		</div>
 		
-		<h2>Commentaires :</h2>
+		<h2>Commentaires</h2>
 		{if !is_null($commentaires)}
 			<div id="liste_commentaires">
 			{foreach $commentaires as $line}
@@ -63,11 +74,16 @@
 		{else}
 			<p>Il n'y a aucun commentaire sur cette recette.</p>
 		{/if}
-		<!-- $smarty.server.HTTP_HOST|cat:$smarty.server.REQUEST_URI -->
-		{include file='add_commentaire.tpl' redirectTo='Recettes/detail_recette/'|cat:$recette->id_recette id_recette=$recette->id_recette inline nocache}
-
+		
+		{if $recette->etat=="public"}
+			{include file='add_commentaire.tpl' redirectTo='Recettes/detail_recette/'|cat:$recette->id_recette id_recette=$recette->id_recette inline nocache}
+		{/if}
+	</div>
+	{else}
+		<p>Vous n'avez pas accès à cette recette.</p>
+	{/if}
 {else}
-	<div>Erreur : $categories vide !</div>
+	<div>Erreur !</div>
 {/if}
 </div>
 {/block}

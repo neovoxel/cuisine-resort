@@ -26,6 +26,16 @@ class mRecette extends CI_Model {
 			return array();
 	}
 	
+	public function getAllWithUtilisateur() {
+		$requette='SELECT * FROM recette r INNER JOIN utilisateur U ON R.id_utilisateur=U.id_utilisateur';
+		$query = $this->db->query($requette);
+		
+		if($query->num_rows() > 0)
+			return $query->result();
+		else
+			return array();
+	}
+	
 	public function getCategories($id_recette) {
 		$requette=<<<EOF
 SELECT C.id_categorie, nom_categorie
@@ -47,7 +57,7 @@ SELECT c.id_categorie, r.id_recette, U.id_utilisateur, titre, recette, etat, tem
 FROM categorie c INNER JOIN appartient a ON c.id_categorie = a.id_categorie
 INNER JOIN recette r ON a.id_recette = r.id_recette
 INNER JOIN utilisateur U ON R.id_utilisateur=U.id_utilisateur
-WHERE c.id_categorie=$id_categorie;
+WHERE c.id_categorie=$id_categorie AND etat LIKE 'public'
 EOF;
 		$query = $this->db->query($requette);
 		
@@ -62,6 +72,7 @@ EOF;
 		$request = <<< EOF
 SELECT *
 FROM recette r INNER JOIN utilisateur u ON r.id_utilisateur=u.id_utilisateur
+WHERE etat LIKE 'public'
 ORDER BY date_recette DESC
 LIMIT 0, $nb_recette
 EOF;
@@ -109,6 +120,7 @@ EOF;
 							$temps_prepar,
 							$nb_pers,
 							$difficulte,
+							$image_recette,
 							$categories,
 							$ingredients,
 							$unites,
@@ -122,6 +134,9 @@ EOF;
 		   'nb_pers' => $nb_pers,
 		   'difficulte' => $difficulte
 		);
+		
+		if (!empty($image_recette))
+			$data['image_recette'] = $image_recette;
 		
 		$this->db->where('id_recette', $id_recette);
 		$this->db->update('recette', $data);

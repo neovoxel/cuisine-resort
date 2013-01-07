@@ -27,7 +27,12 @@ class mCategorie extends CI_Model {
 	}
 	
 	public function getNbRecettes($id_categorie) {
-		$query = $this->db->query('SELECT COUNT(id_recette) as "nb_recettes" FROM appartient WHERE id_categorie = '.$id_categorie);
+		$requette=<<<EOF
+SELECT COUNT(A.id_recette) as "nb_recettes"
+FROM appartient A INNER JOIN recette R ON A.id_recette=R.id_recette
+WHERE id_categorie = $id_categorie AND etat LIKE 'public'
+EOF;
+		$query = $this->db->query($requette);
 		
 		if($query->num_rows() > 0) {
 			$categorie = $query->result();
@@ -36,12 +41,6 @@ class mCategorie extends CI_Model {
 		else
 			return null;
 	}
-	
-	/*
-		SELECT COUNT(id_recette) AS nb_recettes
-		FROM appartient
-		WHERE id_categorie = $id_categorie;
-	*/
 	
 	public function update($id, $nom_categorie, $image_categorie) {
 		

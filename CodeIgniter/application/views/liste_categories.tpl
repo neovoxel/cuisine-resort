@@ -17,7 +17,7 @@
 	</div>
 
 {else}
-	<div>Erreur : $categories vide !</div>
+	<div>Erreur : Il semblerait qu'il n'y ait pas de catégorie !</div>
 {/if}
 </div>
 {/block}

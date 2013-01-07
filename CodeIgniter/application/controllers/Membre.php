@@ -110,14 +110,9 @@ class Membre extends MY_Membre_Controller {
 			
 			if (!is_null($recette)) {
 				if ($recette->id_utilisateur == $this->session->userdata('id_utilisateur')) {
-					
 					if (!empty($recette->image_recette)) {
-						$path='./images/'.$this->session->userdata('login').'/'.$recette->id_recette.'/';
-						$rep=opendir($path);
-						while($file = readdir($rep)) {
-							if($file != '..' && $file !='.' && $file !='')
-								unlink($path.$file);
-						}
+						$path = './images/'.$this->session->userdata('login').'/'.$recette->id_recette.'/';
+						$this->deleteFiles($path);
 						rmdir($path);
 					}
 					

@@ -1,5 +1,13 @@
 {extends 'main.tpl'}
 {block name="titre"}Profil de {$utilisateur->login}{/block}
+{block name="scripts_area"}
+<script type="text/javascript" >
+	function delete_com()
+	{ return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?'); }
+	function delete_recette()
+	{ return confirm('Êtes-vous sûr de vouloir supprimer cette recette ?'); }
+</script>
+{/block}
 {block name="output_area"}
 <div id="profil">
 	<div id="profil_details">
