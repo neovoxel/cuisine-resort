@@ -26,7 +26,6 @@
 						alert("Une erreur est survenue lors du changement d'état de la recette.");
 				}
 			}
-			
 		};
 		
 		xhr_object.open("POST", "{base_url('index.php/Admin/changerEtatRecette')}", true);
