@@ -1,13 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class MY_CONTROLLER extends CI_Controller {
-	private $user = null;
-	
 	function __construct() {
 		parent::__construct();
 		$this->load->library('session');
 		$this->load->helper('url');
-		$user;
 	}
 	
 	public function _isLogOn() {
@@ -191,6 +188,19 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 		parent::__construct();
 		if(!$this->_isLogOn())
 			redirect('home/connexion');
+		else {
+			$this->load->model('mUtilisateur');
+			$utilisateur = $this->mUtilisateur->get($this->session->userdata('id_utilisateur'));
+			if (!is_null($utilisateur)) {
+				$this->session->set_userdata('id_utilisateur', $utilisateur->id_utilisateur);
+				$this->session->set_userdata('type_utilisateur', $utilisateur->type_utilisateur);
+				$this->session->set_userdata('login', $utilisateur->login);
+			}
+			else {
+				$this->deconnexion();
+				redirect('home/connexion');
+			}
+		}
 	}
 	
 	protected function deleteFiles($path) {

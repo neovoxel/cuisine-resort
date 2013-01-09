@@ -32,7 +32,7 @@
 							select.options[1].selected = true;
 						else
 							select.options[0].selected = true;
-						alert("Une erreur est survenue lors du changement de type de l'utilisateur.'" + xhr_object.responseText + "'");
+						alert("Une erreur est survenue lors du changement de type de l'utilisateur.\n'" + xhr_object.responseText + "'");
 					}
 				}
 			}

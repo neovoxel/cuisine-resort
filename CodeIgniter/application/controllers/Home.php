@@ -72,7 +72,7 @@ class Home extends MY_CONTROLLER {
 				$data['result']=array();
 			$data['ok']=true;
 		}
-		
+		//printf("<pre>%s</pre>", print_r($data, true));
 		$this->load->view('recherche', $data);
 		
 	}
