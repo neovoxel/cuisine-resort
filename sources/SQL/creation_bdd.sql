@@ -87,7 +87,6 @@ CREATE TABLE Unite
 
 
 ALTER TABLE Commentaire
-ADD constraint FK_Commentaire_Utilisateur foreign key (id_utilisateur) references Utilisateur (id_utilisateur),
 ADD constraint FK_Commentaire_Recette foreign key (id_recette) references Recette (id_recette);
 
 ALTER TABLE Recette
