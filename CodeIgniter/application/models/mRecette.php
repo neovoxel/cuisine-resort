@@ -157,6 +157,20 @@ EOF;
 		}
 	}
 	
+	public function updateEtat($id_recette, $etat) {
+		if ($etat == 'public' or $etat == 'waiting' or $etat == 'private') {
+			$data = array(
+			   'etat' => $etat,
+			);
+			
+			$this->db->where('id_recette', $id_recette);
+			$this->db->update('recette', $data);
+			return true;
+		}
+		else
+			return false;
+	}
+	
 	public function insert(	$id_utilisateur,
 							$titre,
 							$recette,

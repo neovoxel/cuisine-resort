@@ -76,6 +76,7 @@ class Membre extends MY_Membre_Controller {
 			$this->load->view('edit_profil', $var);
 		}
 	}
+	
 	public function supprimerCommentaire() {
 		$tmp = $this->input->post('form_supp_com_x');
 		if (empty($tmp))
@@ -99,33 +100,34 @@ class Membre extends MY_Membre_Controller {
 		}
 	}
 	
-	public function supprimerRecette() {
-		$tmp = $this->input->post('form_supp_recette_x');
-		if (empty($tmp))
-			$this->redirectTo('home');
-		else {
-			$id_recette = $this->input->post('id_recette');
-			$this->load->model('mRecette');
-			$recette = $this->mRecette->get($id_recette);
-			
-			if (!is_null($recette)) {
-				if ($recette->id_utilisateur == $this->session->userdata('id_utilisateur')) {
-					if (!empty($recette->image_recette)) {
-						$path = './images/'.$this->session->userdata('login').'/'.$recette->id_recette.'/';
-						$this->deleteFiles($path);
-						rmdir($path);
-					}
-					
-					$this->mRecette->delete($id_recette);
-					$this->redirectTo('Membre/profil');
-				}
-				else
-					$this->redirectTo('home');
-			}
-			else
-				$this->redirectTo('home');
-			//printf("<pre>%s</pre>", print_r($recette, true));
+	public function editerRecette($id_recette) {
+		if (empty($id_recette))
+			$this->redirectTo('Membre/ajouterRecette');
+		
+		$this->load->model('mRecette');
+		$data = array();
+		$recette = $this->mRecette->get($id_recette);
+		
+		if ($recette->id_utilisateur == $this->session->userdata('id_utilisateur')) {
+			parent::editerRecette($id_recette);
 		}
+		else
+			$this->redirectTo('Membre/ajouterRecette');
+	}
+	
+	public function supprimerRecette() {
+		$id_recette = $this->input->post('id_recette');
+		$this->load->model('mRecette');
+		$recette = $this->mRecette->get($id_recette);
+		
+		if (!is_null($recette)) {
+			if ($recette->id_utilisateur == $this->session->userdata('id_utilisateur'))
+				parent::supprimerRecette();
+			else
+				$this->redirectTo('Membre/profil');
+		}
+		else
+			$this->redirectTo('Membre/profil');
 	}
 }
 ?>

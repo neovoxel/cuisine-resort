@@ -14,9 +14,9 @@
 {if $recette|default:''}
 	{$display=0}
 	{if $recette->etat=="public"}{$display=1}
+	{elseif $ci->_isAdmin()}{$display=1}
 	{elseif $ci->_isLogOn()}
 		{if $ci->getUser()->userdata('id_utilisateur')==$utilisateur->id_utilisateur}{$display=1}
-		{elseif $recette->etat=="waiting" && $ci->_isAdmin()}{$display=1}
 		{/if}
 	{/if}
 	{if $display==1}

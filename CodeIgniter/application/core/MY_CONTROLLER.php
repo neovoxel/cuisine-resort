@@ -265,7 +265,10 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 		$data = array();
 		$recette = $this->mRecette->get($id_recette);
 		
-		if ($recette->id_utilisateur == $this->session->userdata('id_utilisateur')) {
+		if (!is_null($recette)) {
+			$this->load->model('mUtilisateur');
+			$utilisateur = $this->mUtilisateur->get($recette->id_utilisateur);
+			
 			if (!$this->verifyRecette()) {
 				$titre = $this->input->post('titre');
 				if (!empty($titre))
@@ -291,7 +294,7 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 				$tabRecette['difficulte']	 = $recette->difficulte;
 				$tabRecette['etat']			 = $recette->etat;
 				$tabRecette['date_recette']	 = $recette->date_recette;
-				$tabRecette['login']		 = $this->session->userdata('login');
+				$tabRecette['login']		 = $utilisateur->login;
 				
 				if (!empty($recette->image_recette))
 					$tabRecette['image_recette'] = $recette->image_recette;
@@ -334,7 +337,7 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 				$data = $data['recette'];
 				
 				$image_recette = $this->do_upload();
-				$this->deleteFiles('./images/'.$this->session->userdata('login').'/'.$id_recette.'/');
+				$this->deleteFiles('./images/'.$utilisateur->login.'/'.$id_recette.'/');
 				
 				$quantites	 = explode(';', $data['quantites']);
 				$unites		 = explode(';', $data['unites']);
@@ -343,7 +346,7 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 				$this->load->helper('date');
 				$this->load->model('mRecette');
 				$this->mRecette->update($id_recette,
-										$this->session->userdata('id_utilisateur'),
+										$utilisateur->id_utilisateur,
 										$data['titre'],
 										$data['texte_recette'],
 										$data['tps_h'].':'.$data['tps_m'].':'.$data['tps_s'],
@@ -356,15 +359,15 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 										$quantites);
 				
 				if (!empty($image_recette)) {
-					mkdir('./images/'.$this->session->userdata('login').'/'.$id_recette);
-					rename("./uploads/".$image_recette, './images/'.$this->session->userdata('login').'/'.$id_recette.'/'.$image_recette);
+					mkdir('./images/'.$utilisateur->login.'/'.$id_recette);
+					rename("./uploads/".$image_recette, './images/'.$utilisateur->login.'/'.$id_recette.'/'.$image_recette);
 				}
 				
 				$this->redirectTo('Membre/profil');
 			}
 		}
 		else
-			$this->redirectTo('home');
+			$this->redirectTo('Membre/ajouterRecette');
 	}
 	
 	public function ajouterRecette() {
@@ -428,7 +431,32 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 		//printf("<pre>%s</pre>", print_r($data, true));
 	}
 	
-	function ajouterIngredient() {
+	public function supprimerRecette() {
+		$tmp = $this->input->post('form_supp_recette_x');
+		if (empty($tmp))
+			$this->redirectTo('home');
+		else {
+			$id_recette = $this->input->post('id_recette');
+			$this->load->model('mRecette');
+			$recette = $this->mRecette->get($id_recette);
+			
+			if (!is_null($recette)) {
+				$this->load->model('mUtilisateur');
+				$utilisateur = $this->mRecette->get($id_recette->id_utilisateur);
+				if (!empty($recette->image_recette)) {
+					$path = './images/'.$utilisateur->login.'/'.$recette->id_recette.'/';
+					$this->deleteFiles($path);
+					rmdir($path);
+				}
+				$this->mRecette->delete($id_recette);
+				$this->redirectTo('Membre/profil');
+			}
+			else
+				$this->redirectTo('home');
+		}
+	}
+	
+	public function ajouterIngredient() {
 		$nom_ingredient = $this->input->post('nom_ingredient');
 		
 		if (empty($nom_ingredient))
@@ -448,7 +476,7 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 		echo $result;
 	}
 	
-	function ajouterUnite() {
+	public function ajouterUnite() {
 		$nom_unite = $this->input->post('nom_unite');
 		
 		if (empty($nom_unite))
@@ -496,6 +524,31 @@ class MY_Admin_Controller extends MY_Membre_Controller {
 			
 			//printf("<pre>%s</pre>", print_r($com, true));
 		}
+	}
+	
+	public function changerEtatRecette() {
+		$id_recette = $this->input->post('id_recette');
+		$etat = $this->input->post('etat');
+		
+		if (empty($id_recette))
+			$result = 'erreur';
+		if (empty($etat))
+			$result = 'erreur';
+		else {
+			$this->load->model('mRecette');
+			$recette = $this->mRecette->get($id_recette);
+			
+			if (!is_null($recette)) {
+				if ($this->mRecette->updateEtat($id_recette, $etat))
+					$result = "ok";
+				else
+					$result = "erreur";
+			}
+			else
+				$result = "erreur";
+		}
+		
+		echo $result;
 	}
 }
 
