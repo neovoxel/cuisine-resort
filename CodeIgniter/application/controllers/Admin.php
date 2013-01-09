@@ -23,7 +23,11 @@ class Admin extends MY_Admin_Controller {
 	}
 	
 	public function administrationMembres() {
+		$this->load->model('mUtilisateur');
+		$data['membres'] = $this->mUtilisateur->getAll();
 		
+		
+		$this->load->view('administrationMembres', $data);
 	}
 }
 ?>

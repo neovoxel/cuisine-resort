@@ -39,8 +39,6 @@ class mUtilisateur extends CI_Model {
 	}
 	
 	public function getPassword($login) {
-		//echo "<h1>$login</h1>";
-		
 		$query = $this->db->query("SELECT * FROM Utilisateur WHERE login = '".$login."'");
 		
 		if($query->num_rows() > 0) {
@@ -51,23 +49,42 @@ class mUtilisateur extends CI_Model {
 			return null;
 	}
 	
-	public function update($id, $nom, $prenom, $email, $password) {	
-		if(strlen($password)<6)
-			$password=$this->get($id)->mdp;
-		else
-			$password=hash('sha256', $password);
-			
+	public function update($id, $nom, $prenom) {	
 		$data = array(
-		   'id_utilisateur' => $id,
 		   'nom_utilisateur' => $nom,
-		   'prenom' => $prenom,
-		   'email' => $email,
-		   'mdp' =>  $password
+		   'prenom' => $prenom
 		);
 		
 		$this->db->where('id_utilisateur', $id);
 		$this->db->update('utilisateur', $data);
 		
+	}
+	
+	public function updatePassword($id, $password) {
+		$data = array(
+		   'mdp' =>  $password
+		);
+		
+		$this->db->where('id_utilisateur', $id);
+		$this->db->update('utilisateur', $data);
+	}
+	
+	public function updateEmail($id, $email) {
+		$data = array(
+		   'email' =>  $email
+		);
+		
+		$this->db->where('id_utilisateur', $id);
+		$this->db->update('utilisateur', $data);
+	}
+	
+	public function updateType($id_utilisateur, $type) {
+		$data = array(
+		   'type_utilisateur' => $type
+		);
+		
+		$this->db->where('id_utilisateur', $id_utilisateur);
+		$this->db->update('utilisateur', $data);
 	}
 	
 	public function insert($login, $password, $nom_utilisateur, $prenom, $email) {

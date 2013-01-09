@@ -14,9 +14,9 @@
 {if $recette|default:''}
 	{$display=0}
 	{if $recette->etat=="public"}{$display=1}
+	{elseif $ci->_isAdmin()}{$display=1}
 	{elseif $ci->_isLogOn()}
 		{if $ci->getUser()->userdata('id_utilisateur')==$utilisateur->id_utilisateur}{$display=1}
-		{elseif $recette->etat=="waiting" && $ci->_isAdmin()}{$display=1}
 		{/if}
 	{/if}
 	{if $display==1}
@@ -34,7 +34,7 @@
 			{/if}
 			</h1>
 			
-			{if $recette->etat!="public"}{include file='info_etat_recette.tpl' etat=$recette->etat inline nocache}{/if}
+			{if $recette->etat!="public"}{include file='info_etat_recette.tpl' id_recette=$recette->id_recette etat=$recette->etat inline nocache}{/if}
 			
 			<ul>
 				<li>Catégories :
