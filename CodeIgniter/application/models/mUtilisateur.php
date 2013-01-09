@@ -51,12 +51,18 @@ class mUtilisateur extends CI_Model {
 			return null;
 	}
 	
-	public function update($id, $nom, $prenom, $email) {	
+	public function update($id, $nom, $prenom, $email, $password) {	
+		if(strlen($password)<6)
+			$password=$this->get($id)->mdp;
+		else
+			$password=hash('sha256', $password);
+			
 		$data = array(
 		   'id_utilisateur' => $id,
 		   'nom_utilisateur' => $nom,
 		   'prenom' => $prenom,
-		   'email' => $email
+		   'email' => $email,
+		   'mdp' =>  $password
 		);
 		
 		$this->db->where('id_utilisateur', $id);
@@ -76,8 +82,13 @@ class mUtilisateur extends CI_Model {
 		$this->db->insert('utilisateur', $data);
 	}
 	
-	public function delete($id) {
-		
+	public function delete($id)
+	{ // Vire les recettes, garde les coms
+		$this->load->model('mRecette');
+		$data=$this->mRecette->getAllFromUtilisateur($id);
+		foreach($data as $line)
+			$this->mRecette->delete($line->id_recette);
+		$this->db->delete('utilisateur', array('id_utilisateur' => $id));
 	}	
 }
 
