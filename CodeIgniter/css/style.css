@@ -1,5 +1,5 @@
 body {
-	background-color: #3D6328;
+	background-color: #dddddd;
 	font-family:  Arial, sans-serif;
 }
 
@@ -108,12 +108,42 @@ label {
 	
 #navigation {
 	border-style: solid;
-	border-color: gray;
+	border-color: #dddddd;
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
 	width: 600px;
 	border-radius: 0 0 20px 20px;
+}
+
+table{
+	background-color: rgba(255, 255, 255, 0.8);
+	border-radius: 0 0 10px 10px;
+	width:600px;
+	margin-left:auto;
+	margin-right: auto;
+	
+}
+
+#nav
+{
+	background-color: rgba(0,0,0,0);
+	border-radius: 8px;
+}
+
+#nav a
+{
+	color: black;
+	text-decoration: none;
+}
+
+#nav:hover{
+	transition: all 1s;
+	-moz-transition: all 1s; /* Firefox 4 */
+	-webkit-transition: all 1s; /* Safari and Chrome */
+	-o-transition: all 1s; /* Opera */
+	background-color: rgba(150,150,150,1);
+	
 }
 	
 #contenu {
@@ -130,6 +160,14 @@ label {
 
 #accueil h1  {
 	text-align: center;
+}
+
+#navigation 
+{
+	display:inline;
+}
+.nav {
+	background: white;
 }
 
 fieldset.info {
