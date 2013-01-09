@@ -239,19 +239,32 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 		if ($erreur)
 			return false;
 		
-		if (empty($recette['titre']))
+		printf("<pre>%s</pre>", print_r($recette, true));
+			
+		foreach ($recette as $value) {
+			if (empty($value)) {
+				if (is_numeric($value))
+					continue;
+				else
+					return false;
+			}
+		}
+		
+		$quantites	 = explode(';', $recette['quantites']);
+		foreach ($quantites as $value)
+			if (!is_numeric($value))
+				return false;
+		
+		if (!is_numeric($recette['nb_pers']))
 			return false;
 		
-		if (empty($recette['texte_recette']))
+		if (!is_numeric($recette['tps_h']))
 			return false;
 		
-		if (empty($recette['quantites']))
+		if (!is_numeric($recette['tps_m']))
 			return false;
 		
-		if (empty($recette['unites']))
-			return false;
-		
-		if (empty($recette['ingredients']))
+		if (!is_numeric($recette['tps_s']))
 			return false;
 		
 		return true;	// Pas d'erreur
@@ -456,6 +469,31 @@ class MY_Membre_Controller extends MY_CONTROLLER {
 		}
 	}
 	
+	public function changerEtatRecette() {
+		$id_recette = $this->input->post('id_recette');
+		$etat = $this->input->post('etat');
+		
+		if (empty($id_recette))
+			$result = 'erreur';
+		if (empty($etat))
+			$result = 'erreur';
+		else {
+			$this->load->model('mRecette');
+			$recette = $this->mRecette->get($id_recette);
+			
+			if (!is_null($recette)) {
+				if ($this->mRecette->updateEtat($id_recette, $etat))
+					$result = "ok";
+				else
+					$result = "erreur";
+			}
+			else
+				$result = "erreur";
+		}
+		
+		echo $result;
+	}
+	
 	public function ajouterIngredient() {
 		$nom_ingredient = $this->input->post('nom_ingredient');
 		
@@ -526,27 +564,38 @@ class MY_Admin_Controller extends MY_Membre_Controller {
 		}
 	}
 	
-	public function changerEtatRecette() {
-		$id_recette = $this->input->post('id_recette');
-		$etat = $this->input->post('etat');
-		
-		if (empty($id_recette))
-			$result = 'erreur';
-		if (empty($etat))
-			$result = 'erreur';
-		else {
-			$this->load->model('mRecette');
-			$recette = $this->mRecette->get($id_recette);
+	public function supprimerUtilisateur() {
+		$tmp = $this->input->post('form_supp_utilisateur_x');
+		if (!empty($tmp)) {
+			$id_utilisateur = $this->input->post('id_utilisateur');
+			$this->load->model('mUtilisateur');
+			$utilisateur = $this->mUtilisateur->get($id_utilisateur);
 			
-			if (!is_null($recette)) {
-				if ($this->mRecette->updateEtat($id_recette, $etat))
-					$result = "ok";
-				else
-					$result = "erreur";
+			if (!is_null($utilisateur))
+				$this->mUtilisateur->delete($id_utilisateur);
+		}
+		$this->redirectTo('Admin/administrationMembres');
+	}
+	
+	public function changerTypeUtilisateur() {
+		$id_utilisateur = $this->input->post('id_utilisateur');
+		$type = $this->input->post('type');
+		
+		if (empty($id_utilisateur))
+			$result = 'erreur';
+		else if ($type === '1' or $type === '0') {
+			$this->load->model('mUtilisateur');
+			$utilisateur = $this->mUtilisateur->get($id_utilisateur);
+			
+			if (!is_null($utilisateur)) {
+				$this->mUtilisateur->updateType($id_utilisateur, $type);
+				$result = "ok";
 			}
 			else
 				$result = "erreur";
 		}
+		else
+			$result = 'erreur_'.$type;
 		
 		echo $result;
 	}

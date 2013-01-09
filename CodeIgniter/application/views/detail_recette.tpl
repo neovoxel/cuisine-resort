@@ -34,7 +34,7 @@
 			{/if}
 			</h1>
 			
-			{if $recette->etat!="public"}{include file='info_etat_recette.tpl' etat=$recette->etat inline nocache}{/if}
+			{if $recette->etat!="public"}{include file='info_etat_recette.tpl' id_recette=$recette->id_recette etat=$recette->etat inline nocache}{/if}
 			
 			<ul>
 				<li>Catégories :

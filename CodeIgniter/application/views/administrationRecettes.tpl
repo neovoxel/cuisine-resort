@@ -1,6 +1,6 @@
 
 {extends 'main.tpl'}
-{block name="titre"}Welcome{/block}
+{block name="titre"}Administration des recettes{/block}
 {block name="scripts_area"}
 <script type="text/javascript" >
 	function getXMLHTTP() {
@@ -85,7 +85,7 @@
 </script>
 {/block}
 {block name="output_area"}
-<div id="body">
+<div id="administration">
 <h1>Administration des recettes</h1>
 	<div class="table">
 		<div class="trow">

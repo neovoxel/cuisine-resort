@@ -82,6 +82,19 @@ label {
 	font-weight: bold;
 }
 
+#administration h1 {
+	text-align: center;
+}
+
+#administration .no_table .cell {
+	font-size: large;
+	padding-bottom: 10px;
+}
+
+#administration .no_table .cell:hover {
+	background-color: #909090;
+}
+
 #entete {
 	width: 900px;
 	height: 300px;

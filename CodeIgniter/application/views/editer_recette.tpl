@@ -314,7 +314,7 @@ function annulerModification(id_ingredient) {
 	{/if}
 	<h1>{if $recette['id_recette']|default:''}Editer{else}Ajouter{/if} une recette</h1>
 	{if $recette['etat']|default:''}
-		{include file='info_etat_recette.tpl' etat=$recette['etat'] inline nocache}
+		{include file='info_etat_recette.tpl' id_recette=$recette['id_recette'] etat=$recette['etat'] inline nocache}
 	{/if}
 	
 	{if $erreur|default:''}<span class="erreur" >Erreur : certains champs sont invalides</span><br />{/if}

@@ -171,5 +171,16 @@ class Membre extends MY_Membre_Controller {
 		else
 			$this->redirectTo('Membre/profil');
 	}
+	
+	public function changerEtatRecette() {
+		$etat = $this->input->post('etat');
+		
+		if (empty($etat))
+			echo 'erreur';
+		else if ($etat == 'public')
+			echo 'erreur';
+		else
+			parent::changerEtatRecette();
+	}
 }
 ?>

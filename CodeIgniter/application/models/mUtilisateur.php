@@ -51,7 +51,6 @@ class mUtilisateur extends CI_Model {
 	
 	public function update($id, $nom, $prenom) {	
 		$data = array(
-		   'id_utilisateur' => $id,
 		   'nom_utilisateur' => $nom,
 		   'prenom' => $prenom
 		);
@@ -63,7 +62,6 @@ class mUtilisateur extends CI_Model {
 	
 	public function updatePassword($id, $password) {
 		$data = array(
-		   'id_utilisateur' => $id,
 		   'mdp' =>  $password
 		);
 		
@@ -73,11 +71,19 @@ class mUtilisateur extends CI_Model {
 	
 	public function updateEmail($id, $email) {
 		$data = array(
-		   'id_utilisateur' => $id,
 		   'email' =>  $email
 		);
 		
 		$this->db->where('id_utilisateur', $id);
+		$this->db->update('utilisateur', $data);
+	}
+	
+	public function updateType($id_utilisateur, $type) {
+		$data = array(
+		   'type_utilisateur' => $type
+		);
+		
+		$this->db->where('id_utilisateur', $id_utilisateur);
 		$this->db->update('utilisateur', $data);
 	}
 	
