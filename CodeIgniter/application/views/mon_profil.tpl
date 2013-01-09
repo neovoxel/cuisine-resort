@@ -10,6 +10,7 @@
 {/block}
 {block name="output_area"}
 <div id="mon_profil">
+	{if $erreur|default:''}<span style="color:red;">{$erreur}</span>{/if}
 	<div id="profil_details">
 		<h2>Informations personnelles <a href="{base_url('index.php/Membre/edit')}"><img src="{base_url('images/edit_recette.gif')}" alt="Editer profil"></a></h2>
 		<p>{if $utilisateur->type_utilisateur==1}Administrateur{else}Membre{/if}<br />

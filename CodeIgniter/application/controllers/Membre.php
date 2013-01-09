@@ -35,10 +35,18 @@ class Membre extends MY_Membre_Controller {
 		$email = $this->input->post('email');
 		$emailok = $this->input->post('emailok');
 		$password = $this->input->post('password');
-		$passok = $this->input->post('passok');
-		if(!empty($nom) and !empty($prenom) and !empty($email) and !empty($emailok) and !empty($password) and !empty($passok)) { //Si formulaire validé
+		$supp = $this->input->post('supp');
+		if (!empty($supp))
+		{
+			$this->load->model('mUtilisateur');
+			$this->mUtilisateur->delete($id);
+			$this->deconnexion();
+			$this->load->view('home');		
+		}
+		
+		if(!empty($email) and !empty($emailok)) { //Si formulaire validé
 			// On vérifie les données
-			if($password===$passok and $email===$emailok)
+			if($email===$emailok)
 			{
 				//CHeck l'adresse mail
 				$atom   = '[-a-z0-9!#$%&\'*+\\/=?^_`{|}~]';   // caractères autorisés avant l'arobase
@@ -58,14 +66,28 @@ class Membre extends MY_Membre_Controller {
 					$this->load->model('mUtilisateur');
 					if(!$this->mUtilisateur->checkIfEmailExist($email) or $email===$this->mUtilisateur->get($id)->email) //Tout est bon
 					{
-						$this->mUtilisateur->update($id, $nom, $prenom, $email);
-						$this->redirectTo("Membre/profil");
+						$this->mUtilisateur->update($id, $nom, $prenom, $email, $password);
+						$this->load->model('mRecette');
+						$this->load->model('mCommentaire');
+						$data['utilisateur'] = $this->mUtilisateur->get($id);
+						$data['recettes'] = $this->mRecette->getAllFromUtilisateur($id);
+						
+						foreach ($data['recettes'] as $line) {
+							$line->liste_categories = $this->mRecette->getCategories($line->id_recette);
+						}
+						
+						$data['commentaire'] = $this->mCommentaire->getComsFromUser($id);				
+						
+						if(strlen($password)<6)
+							$data['erreur']="Le mot de passe n'a pas été changé (Inferieur à 6 caractères).";
+							
+						$this->load->view('mon_profil', $data);
 					}
 					else //L'email existe déjà!
 					{
 						$var['erreur'] = 'Votre adresse email est déjà utilisée! Les doubles comptes sont interdis.';
 						$var['utilisateur']=$this->mUtilisateur->get($id);
-						$this->load->view('edit_profil', $var);;
+						$this->load->view('edit_profil', $var);
 					}
 				}
 			}
