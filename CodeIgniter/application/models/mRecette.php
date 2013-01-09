@@ -36,6 +36,26 @@ class mRecette extends CI_Model {
 			return array();
 	}
 	
+	public function getNbPersonne() {
+		$requette='SELECT distinct nb_pers FROM recette ';
+		$query = $this->db->query($requette);
+		
+		if($query->num_rows() > 0)
+			return $query->result();
+		else
+			return array();
+	}
+	
+	public function getDifficulte() {
+		$requette='SELECT distinct difficulte FROM recette ';
+		$query = $this->db->query($requette);
+		
+		if($query->num_rows() > 0)
+			return $query->result();
+		else
+			return array();
+	}
+	
 	public function getCategories($id_recette) {
 		$requette=<<<EOF
 SELECT C.id_categorie, nom_categorie
